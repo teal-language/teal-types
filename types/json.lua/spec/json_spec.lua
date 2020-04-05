@@ -1,5 +1,5 @@
 local tl = require("tl")
-local util = require("spec.util")
+local util = require("spec_util")
 
 describe("json", function()
    describe("encode", function()
