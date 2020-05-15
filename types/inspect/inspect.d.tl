@@ -2,7 +2,7 @@ global InspectOptions = record
     depth: number
     newline: string
     indent: string
-    process: function(any, {any}): any
+    process: function(item: any, path: {any}): any
 end
 
 local inspect: function(value: any, options: InspectOptions): string
