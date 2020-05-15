@@ -70,22 +70,20 @@ local lume = record
     sort: function<N>(t: {N}, comp: string): {N}
 
     -- Iterates the supplied iterator and returns an array filled with the values.
-    array: function<N>(function(): N): {N}
-    array: function<N>(...: N): {N}
+    array: function<N>(it: function(): N): {N}
 
     -- Iterates the table t and calls the function fn on each value followed by the supplied additional arguments. 
     -- If fn is a string the method of that name is called for each value. 
     -- The function returns t unmodified.
-    -- FIXME
-    each: function<N, F>(t: {N}, fn: function(item: N, ...: any), ...: any): {N} -- FIXME: technically, the type of "..." should not be "any"
-    each: function<K, V>(t: {K: V}, fn: string, ...: any): {V} -- FIXME: technically, the type of "..." should not be "any"
+    each: function<N>(t: {N}, fn: function(...: any), ...: any): {N}
+    each: function<K, V>(t: {{K:V}}, fn: string, ...: any): {{K:V}}
 
     MapFunction = functiontype<V, R>(item: V): R
 
     -- Applies the function fn to each value in table t and returns a new table with the resulting values.
-    -- FIXME
-    map: function<K, V>(t: {K:V}, fn: string): {V}
-    map: function<K, V, R>(t: {K:V}, fn: MapFunction<V, R>): {R}
+    map: function<V, R>(t: {V}, fn: MapFunction<V, R>): {R}
+    map: function<K, V, R>(t: {K:V}, fn: MapFunction<V, R>): {K:R}
+    map: function<K, V>(t: {{K:V}}, key: K): {V}
 end
 
 return lume
