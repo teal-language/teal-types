@@ -17,6 +17,7 @@ local SLAXDOM = record
         type: NodeType
         name: string
         kids: {Node} -- {ProcessingInstruction | Element | Comment}
+        root: Element
     end
 
     Element = record
@@ -24,7 +25,7 @@ local SLAXDOM = record
         name: string
         nsURI: string
         nsPrefix: string
-        attr: {(number | string):Attribute}
+        attr: {string:Attribute} -- FIXME: {string:Attribute} | {Attribute}
         kids: {Node} -- {Element | Text | Comment | ProcessingInstruction}
         el: {Element}
         parent: Node -- Document | Element
@@ -33,12 +34,16 @@ local SLAXDOM = record
     Attribute = record
         type: NodeType
         name: string
+        value: string
+        nsURI: string
+        nsPrefix: string
+        parent: Element
     end
 
     Text = record
         type: NodeType
         name: string
-        cdata: string
+        cdata: boolean
         value: string
         parent: Element
     end

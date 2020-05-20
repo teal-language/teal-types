@@ -11,7 +11,7 @@ local SLAXML = record
         startElement: function(name: string, nsURI: string, nsPrefix: string)
         attribute: function(name: string, value: string, nsURI: string, nsPrefix: string)
         closeElement: function(name: string, nsURI: string)
-        text: function(text, cdata: string)
+        text: function(text: string, cdata: boolean)
         comment: function(content: string)
         pi: function(target: string, content: string)
     end
