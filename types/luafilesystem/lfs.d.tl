@@ -1,6 +1,6 @@
 local lfs = record
 
-   FileModes = enum
+   FileMode = enum
       "file"
       "directory"
       "link"
