@@ -1,5 +1,3 @@
--- TODO: math.pi
-
 function loadstring(x: string): any, string -- TODO: add to tl
 end
 
@@ -10,9 +8,6 @@ function dofile(filename: string) -- TODO: add to tl
 end
 
 function dump(x: any): string -- TODO
-end
-
-function math.ceil(x: number): number
 end
 
 function table.copy<T>(x: T): T -- TODO
@@ -31,21 +26,21 @@ end
 global ItemStack = function(x: string): ItemStack -- TODO
 end
 
-global Vector = record
+global Vec = record
     x: number
     y: number
     z: number
 end
 
 global vector = record
-    floor: function(Vector): Vector
-    add: function(Vector, Vector): Vector
-    round: function(Vector): Vector
-    distance: function(Vector, Vector): number
-    multiply: function(Vector, number): Vector
+    floor: function(Vec): Vec
+    add: function(Vec, Vec): Vec
+    round: function(Vec): Vec
+    distance: function(Vec, Vec): number
+    multiply: function(Vec, number): Vec
 end
 
-global Vector2 = record
+global Vec2 = record
     x: number
     y: number
 end
@@ -61,8 +56,8 @@ global PointedThing = record
     type: string
 
     -- node
-    under: Vector
-    above: Vector
+    under: Vec
+    above: Vec
 
     -- object
     ref: ObjectRef
@@ -90,23 +85,23 @@ global ObjectRef = record
     get_player_name: function(ObjectRef): string
     is_player: function(ObjectRef)
     set_inventory_formspec: function(ObjectRef, string)
-    get_pos: function(ObjectRef): Vector
+    get_pos: function(ObjectRef): Vec
     set_armor_groups: function(ObjectRef, {string: number})
-    set_sprite: function(ObjectRef, Vector2, number, number, boolean)
+    set_sprite: function(ObjectRef, Vec2, number, number, boolean)
     get_player_control: function(ObjectRef): PlayerControl
     get_wielded_item: function(ObjectRef): ItemStack
     set_wielded_item: function(ObjectRef, ItemStack)
     remove: function(ObjectRef)
-    get_rotation: function(ObjectRef): Vector
-    set_rotation: function(ObjectRef, Vector)
+    get_rotation: function(ObjectRef): Vec
+    set_rotation: function(ObjectRef, Vec)
     get_look_horizontal: function(ObjectRef): number
     get_look_vertical: function(ObjectRef): number
-    set_pos: function(ObjectRef, Vector)
-    get_properties: function(ObjectRef): EntityProperties
-    set_properties: function(ObjectRef, EntityProperties)
+    set_pos: function(ObjectRef, Vec)
+    get_properties: function(ObjectRef): ObjectProps
+    set_properties: function(ObjectRef, ObjectProps)
     get_luaentity: function(ObjectRef): LuaEntity
     get_attach: function(ObjectRef): any -- TODO
-    set_attach: function(ObjectRef, ObjectRef, string, Vector, Vector)
+    set_attach: function(ObjectRef, ObjectRef, string, Vec, Vec)
     set_detach: function(ObjectRef)
     hud_set_hotbar_itemcount: function(ObjectRef, number): boolean
     set_hp: function(ObjectRef, number)
@@ -125,6 +120,13 @@ global ToolGroupCap = record
     maxlevel: number
 end
 
+global ColorSpec = record
+    a: number
+    r: number
+    g: number
+    b: number
+end
+
 global TileDef = record
     name: string
     backface_culling: boolean
@@ -132,18 +134,11 @@ global TileDef = record
     tileable_horizontal: boolean
     align_style: string
     scale: number
-    animation: Animation
-    color: ColorSpec -- TODO: ColorSpec | number | string
+    animation: TileAnimDef
+    color: ColorSpec | number | string
 
     -- deprecated
     image: string
-end
-
-global ColorSpec = record
-    a: number
-    r: number
-    g: number
-    b: number
 end
 
 global NodeBox = record
@@ -178,7 +173,7 @@ global MetaDataRef = record
     contains: function(MetaDataRef, string): boolean
 end
 
-global DetachedInventoryCallbacks = record -- TODO
+global DetachedInvCallbacks = record -- TODO
     allow_move: function
     allow_put: function
     allow_take: function
@@ -187,11 +182,11 @@ global DetachedInventoryCallbacks = record -- TODO
     on_take: function
 end
 
-global Timer = record
-    start: function(Timer, number, number)
+global NodeTimerRef = record
+    start: function(NodeTimerRef, number, number)
 end
 
-global Animation = record
+global TileAnimDef = record
     type: string
 
     frames_w: number
@@ -212,7 +207,7 @@ end
 global ItemDef = record
     type: string
     wield_image: string
-    wield_scale: Vector
+    wield_scale: Vec
     tool_capabilities: ToolCapabilities
 end
 
@@ -229,7 +224,7 @@ global ToolDef = record -- TODO: inheritance?
     tool_capabilities: ToolCapabilities
 end
 
-global CraftitemDef = record -- TODO: inheritance?
+global CraftItemDef = record -- TODO: inheritance?
     description: string
     inventory_image: string
     liquids_pointable: boolean
@@ -285,19 +280,19 @@ global NodeDef = record -- TODO: inheritance?
     groups: {string: number}
     sounds: {string: SimpleSoundSpec}
     on_use: function(ItemStack, ObjectRef | nil, PointedThing): ItemStack | nil
-    on_construct: function(Vector)
-    can_dig: function(Vector, ObjectRef): boolean
-    on_receive_fields: function(Vector, string, {string: any}, any) -- TODO
-    after_place_node: function(Vector, ObjectRef | nil)
-    on_destruct: function(Vector)
-    after_destruct: function(Vector)
-    after_dig_node: function(Vector, any, any, any) -- TODO
-    on_timer: function(Vector, any): boolean | nil -- TODO
-    on_rightclick: function(Vector, Node, ObjectRef)
-    on_receive_fields: function(Vector, string, {string: string}, ObjectRef)
-    allow_metadata_inventory_move: function -- TODO: (Vector, string?, number?, string?, number?, number, ObjectRef): number
-    allow_metadata_inventory_put: function -- TODO: (Vector, string?, number?, ItemStack, ObjectRef): number
-    allow_metadata_inventory_take: function -- TODO: (Vector, string?, number?, ItemStack, ObjectRef): number
+    on_construct: function(Vec)
+    can_dig: function(Vec, ObjectRef): boolean
+    on_receive_fields: function(Vec, string, {string: any}, any) -- TODO
+    after_place_node: function(Vec, ObjectRef | nil)
+    on_destruct: function(Vec)
+    after_destruct: function(Vec)
+    after_dig_node: function(Vec, any, any, any) -- TODO
+    on_timer: function(Vec, any): boolean | nil -- TODO
+    on_rightclick: function(Vec, Node, ObjectRef)
+    on_receive_fields: function(Vec, string, {string: string}, ObjectRef)
+    allow_metadata_inventory_move: function -- TODO: (Vec, string?, number?, string?, number?, number, ObjectRef): number
+    allow_metadata_inventory_put: function -- TODO: (Vec, string?, number?, ItemStack, ObjectRef): number
+    allow_metadata_inventory_take: function -- TODO: (Vec, string?, number?, ItemStack, ObjectRef): number
     on_metadata_inventory_move: function -- TODO: see above allow_metadata_*
     on_metadata_inventory_put: function -- TODO: see above allow_metadata_*
     on_metadata_inventory_take: function -- TODO: see above allow_metadata_*
@@ -307,7 +302,7 @@ global NodeDef = record -- TODO: inheritance?
     legacy_facedir_simple: boolean
 end
 
-global CommandDef = record
+global ChatCommandDef = record
     params: string
     privs: {string: boolean}
     description: string
@@ -326,14 +321,14 @@ global InvRef = record
     set_stack: function(InvRef, string, number, ItemStack)
 end
 
-global Particle = record
-    pos: Vector
-    velocity: Vector
-    acceleration: Vector
+global ParticleDef = record
+    pos: Vec
+    velocity: Vec
+    acceleration: Vec
     expirationtime: number
     collisiondetection: boolean
     texture: string
-    animation: Animation
+    animation: TileAnimDef
     size: number
     glow: number
     playername: string
@@ -363,30 +358,30 @@ global ModChannel = record
     leave: function(ModChannel)
 end
 
-global SoundPlay = record
-    pos: Vector
+global SoundParams = record
+    pos: Vec
     gain: number
     max_hear_distance: number
 end
 
-global EntityProperties = record
+global ObjectProps = record
     hp_max: number
     physical: boolean
     collisionbox: {number}
     selectionbox: {number}
     visual: string
-    visual_size: Vector
+    visual_size: Vec
     wield_item: string
     mesh: string
     textures: {string}
-    spritediv: Vector2
-    initial_sprite_basepos: Vector2
+    spritediv: Vec2
+    initial_sprite_basepos: Vec2
     on_activate: function -- TODO
     zoom_fov: number
 end
 
 global EntityDef = record -- TODO
-    initial_properties: EntityProperties
+    initial_properties: ObjectProps
     visual: string
     textures: {string}
     on_activate: function
@@ -400,12 +395,12 @@ global EntityDef = record -- TODO
     get_staticdata: function
 end
 
-global Expl = record
+global TextListEvent = record
     type: string
     index: number
 end
 
-global CraftDef = record
+global CraftRecipe = record
     type: string
 
     output: string
@@ -438,7 +433,7 @@ global CraftOutput = record
 end
 
 global VoxelManip = record
-    read_from_map: function(VoxelManip, Vector, Vector): Vector, Vector
+    read_from_map: function(VoxelManip, Vec, Vec): Vec, Vec
     get_data: function(VoxelManip, {number} | nil): {number}
     set_data: function(VoxelManip, {number})
     write_to_map: function(VoxelManip, boolean)
@@ -446,8 +441,8 @@ global VoxelManip = record
 end
 
 global VoxelArea = record
-    MinEdge: Vector
-    MaxEdge: Vector
+    MinEdge: Vec
+    MaxEdge: Vec
 
     new: function(VoxelArea, VoxelArea): VoxelArea
     index: function(VoxelArea, number, number, number): number
@@ -471,14 +466,14 @@ global minetest = record
     end
 
     register_item: function(string, ItemDef)
-    register_craftitem: function(string, CraftitemDef)
+    register_craftitem: function(string, CraftItemDef)
     register_tool: function(string, ToolDef)
     register_node: function(string, NodeDef)
-    register_chatcommand: function(string, CommandDef)
+    register_chatcommand: function(string, ChatCommandDef)
     register_alias: function(string, string)
     register_entity: function(string, EntityDef)
     register_biome: function(BiomeDef)
-    register_craft: function(CraftDef)
+    register_craft: function(CraftRecipe)
     register_abm: function(AbmDef)
     clear_registered_biomes: function()
     clear_registered_decorations: function()
@@ -487,20 +482,20 @@ global minetest = record
     register_on_mods_loaded: function(function())
     register_on_joinplayer: function(function(ObjectRef))
     register_on_modchannel_message: function(function(string, string, string))
-    register_on_placenode: function(function(Vector, Node, ObjectRef, Node, ItemStack)) -- TODO: returns boolean or nil/void
-    register_on_punchnode: function(function(Vector, Node))
-    register_on_dignode: function(function(Vector, Node))
+    register_on_placenode: function(function(Vec, Node, ObjectRef, Node, ItemStack)) -- TODO: returns boolean or nil/void
+    register_on_punchnode: function(function(Vec, Node))
+    register_on_dignode: function(function(Vec, Node))
     get_player_by_name: function(string): ObjectRef
     log: function(string, string)
     item_eat: function(number): function(ItemStack, ObjectRef | nil, PointedThing): ItemStack | nil
-    get_node: function(Vector): Node
-    add_node: function(Vector, Node)
-    set_node: function(Vector, Node)
-    swap_node: function(Vector, Node)
-    remove_node: function(Vector)
-    spawn_falling_node: function(Vector): boolean
-    get_meta: function(Vector): MetaDataRef
-    create_detached_inventory: function(string, DetachedInventoryCallbacks): InvRef
+    get_node: function(Vec): Node
+    add_node: function(Vec, Node)
+    set_node: function(Vec, Node)
+    swap_node: function(Vec, Node)
+    remove_node: function(Vec)
+    spawn_falling_node: function(Vec): boolean
+    get_meta: function(Vec): MetaDataRef
+    create_detached_inventory: function(string, DetachedInvCallbacks): InvRef
     get_item_group: function(string, string): number
     formspec_escape: function(string): string
     get_modpath: function(string): string
@@ -508,31 +503,31 @@ global minetest = record
     chat_send_player: function(string, string)
     get_current_modname: function(): string
     get_worldpath: function(): string
-    bulk_set_node: function({Vector}, Node)
+    bulk_set_node: function({Vec}, Node)
     get_us_time: function(): number
-    emerge_area: function<P>(Vector, Vector, function(Vector, number, number, P), P)
-    get_node_timer: function(Vector): Timer
-    pos_to_string: function(Vector): string
-    get_pointed_thing_position: function(PointedThing, boolean): Vector
-    add_particle: function(Particle)
+    emerge_area: function<P>(Vec, Vec, function(Vec, number, number, P), P)
+    get_node_timer: function(Vec): NodeTimerRef
+    pos_to_string: function(Vec): string
+    get_pointed_thing_position: function(PointedThing, boolean): Vec
+    add_particle: function(ParticleDef)
     after: function<P>(number, function(P), P) -- TODO
     mod_channel_join: function(string): ModChannel
-    sound_play: function(string, SoundPlay)
+    sound_play: function(string, SoundParams)
     get_translator: function(string): function(string, ...: any): string -- TODO
     register_on_player_receive_fields: function(function(ObjectRef, string, {string: string}))
     show_formspec: function(string, string, string)
-    find_path: function(Vector, Vector, number, number, number, string): {Vector}
-    yaw_to_dir: function(number): Vector
-    add_entity: function(Vector, string)
+    find_path: function(Vec, Vec, number, number, number, string): {Vec}
+    yaw_to_dir: function(number): Vec
+    add_entity: function(Vec, string)
     get_player_privs: function(string): {string: string}
-    explode_textlist_event: function(string): Expl
+    explode_textlist_event: function(string): TextListEvent
     is_creative_enabled: function(string): boolean
-    get_objects_inside_radius: function(Vector, number): {ObjectRef}
-    handle_node_drops: function(pos: Vector, drops: {ItemStack}, digger: ObjectRef): ItemStack
+    get_objects_inside_radius: function(Vec, number): {ObjectRef}
+    handle_node_drops: function(pos: Vec, drops: {ItemStack}, digger: ObjectRef): ItemStack
     inventorycube: function(string, string, string): string
-    check_for_falling: function(Vector)
+    check_for_falling: function(Vec)
     get_craft_result: function(CraftInput): CraftOutput, CraftInput
     get_content_id: function(string): number
-    get_node_light: function(Vector, number | nil): number | nil
-    get_voxel_manip: function(Vector, Vector): VoxelManip
+    get_node_light: function(Vec, number | nil): number | nil
+    get_voxel_manip: function(Vec, Vec): VoxelManip
 end
