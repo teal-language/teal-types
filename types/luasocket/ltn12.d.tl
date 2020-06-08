@@ -47,7 +47,7 @@ local ltn12 = record
       error: function(string): Source<any>
       file: function(FILE): Source<string>
       file: function(FILE, string): Source<string>
-      simpilfy: function<T>(FancySource<T>): Source<T>
+      simplify: function<T>(FancySource<T>): Source<T>
       string: function(string): Source<string>
       table: function<T>({T}): Source<T>, {T}
    end
