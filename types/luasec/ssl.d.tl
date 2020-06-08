@@ -1,5 +1,5 @@
 require("socket")
-SSLCertificate = record
+local SSLCertificate = record
    certificate: string
    key: string
    password: string|function
