@@ -1,6 +1,12 @@
-require("socket")
-require("ssl")
-require("ltn12")
+local ssl = require("ssl")
+local SSLCertificate = ssl.SSLCertificate
+local SSLConnection = ssl.SSLConnection
+
+local ltn12 = require("ltn12")
+local Pump = ltn12.Pump
+local Sink = ltn12.Sink
+local Source = ltn12.Source
+
 local https = record
    HTTPSRequest = record
       -- HTTP options
@@ -9,7 +15,7 @@ local https = record
       method: string
       headers: {string:string}
       source: Source<string>
-      step: PumpStep
+      step: Pump<string>
       -- proxy: string -- not supported
       -- redirect: boolean -- not supported
       -- create: function -- https implements its own

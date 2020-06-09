@@ -1,4 +1,6 @@
-require("ltn12")
+local ltn12 = require("ltn12")
+local Filter = ltn12.Filter
+
 local mime = record
    normalize: function(): Filter<string>
    normalize: function(string): Filter<string>

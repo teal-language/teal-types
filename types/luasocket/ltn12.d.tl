@@ -1,18 +1,18 @@
 local EmptyString = enum "" end
-global Filter = functiontype<T, K>(T): K|EmptyString, T
-global Sink = functiontype<T>(T|EmptyString, string): boolean, string
-global Source = functiontype<T>(): T|EmptyString, string
-
--- Uncomment when #135 is closed
-global FancySink = functiontype<T>(T|EmptyString, string): boolean, string|Sink<T>--|FancySink<T>
-global FancySource = functiontype<T>(): T|EmptyString, string|Source<T>--|FancySource<T>
-
--- Docs just say returns a truthy value on success
--- Since this value should really only be
--- used to check for truthiness, any seems fine here
-global Pump = functiontype<T>(Source<T>, Sink<T>): any, string
 
 local ltn12 = record
+   Filter = functiontype<T, K>(T): K|EmptyString, T
+   Sink = functiontype<T>(T|EmptyString, string): boolean, string
+   Source = functiontype<T>(): T|EmptyString, string
+
+   FancySink = functiontype<T>(T|EmptyString, string): boolean, string|FancySink<T>
+   FancySource = functiontype<T>(): T|EmptyString, string|FancySource<T>
+
+   -- Docs just say returns a truthy value on success
+   -- Since this value should really only be
+   -- used to check for truthiness, any seems fine here
+   Pump = functiontype<T>(Source<T>, Sink<T>): any, string
+
    filter = record
       -- Technically each filter's type should be dependent on the last
       -- For two or three types this seems reasonable, but the generic case
