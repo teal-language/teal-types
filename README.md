@@ -1,4 +1,7 @@
-# Teal Types
+Teal Types
+====
+
+[![Build Status](https://travis-ci.org/teal-language/teal-types.svg?branch=master)](https://travis-ci.org/teal-language/teal-types)
 
 A collaborative repository containing Teal type definitions for Lua
 libraries!
