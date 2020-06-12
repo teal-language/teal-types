@@ -1,3 +1,7 @@
+local ltn12 = require("ltn12")
+local Pump = ltn12.Pump
+local Sink = ltn12.Sink
+
 local ftp = record
    get: function(string): string, string
    FTPGetInfo = record
