@@ -27,7 +27,7 @@ local smtp = record
       step: Pump<string>
       create: function
    end
-   send: function(SMPTSendFormat): number, string
+   send: function(SMTPSendFormat): number, string
 end
 
 return smtp
