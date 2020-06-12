@@ -6,9 +6,11 @@ err=0
 trap 'err=1' ERR
 
 for dir in types/*/; do
-	for declfile in $dir**/*.d.tl; do
-		tl check -I "$dir" "$declfile"
+	pushd "$dir"
+	for declfile in **/*.d.tl; do
+		tl check "$declfile"
 	done
+	popd
 done
 
 exit $err
