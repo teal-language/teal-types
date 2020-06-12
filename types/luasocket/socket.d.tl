@@ -5,12 +5,12 @@ local Source = ltn12.Source
 local socket = record
    TCP = record
       -- master methods
-      bind: function(string, number)
-      connect: function(string, number): number, string
-      listen: function(number): number, string
+      bind: function(TCP, string, number)
+      connect: function(TCP, string, number): number, string
+      listen: function(TCP, number): number, string
 
       -- client methods
-      getpeername: function(): string, number
+      getpeername: function(TCP): string, number
 
       TCPReceivePattern = enum
          "*l"
@@ -20,23 +20,23 @@ local socket = record
          "closed"
          "timeout"
       end
-      receive: function(): string, TCPReceiveError
-      receive: function(TCPReceivePattern|number): string, TCPReceiveError
-      receive: function(TCPReceivePattern|number, string): string, TCPReceiveError
+      receive: function(TCP): string, TCPReceiveError
+      receive: function(TCP, TCPReceivePattern|number): string, TCPReceiveError
+      receive: function(TCP, TCPReceivePattern|number, string): string, TCPReceiveError
 
-      send: function(string)
-      send: function(string, number)
-      send: function(string, number, number)
+      send: function(TCP, string): number, string, number
+      send: function(TCP, string, number): number, string, number
+      send: function(TCP, string, number, number): number, string, number
 
       TCPShutdownMode = enum
          "both"
          "send"
          "receive"
       end
-      shutdown: function(TCPShutdownMode): number
+      shutdown: function(TCP, TCPShutdownMode): number
 
       -- server methods
-      accept: function(): TCP, string
+      accept: function(TCP): TCP, string
 
       -- client and server methods
       TCPOption = enum
@@ -51,57 +51,57 @@ local socket = record
          on: boolean
          timeout: number
       end
-      setoption: function(TCPOption): number
-      setoption: function(TCPLinger, TCPLingerOption): number
+      setoption: function(TCP, TCPOption): number
+      setoption: function(TCP, TCPLinger, TCPLingerOption): number
 
       -- master, client, and server methods
-      close: function()
+      close: function(TCP)
 
-      getsockname: function(): string, number
+      getsockname: function(TCP): string, number
 
-      getstats: function(): number, number, number
+      getstats: function(TCP): number, number, number
 
-      setstats: function(number, number, number): number
+      setstats: function(TCP, number, number, number): number
 
       TCPTimeoutMode = enum
          "b"
          "t"
       end
-      settimeout: function(number, TCPTimeoutMode)
+      settimeout: function(TCP, number, TCPTimeoutMode)
    end
    UDP = record
-      close: function()
+      close: function(UDP)
 
-      getpeername: function(): string, number
+      getpeername: function(UDP): string, number
 
-      getsockname: function(): string, number
+      getsockname: function(UDP): string, number
 
       UDPTimeout = enum
          "timeout"
       end
-      receive: function(): string, UDPTimeout
-      receive: function(number): string, UDPTimeout
+      receive: function(UDP): string, UDPTimeout
+      receive: function(UDP, number): string, UDPTimeout
 
-      receivefrom: function(): string, string, number, UDPTimeout
-      receivefrom: function(number): string, string, number, UDPTimeout
+      receivefrom: function(UDP): string, string, number, UDPTimeout
+      receivefrom: function(UDP, number): string, string, number, UDPTimeout
 
-      send: function(string): number, string
+      send: function(UDP, string): number, string
 
-      sendto: function(string, string, number): number, string
+      sendto: function(UDP, string, string, number): number, string
 
-      setpeername: function(string): number, string
-      setpeername: function(string, number): number, string
+      setpeername: function(UDP, string): number, string
+      setpeername: function(UDP, string, number): number, string
 
-      setsockname: function(string, number): number, string
+      setsockname: function(UDP, string, number): number, string
 
       UDPOptions = enum
          "dontroute"
          "broadcast"
       end
-      setoption: function(UDPOptions): number, string
-      setoption: function(UDPOptions, boolean): number, string
+      setoption: function(UDP, UDPOptions): number, string
+      setoption: function(UDP, UDPOptions, boolean): number, string
 
-      settimeout: function(number)
+      settimeout: function(UDP, number)
    end
    tcp: function(): TCP, string
 
