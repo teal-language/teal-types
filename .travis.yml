@@ -17,7 +17,7 @@ install:
   - luarocks install tl
 
 script:
-  - ./check-all.sh
+  - bash check-all.sh
 
 branches:
   except:

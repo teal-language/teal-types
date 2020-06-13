@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 shopt -s globstar
 
@@ -14,4 +14,3 @@ for dir in types/*/; do
 done
 
 exit $err
-
