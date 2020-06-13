@@ -14,3 +14,4 @@ for dir in types/*/; do
 done
 
 exit $err
+
