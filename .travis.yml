@@ -1,0 +1,28 @@
+language: python
+sudo: false
+
+env:
+  - LUA="lua=5.3" LUAROCKS_FLAGS="--dev"
+  - LUA="luajit=2.1" LUAROCKS_FLAGS="--dev"
+  - LUA="lua=5.3" LUAROCKS_FLAGS=""
+  - LUA="luajit=2.1" LUAROCKS_FLAGS=""
+
+before_install:
+  - pip install hererocks
+  - hererocks lua_install -r^ --$LUA
+  - export PATH=$PATH:$PWD/lua_install/bin # Add directory with all installed binaries to PATH
+
+install:
+  - luarocks $LUAROCKS_FLAGS install tl
+
+script:
+  - bash check-all.sh
+
+branches:
+  except:
+    - gh-pages
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
