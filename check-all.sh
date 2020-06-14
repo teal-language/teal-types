@@ -8,7 +8,7 @@ trap 'err=1' ERR
 for dir in types/*/; do
 	pushd "$dir" > /dev/null
 	for declfile in **/*.d.tl; do
-		tl check "$declfile"
+		tl check "$declfile" 1> /dev/null
 	done
 	popd > /dev/null
 done
