@@ -13,7 +13,7 @@ before_install:
   - export PATH=$PATH:$PWD/lua_install/bin # Add directory with all installed binaries to PATH
 
 install:
-  - luarocks "$LUAROCKS_FLAGS" install tl
+  - luarocks $LUAROCKS_FLAGS install tl
 
 script:
   - bash check-all.sh
