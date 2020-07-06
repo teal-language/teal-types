@@ -1,10 +1,11 @@
 global ArgparseParser = record
 	Argument = record
-		args: function(self: Argument, args: string | number)
-		choices: function(self: Argument, choices: {string})
+		choices: function(self: Argument, choices: {string}): Argument
 
-		convert: function(self: Argument, convert: function | {function})
-		convert: function(self: Argument, convert: {string:string})
+		convert: function(self: Argument, convert: function | {function}): Argument
+		convert: function(self: Argument, convert: {string:string}): Argument
+
+		args: function(self: Argument, args: string | number): Argument
 	end
 
 	Option = record
@@ -14,6 +15,10 @@ global ArgparseParser = record
 		argname: function(self: Option, argname: string): Option
 
 		count: function(self: Option, count: number | string): Option
+
+		target: function(self: Option, target: string): Option
+
+		args: function(self: Option, args: string|number): Option
 	end
 
 	Command = record
