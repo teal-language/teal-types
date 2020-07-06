@@ -31,8 +31,8 @@ global ArgparseParser = record
 	flag: function(self: ArgparseParser, flag: string): Option
 	flag: function(self: ArgparseParser, shortalias: string, longalias: string): Option
 
-	parse: function(self: ArgparseParser, argv: {string})
-	pparse: function(self: ArgparseParser, argv: {string}): boolean, string
+	parse: function(self: ArgparseParser, argv: {string}): {string:{string}|string|boolean}
+	pparse: function(self: ArgparseParser, argv: {string}): boolean, {string:{string}|string|boolean} | string
 
 	error: function(self: ArgparseParser, error: string)
 
