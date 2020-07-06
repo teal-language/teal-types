@@ -1,4 +1,4 @@
-local Parser = record
+global ArgparseParser = record
 	Argument = record
 		args: function(self: Argument, args: string | number)
 		choices: function(self: Argument, choices: {string})
@@ -24,29 +24,29 @@ local Parser = record
 	end
 
 	-- FIXME: the config can also be set by calling the parser as a function
-	name: function(self: Parser, name: string): Parser
-	description: function(self: Parser, description: string): Parser
-	epilog: function(self: Parser, epilog: string): Parser
+	name: function(self: ArgparseParser, name: string): ArgparseParser
+	description: function(self: ArgparseParser, description: string): ArgparseParser
+	epilog: function(self: ArgparseParser, epilog: string): ArgparseParser
 
-	flag: function(self: Parser, flag: string): Option
-	flag: function(self: Parser, shortalias: string, longalias: string): Option
+	flag: function(self: ArgparseParser, flag: string): Option
+	flag: function(self: ArgparseParser, shortalias: string, longalias: string): Option
 
-	parse: function(self: Parser, argv: {string})
-	pparse: function(self: Parser, argv: {string}): boolean, string
+	parse: function(self: ArgparseParser, argv: {string})
+	pparse: function(self: ArgparseParser, argv: {string}): boolean, string
 
-	error: function(self: Parser, error: string)
+	error: function(self: ArgparseParser, error: string)
 
-	argument: function(self: Parser, name: string, description: string)
+	argument: function(self: ArgparseParser, name: string, description: string)
 
-	option: function(self: Parser, name: string, description: string, default: string, convert: function | {function}, args: {string}, count: number | string): Option
-	option: function(self: Parser, name: string, description: string, default: string, convert: {string:string}, args: {string}, count: number | string): Option
+	option: function(self: ArgparseParser, name: string, description: string, default: string, convert: function | {function}, args: {string}, count: number | string): Option
+	option: function(self: ArgparseParser, name: string, description: string, default: string, convert: {string:string}, args: {string}, count: number | string): Option
 
-	require_command: function(self: Parser, require_command: boolean): Parser
-	command_target: function(self: Parser, command_target: string): Parser
+	require_command: function(self: ArgparseParser, require_command: boolean): ArgparseParser
+	command_target: function(self: ArgparseParser, command_target: string): ArgparseParser
 
-	command: function(self: Parser, name: string, description: string, epilog: string): Command
+	command: function(self: ArgparseParser, name: string, description: string, epilog: string): Command
 end
 
-local argparse: function(name: string, description: string, epilog: string): Parser
+local argparse: function(name: string, description: string, epilog: string): ArgparseParser
 
 return argparse
