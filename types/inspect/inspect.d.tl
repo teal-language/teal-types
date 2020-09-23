@@ -1,4 +1,4 @@
-global InspectOptions = record
+global record InspectOptions
     depth: number
     newline: string
     indent: string

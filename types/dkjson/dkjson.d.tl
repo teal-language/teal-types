@@ -3,8 +3,8 @@
 - local type json = {string:json}
 ]]
 
-local dkjson = record
-   JsonState = record
+local record dkjson
+   record JsonState
       indent: boolean
       keyorder: {string}
       level: number

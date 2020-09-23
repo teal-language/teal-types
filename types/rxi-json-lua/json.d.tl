@@ -1,4 +1,4 @@
-local json = record
+local record json
     -- Returns a string representing value encoded in JSON.
     encode: function(value: any): string
 

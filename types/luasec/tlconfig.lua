@@ -1,5 +1,5 @@
 return {
-	include = {
+	include_dir = {
 		"../luasocket"
 	}
 }

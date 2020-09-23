@@ -3,19 +3,19 @@ local Pump = ltn12.Pump
 local Sink = ltn12.Sink
 local Source = ltn12.Source
 
-local smtp = record
-   Message = record
+local record smtp
+   record Message
       headers: {string:string}
       body: Source<string>|string|MultipartMessage
    end
-   MultipartMessage = record
+   record MultipartMessage
       {Message}
       preamble: string
       epilogue: string
    end
    message: function(Message): Source<string>
 
-   SMTPSendFormat = record
+   record SMTPSendFormat
       from: string
       rcpt: string|{string}
       source: Source<string>

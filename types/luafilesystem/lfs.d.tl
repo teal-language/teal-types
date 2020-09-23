@@ -1,6 +1,6 @@
-local lfs = record
+local record lfs
 
-   FileMode = enum
+   enum FileMode
       "file"
       "directory"
       "link"
@@ -11,7 +11,7 @@ local lfs = record
       "other"
    end
 
-   Attributes = record
+   record Attributes
       dev: number
       ino: number
       mode: FileMode
@@ -28,17 +28,17 @@ local lfs = record
       blksize: number
    end
 
-   OpenFileMode = enum
+   enum OpenFileMode
       "binary"
       "text"
    end
 
-   LockMode = enum
+   enum LockMode
       "r"
       "w"
    end
 
-   Lock = record
+   record Lock
       free: function()
    end
 

@@ -1,13 +1,13 @@
 local socket = require("socket")
 local TCP = socket.TCP
 
-local ssl = record
-   SSLCertificate = record
+local record ssl
+   record SSLCertificate
       certificate: string
       key: string
       password: string|function
    end
-   SSLContext = record
+   record SSLContext
       mode: string
       protocol: string
       key: string
@@ -28,8 +28,8 @@ local ssl = record
       alpn: string|function|{string}
       dane: boolean
    end
-   X509Certificate = record
-      Algorithm = enum
+   record X509Certificate
+      enum Algorithm
          "sha1"
          "sha256"
          "sha512"
@@ -43,7 +43,7 @@ local ssl = record
       pem: function(X509Certificate): string
       pubkey: function(X509Certificate): string
       serial: function(X509Certificate): string
-      Encoding = enum
+      enum Encoding
          "ai5"
          "utf8"
       end
@@ -51,7 +51,7 @@ local ssl = record
       subject: function(X509Certificate): string
       validat: function(X509Certificate, string): boolean
    end
-   SSLConnection = record
+   record SSLConnection
       close: function(SSLConnection)
       dohandshake: function(SSLConnection): boolean, string
       getalpn: function(SSLConnection): string
@@ -65,7 +65,7 @@ local ssl = record
       getstats: function(SSLConnection): number, number, number
       info: function(SSLConnection): table
       info: function(SSLConnection, string): string
-      ReceivePattern = enum
+      enum ReceivePattern
          "*a"
          "*l"
       end
@@ -76,7 +76,7 @@ local ssl = record
       send: function(SSLConnection, number, number): number, number|string, number
       setdane: function(SSLConnection, string)
       setstats: function(SSLConnection, number, number, number): number
-      TimeoutMode = enum
+      enum TimeoutMode
          "b"
          "t"
       end
@@ -86,7 +86,7 @@ local ssl = record
       sni: function(SSLConnection, string)
       sni: function(SSLConnection, {string:SSLContext})
       sni: function(SSLConnection, {string:SSLContext}, boolean)
-      Reason = enum
+      enum Reason
          "read"
          "write"
          "nothing"
@@ -94,7 +94,7 @@ local ssl = record
       want: function(SSLConnection): Reason
    end
 
-   config = record
+   record config
       protocols: {string:boolean}
       curves: {string:boolean}
       capabilities: {string:boolean}

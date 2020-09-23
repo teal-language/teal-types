@@ -7,8 +7,8 @@ local Pump = ltn12.Pump
 local Sink = ltn12.Sink
 local Source = ltn12.Source
 
-local https = record
-   HTTPSRequest = record
+local record https
+   record HTTPSRequest
       -- HTTP options
       url: string|{string}
       sink: Sink<string>
