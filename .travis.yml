@@ -15,9 +15,8 @@ before_install:
 install:
   - |
     if [ $TL_VERSION == "dev" ]; then
-      git clone --depth 1 https://github.com/teal-language/tl.git
-      cd tl
-      luarocks build
+      git clone --depth 1 https://github.com/teal-language/tl.git /tmp/tl
+      luarocks build /tmp/tl
     else
       luarocks install tl
     fi
