@@ -16,7 +16,7 @@ install:
   - |
     if [ $TL_VERSION == "dev" ]; then
       git clone --depth 1 https://github.com/teal-language/tl.git /tmp/tl
-      luarocks build /tmp/tl
+      luarocks build /tmp/tl/tl-dev-1.rockspec
     else
       luarocks install tl
     fi
