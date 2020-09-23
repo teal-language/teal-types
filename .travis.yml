@@ -13,7 +13,8 @@ before_install:
   - export PATH=$PATH:$PWD/lua_install/bin # Add directory with all installed binaries to PATH
 
 install:
-  - if [ $TL_VERSION == "dev" ]; then
+  - |
+    if [ $TL_VERSION == "dev" ]; then
       git clone --depth 1 https://github.com/teal-language/tl.git
       cd tl
       luarocks build
