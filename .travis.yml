@@ -2,10 +2,10 @@ language: python
 sudo: false
 
 env:
-  - LUA="lua=5.3" LUAROCKS_FLAGS="--dev"
-  - LUA="luajit=2.1" LUAROCKS_FLAGS="--dev"
-  - LUA="lua=5.3" LUAROCKS_FLAGS=""
-  - LUA="luajit=2.1" LUAROCKS_FLAGS=""
+  - LUA="lua=5.3" TL_VERSION="dev"
+  - LUA="luajit=2.1" TL_VERSION="dev"
+  - LUA="lua=5.3" TL_VERSION="stable"
+  - LUA="luajit=2.1" TL_VERSION="stable"
 
 before_install:
   - pip install hererocks
@@ -13,7 +13,13 @@ before_install:
   - export PATH=$PATH:$PWD/lua_install/bin # Add directory with all installed binaries to PATH
 
 install:
-  - luarocks $LUAROCKS_FLAGS install tl
+  - if [ $TL_VERSION == "dev" ]; then
+      git clone --depth 1 https://github.com/teal-language/tl.git
+      cd tl
+      luarocks build
+    else
+      luarocks install tl
+    fi
 
 script:
   - bash check-all.sh
