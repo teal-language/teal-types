@@ -57,7 +57,7 @@ local record lfs
 
    setmode: function(string, OpenFileMode): boolean, string
 
-   current_dir: function(): string
+   currentdir: function(): string
 
    attributes: function(string): Attributes
    attributes: function(string, string): string
