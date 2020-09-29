@@ -1,5 +1,5 @@
-local SLAXDOM = record
-    NodeType = enum
+local record SLAXDOM
+    enum NodeType
         "pi"
         "comment"
         "text"
@@ -8,19 +8,19 @@ local SLAXDOM = record
         "document"
     end
 
-    Node = record
+    record Node
         type: NodeType
         name: string
     end
 
-    Document = record
+    record Document
         type: NodeType
         name: string
         kids: {Node} -- {ProcessingInstruction | Element | Comment}
         root: Element
     end
 
-    Element = record
+    record Element
         type: NodeType
         name: string
         nsURI: string
@@ -31,7 +31,7 @@ local SLAXDOM = record
         parent: Node -- Document | Element
     end
 
-    Attribute = record
+    record Attribute
         type: NodeType
         name: string
         value: string
@@ -40,7 +40,7 @@ local SLAXDOM = record
         parent: Element
     end
 
-    Text = record
+    record Text
         type: NodeType
         name: string
         cdata: boolean
@@ -48,26 +48,26 @@ local SLAXDOM = record
         parent: Element
     end
 
-    Comment = record
+    record Comment
         type: NodeType
         name: string
         value: string
         parent: Node -- Document | Element
     end
 
-    ProcessingInstruction = record
+    record ProcessingInstruction
         type: NodeType
         name: string
         value: string
         parent: Node -- Document | Element
     end
 
-    DomConfig = record
+    record DomConfig
         stripWhitespace: boolean
         simple: boolean -- TODO: support simple DOM
     end
 
-    SerializationConfig = record
+    record SerializationConfig
         indent: number | string -- each pi/comment/element/text node on its own line, indented by this many spaces, or supply a custom string to use for indentation
         sort: boolean -- sort attributes by name, with no-namespace attributes coming first
         omit: {string} -- an array of namespace URIs; removes elements and attributes in these namespaces

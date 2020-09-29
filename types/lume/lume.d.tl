@@ -1,4 +1,4 @@
-local lume = record
+local record lume
     -- Returns the number x clamped between the numbers min and max.
     clamp: function(x: number, min: number, max: number): number
 
@@ -61,7 +61,7 @@ local lume = record
     -- Returns a shuffled copy of the array t.
     shuffle: function<N>(t: {N}): {N}
 
-    SortFunction = functiontype<V>(a: V, b: V): boolean
+    type SortFunction = function<V>(a: V, b: V): boolean
 
     -- Returns a copy of the array t with all its items sorted. 
     -- If comp is a function it will be used to compare the items when sorting.
@@ -78,7 +78,7 @@ local lume = record
     each: function<N>(t: {N}, fn: function(...: any), ...: any): {N}
     each: function<K, V>(t: {{K:V}}, fn: string, ...: any): {{K:V}}
 
-    MapFunction = functiontype<V, R>(item: V): R
+    type MapFunction = function<V, R>(item: V): R
 
     -- Applies the function fn to each value in table t and returns a new table with the resulting values.
     map: function<V, R>(t: {V}, fn: MapFunction<V, R>): {R}

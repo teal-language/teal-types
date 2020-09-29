@@ -1,6 +1,6 @@
 
 local API = require("nvim_api")
-global vim = record
+global record vim
    api: API
 
    -- TODO: Either find a way to generate these or at least find a comprehensive list to put a bunch of 'TODO' stub definitions here
@@ -15,7 +15,7 @@ global vim = record
    -- end
    fn: {string:function(...: any): (any)}
 
-   InspectOptions = record
+   record InspectOptions
       depth: number
       newline: string
       indent: string
@@ -54,7 +54,7 @@ global vim = record
 
    tbl_contains: function<T>({T}, T): boolean
 
-   ExtendBehavior = enum
+   enum ExtendBehavior
       "error"
       "keep"
       "force"
@@ -75,7 +75,7 @@ global vim = record
 
    validate: function({string:{any}})
 
-   Regex = record
+   record Regex
       match_str: function(Regex, string): number, number
 
       match_line: function(Regex, number, number): number, number
@@ -84,8 +84,8 @@ global vim = record
    end
    regex: function(string): Regex
 
-   loop = record
-      Timer = record
+   record loop
+      record Timer
          start: function(Timer, number, number, function)
          close: function(Timer)
       end
@@ -100,7 +100,7 @@ global vim = record
 
    in_fast_event: function(): boolean
 
-   NIL = record end -- special nil for filling tables, just a userdata
+   type NIL = record end -- special nil for filling tables, just a userdata
 
    empty_dict: function(): table
 

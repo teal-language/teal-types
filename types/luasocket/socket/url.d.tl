@@ -1,5 +1,5 @@
-local url = record
-   ParsedUrl = record
+local record url
+   record ParsedUrl
       url: string
       scheme: string
       authority: string

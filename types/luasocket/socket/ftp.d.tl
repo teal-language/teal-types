@@ -2,9 +2,9 @@ local ltn12 = require("ltn12")
 local Pump = ltn12.Pump
 local Sink = ltn12.Sink
 
-local ftp = record
+local record ftp
    get: function(string): string, string
-   FTPGetInfo = record
+   record FTPGetInfo
       host: string
       sink: Sink<string>
       argument: string
@@ -19,7 +19,7 @@ local ftp = record
    end
    get: function(FTPGetInfo): number, string
 
-   FTPPutInfo = record
+   record FTPPutInfo
       host: string
       source: Sink<string> -- yes, this is a sink
       argument: string

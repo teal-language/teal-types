@@ -1,4 +1,4 @@
-local api = record
+local record api
    --[[INFORMATION]]--
 
    --[[api compatible: 0]]--

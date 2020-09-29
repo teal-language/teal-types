@@ -1,15 +1,15 @@
 local ltn12 = require("ltn12")
 local Filter = ltn12.Filter
 
-local mime = record
+local record mime
    normalize: function(): Filter<string>
    normalize: function(string): Filter<string>
 
-   Encoding = enum
+   enum Encoding
       "base64"
       "quoted-printable"
    end
-   Mode = enum
+   enum Mode
       "text"
       "binary"
    end

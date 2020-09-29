@@ -1,6 +1,6 @@
 #!/usr/bin/env tl run
 
-local Func = record
+local record Func
 	method: boolean
 	name: string
 	parameters: {{string}}
@@ -8,23 +8,23 @@ local Func = record
 	since: number
 	deprecated_since: number
 end
-local Type = record
+local record Type
 	id: number
 	prefix: string
 end
-local UI_Event = record
+local record UI_Event
 	name: string
 	parameters: {{string}}
 	since: string
 end
 
-local Info = record
+local record Info
 	error_types: {string:{string:number}}
 	functions: {Func}
 	types: {string:Type}
 	ui_events: {{UI_Event}}
 	ui_options: {string}
-	Version = record
+	record Version
 		api_compatible: number
 		api_level: number
 		api_prerelease: boolean
@@ -72,7 +72,7 @@ local buf: {string} = {}
 local deprecatedList: {string} = {}
 local nonDeprecatedList: {string} = {}
 
-ins(buf, "local api = record")
+ins(buf, "local record api")
 ins(buf, "   --[[INFORMATION]]--\n")
 ins(buf, "   --[[api compatible: " .. api_info.version.api_compatible .. "]]--")
 ins(buf, "   --[[api level: " .. api_info.version.api_level .. "]]--")

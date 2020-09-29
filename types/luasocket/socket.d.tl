@@ -2,8 +2,8 @@ local ltn12 = require("ltn12")
 local Sink = ltn12.Sink
 local Source = ltn12.Source
 
-local socket = record
-   TCP = record
+local record socket
+   record TCP
       -- master methods
       bind: function(TCP, string, number)
       connect: function(TCP, string, number): number, string
@@ -12,11 +12,11 @@ local socket = record
       -- client methods
       getpeername: function(TCP): string, number
 
-      TCPReceivePattern = enum
+      enum TCPReceivePattern
          "*l"
          "*a"
       end
-      TCPReceiveError = enum
+      enum TCPReceiveError
          "closed"
          "timeout"
       end
@@ -28,7 +28,7 @@ local socket = record
       send: function(TCP, string, number): number, string, number
       send: function(TCP, string, number, number): number, string, number
 
-      TCPShutdownMode = enum
+      enum TCPShutdownMode
          "both"
          "send"
          "receive"
@@ -39,15 +39,15 @@ local socket = record
       accept: function(TCP): TCP, string
 
       -- client and server methods
-      TCPOption = enum
+      enum TCPOption
          "keepalive"
          "reuseaddr"
          "tcp-nodelay"
       end
-      TCPLinger = enum
+      enum TCPLinger
          "linger"
       end
-      TCPLingerOption = record
+      record TCPLingerOption
          on: boolean
          timeout: number
       end
@@ -63,20 +63,20 @@ local socket = record
 
       setstats: function(TCP, number, number, number): number
 
-      TCPTimeoutMode = enum
+      enum TCPTimeoutMode
          "b"
          "t"
       end
       settimeout: function(TCP, number, TCPTimeoutMode)
    end
-   UDP = record
+   record UDP
       close: function(UDP)
 
       getpeername: function(UDP): string, number
 
       getsockname: function(UDP): string, number
 
-      UDPTimeout = enum
+      enum UDPTimeout
          "timeout"
       end
       receive: function(UDP): string, UDPTimeout
@@ -94,7 +94,7 @@ local socket = record
 
       setsockname: function(UDP, string, number): number, string
 
-      UDPOptions = enum
+      enum UDPOptions
          "dontroute"
          "broadcast"
       end
@@ -107,8 +107,8 @@ local socket = record
 
    udp: function(): UDP, string
 
-   dns = record
-      DNSResolved = record
+   record dns
+      record DNSResolved
          name: string
          alias: {string}
          ip: {string}
@@ -139,7 +139,7 @@ local socket = record
    select: function({UDP}, {UDP}, number): {UDP}, {UDP}, string
    select: function({TCP}, {TCP}, number): {TCP}, {TCP}, string
 
-   SinkMode = enum
+   enum SinkMode
       "http-chunked"
       "close-when-done"
       "keep-open"
@@ -152,7 +152,7 @@ local socket = record
 
    sleep: function(number)
 
-   SourceMode = enum
+   enum SourceMode
       "http-chunked"
       "by-length"
       "until-closed"
@@ -171,4 +171,3 @@ local socket = record
 end
 
 return socket
-

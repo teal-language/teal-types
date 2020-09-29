@@ -3,10 +3,10 @@ local Pump = ltn12.Pump
 local Sink = ltn12.Sink
 local Source = ltn12.Source
 
-local http = record
+local record http
    request: function(string): string, number|string, string, string
    request: function(string, string): string, number|string, string, string
-   HTTPRequest = record
+   record HTTPRequest
       url: string
       sink: Sink<string>
       method: string

@@ -1,13 +1,13 @@
-local SLAXML = record
-    Parser = record
-        ParserConfig = record
+local record SLAXML
+    record Parser
+        record ParserConfig
             stripWhitespace: boolean
         end
 
         parse: function(self: Parser, xml: string, config: ParserConfig)
     end
 
-    ParserCallbacks = record
+    record ParserCallbacks
         startElement: function(name: string, nsURI: string, nsPrefix: string)
         attribute: function(name: string, value: string, nsURI: string, nsPrefix: string)
         closeElement: function(name: string, nsURI: string)

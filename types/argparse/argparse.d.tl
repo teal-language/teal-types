@@ -1,5 +1,5 @@
-global ArgparseParser = record
-	Argument = record
+global record ArgparseParser
+	record Argument
 		choices: function(self: Argument, choices: {string}): Argument
 
 		convert: function(self: Argument, convert: function | {function}): Argument
@@ -8,7 +8,7 @@ global ArgparseParser = record
 		args: function(self: Argument, args: string | number): Argument
 	end
 
-	Option = record
+	record Option
 		name: function(self: Option, name: string): Option
 		description: function(self: Option, description: string): Option
 
@@ -21,7 +21,7 @@ global ArgparseParser = record
 		args: function(self: Option, args: string|number): Option
 	end
 
-	Command = record
+	record Command
 		summary: function(self: Command, summary: string): Command
 		description: function(self: Command, description: string): Command
 
