@@ -26,6 +26,8 @@ global record ArgparseParser
 		description: function(self: Command, description: string): Command
 
 		argument: function(self: Command, name: string, description: string): Argument
+
+		option: function(self: Command, name: string, description: string): Option
 	end
 
 	-- FIXME: the config can also be set by calling the parser as a function
@@ -42,6 +44,8 @@ global record ArgparseParser
 	error: function(self: ArgparseParser, error: string)
 
 	argument: function(self: ArgparseParser, name: string, description: string)
+
+	get_usage: function(self: ArgparseParser): string
 
 	option: function(self: ArgparseParser, name: string, description: string, default: string, convert: function | {function}, args: {string}, count: number | string): Option
 	option: function(self: ArgparseParser, name: string, description: string, default: string, convert: {string:string}, args: {string}, count: number | string): Option
