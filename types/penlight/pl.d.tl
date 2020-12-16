@@ -43,8 +43,7 @@ local record pl
         forall: function(Array2D, function({any}, number), function(number), number, number, number, number)
         move: function(Array2D, number, number, Array2D, number, number, number, number)
 
-        -- TODO add this when tuples are stable
-        -- iter: function(Array2D, boolean, number, number, number, number): (function(): any | [number, number, any])
+        iter: function(Array2D, boolean, number, number, number, number): (function(): any | [number, number, any])
 
         columns: function(Array2D): (function(): {any})
 
@@ -73,6 +72,8 @@ local record pl
         getfenv: function(function): {string: any}
         setfenv: function(function, {string: any})
     end
+
+    -- TODO comprehension
 end
 
 return pl
