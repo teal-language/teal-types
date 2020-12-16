@@ -50,6 +50,29 @@ local record pl
 
         new: function(number, number, any): Array2D
     end
+
+    -- TODO class
+
+    record compat
+        lua51: boolean
+        jit: boolean
+        jit52: boolean | nil
+        is_windows: boolean
+
+        dir_separator: string
+
+        execute: function(string): boolean, number
+
+        enum LoadMode
+            'b'
+            't'
+            'bt'
+        end
+        load: function(any, string, LoadMode, {string: any})
+
+        getfenv: function(function): {string: any}
+        setfenv: function(function, {string: any})
+    end
 end
 
 return pl
