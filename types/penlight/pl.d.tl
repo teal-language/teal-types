@@ -1,4 +1,11 @@
 local record pl
+    -- TODO any function that accepts a function as argument (afaict)
+    -- also accepts a few key strings (such as '+') which are internally
+    -- converted into the respective function
+    -- These special strings are probably all defined in pl.operator,
+    -- so you need to retcon the existing functions with it, probably
+    -- by creating a FunctionArg type, which is the union a function and
+    -- the special strings enum
     record List<T>
         new: function({T}): List<T>
         range: function(number, number, number): List<number>
