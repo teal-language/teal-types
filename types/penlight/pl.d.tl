@@ -58,12 +58,35 @@ local record pl
 
         -- TODO uncomment this after declaring MultiMap
         -- The first type parameter is the key type, the second one is the value type
-        -- partition: function<U>(List<T>, (function(T, ...: any): U), ...: any): MultiMap<U, T>
+        -- partition: function<K>(List<T>, (function(T, ...: any): K), ...: any): MultiMap<K, T>
 
         iter: function(List<T>): (function(): T)
         iterate: function(string | table | function) -- FILE is also considered a table
 
         -- TODO metamethods when they get supported in Teal
+    end
+
+    record Map<K, V>
+        -- TODO so uh, we have a problem
+        -- Map has no constructor, it can only be created by
+        -- manually setting the metatable of a regular {K: V},
+        -- of by calling the record which... is not supported yet
+        -- in Teal
+        -- {K: V} -- TODO check if this is really not allowed
+        keys: List<K>
+        values: List<V>
+
+        iter: function(Map<K, V>): (function(): {K, V})
+        items: function(Map<K, V>): (function(): {K, V})
+
+        get: function(Map<K, V>, K): V
+        set: function(Map<K, V>, K, V)
+        setdefault: function(Map<K, V>, K, V): V
+
+        getvalues: function(Map<K, V>, {K}): List<V>
+        update: function(Map<K, V>, {K: V})
+
+        len: function(Map<K, V>): number
     end
 
     record app
