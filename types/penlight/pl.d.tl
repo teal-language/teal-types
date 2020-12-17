@@ -1,4 +1,62 @@
 local record pl
+    record List<T>
+        new: function({T}): List<T>
+        range: function(number, number, number): List<number>
+        split: function(string, string): List<string>
+
+        len: function(List<T>): number
+
+        -- TODO check if this is how you declare methods
+        append: function(List<T>, T): List<T>
+        clone: function(List<T>): List<T>
+        extend: function(List<T>, List<T>): List<T>
+        insert: function(List<T>, number, T): List<T>
+        pop: function(List<T>, number): T
+        put: function(List<T>, T): List<T>
+        remove: function(List<T>, number): List<T>
+        remove_value: function(List<T>, T): List<T>
+
+        chop: function(List<T>, number, number): List<T>
+        slice_assign: function(List<T>, number, number, List<T>): List<T>
+        splice: function(List<T>, number, List<T>): List<T>
+
+        reverse: function(List<T>): List<T>
+        sorted: function(List<T>, function(T, T): boolean): List<T>
+        sort: function(List<T>, function(T, T): boolean): List<T>
+
+        clear: function(List<T>): List<T>
+        contains: function(List<T>, T): boolean
+        count: function(List<T>, T): number
+        index: function(List<T>, T, number): number
+        minmax: function(List<T>): number, number
+        slice: function(List<T>, number, number): List<T>
+
+        concat: function(List<T>, string): string
+        join: function(List<T>, string): string
+
+        foreach: function(List<T>, function(T, ...: any), ...: any)
+        foreachm: function(List<table>, string, ...: any)
+        filter: function(List<T>, function(T, any): boolean, any): List<T>
+        transform: function(List<T>, (function(T, ...: any): T), ...: any): List<T>
+        map: function<U>(List<T>, (function(T, ...: any): U), ...: any): List<U>
+        map2: function<U, V>(List<T>, (function(T, U, ...: any): V), List<U>, ...: any): List<V> -- this is ridiculous
+
+        -- TODO check if there isnt a way to infer type here
+        -- I expect there isnt a way, but just to make sure
+        mapm: function(List<T>, string, ...: any): List<any>
+
+        reduce: function(List<T>, (function(T, T): T)): T
+
+        -- TODO uncomment this after declaring MultiMap
+        -- The first type parameter is the key type, the second one is the value type
+        -- partition: function<U>(List<T>, (function(T, ...: any): U), ...: any): MultiMap<U, T>
+
+        iter: function(List<T>): (function(): T)
+        iterate: function(string | table | function) -- FILE is also considered a table
+
+        -- TODO metamethods when they get supported in Teal
+    end
+
     record app
         script_name: function(): string
         require_here: function(string): any
@@ -17,8 +75,8 @@ local record pl
         reduce_cols: function(function(any, any): any, Array2D): {any}
         reduce2: function(function(any, any): any, function(any, any): any, Array2D): any
 
-        map: function(function(any, ...: any): any, Array2D, any...): Array2D
-        map2: function(function(any, any, ...:any): any, number, number, table, table, any...): {any}
+        map: function((function(any, ...: any): any), Array2D, ...: any): Array2D
+        map2: function((function(any, any, ...:any): any), number, number, table, table, ...: any): {any}
 
         product: function(function(any, any): any, {any}, {any}): Array2D
         flatten: function(Array2D): {any}
@@ -108,6 +166,7 @@ local record pl
         end
 
         record Data
+            -- TODO check if these methods return arrays and not lists
             {{any}}
 
             -- TODO check if this is the right way to declare "methods"
@@ -138,7 +197,7 @@ local record pl
         -- TODO the second parameter could be specified better.
         -- If it is a table, it does have a shallow structure which I haven't
         -- identified properly, but shouldn't be too hard to understand
-        query: function(Data, string | table, table, boolean): function(): {any}, string
+        query: function(Data, string | table, {table}, boolean): function(): {any}, string
 
         filter: function(string, FILE | string, FILE | string, boolean)
     end
