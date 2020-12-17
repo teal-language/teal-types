@@ -7,6 +7,8 @@ local record pl
     -- by creating a FunctionArg type, which is the union a function and
     -- the special strings enum
     record List<T>
+        {T}
+
         new: function({T}): List<T>
         range: function(number, number, number): List<number>
         split: function(string, string): List<string>
