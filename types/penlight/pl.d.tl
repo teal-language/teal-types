@@ -43,7 +43,7 @@ local record pl
         forall: function(Array2D, function({any}, number), function(number), number, number, number, number)
         move: function(Array2D, number, number, Array2D, number, number, number, number)
 
-        iter: function(Array2D, boolean, number, number, number, number): (function(): any | [number, number, any])
+        iter: function(Array2D, boolean, number, number, number, number): (function(): any) | {number, number, any}
 
         columns: function(Array2D): (function(): {any})
 
@@ -74,6 +74,26 @@ local record pl
     end
 
     -- TODO comprehension
+
+    record config
+        enum ReadOpt
+            'smart'
+            'variabilize'
+            'convert_numbers'
+            'trim_space'
+            'trim_quotes'
+            'list_delim'
+            'keysep'
+        end
+
+        enum ReadError
+            'not a file-like object'
+            'file is nil'
+        end
+
+        lines: function(FILE | string): function(): string, ReadError
+        read: function(FILE | string, {ReadOpt: any}): table, ReadError
+    end
 end
 
 return pl
