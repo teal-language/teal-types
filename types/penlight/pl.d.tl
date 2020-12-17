@@ -94,6 +94,54 @@ local record pl
         lines: function(FILE | string): function(): string, ReadError
         read: function(FILE | string, {ReadOpt: any}): table, ReadError
     end
+
+    record data
+        enum ReadOpt
+            'delim'
+            'fieldnames'
+            'no_convert'
+            'convert'
+            'numfields'
+            'last_field_collect'
+            'thousands_dot'
+            'csv'
+        end
+
+        record Data
+            {{any}}
+
+            -- TODO check if this is the right way to declare "methods"
+            column_by_name: function(Data, string): {any}
+
+            -- FIXME not entirely sure these two are right...
+            -- Incomplete documentation, spaghetti code everywhere, no comments in sight
+            select: function(Data, string): function(): any...
+            select_row: function(Data, string): function(): {any}
+
+            copy_select: function(Data, string): Data
+            column_names: function(Data): {string}
+
+            -- FIXME What is the purpose of this function?
+            -- Am I misunderstanding something? Or should this just
+            -- not need a Data instance to work?
+            write_row: function(Data, FILE, {any})
+
+            write: function(Data, FILE)
+            read: function(FILE | string, {ReadOpt: any}): Data, string
+        end
+        write: function(array2d.Array2D, FILE, {string}, string): boolean, string
+
+        -- TODO documentation specifically mentions this is a {{any}}
+        -- Is an Array2D a better or worse description of it? Would it cause any conflicts?
+        new: function(array2d.Array2D, {string})
+
+        -- TODO the second parameter could be specified better.
+        -- If it is a table, it does have a shallow structure which I haven't
+        -- identified properly, but shouldn't be too hard to understand
+        query: function(Data, string | table, table, boolean): function(): {any}, string
+
+        filter: function(string, FILE | string, FILE | string, boolean)
+    end
 end
 
 return pl
