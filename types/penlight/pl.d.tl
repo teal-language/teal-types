@@ -233,6 +233,24 @@ local record pl
 
         filter: function(string, FILE | string, FILE | string, boolean)
     end
+
+    record dir
+        fnmatch: function(string, string): boolean
+        filter: function({string}, string): List<string>
+
+        copyfile: function(string, string, boolean): boolean
+        movefile: function(string, string): boolean
+        makepath: function(string): boolean, string
+        rmtree: function(string): boolean, string
+        clonetree: function(string, string, (function(string, string): any))
+
+        getfiles: function(string, string): List<string>
+        getdirectories: function(string): List<string>
+        walk: function(string, boolean, boolean): (function(): string, List<string>, List<string>)
+
+        dirtree: function(string): (function(): string, boolean)
+        getallfiles: function(string, string): List<string>
+    end
 end
 
 return pl
