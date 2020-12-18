@@ -45,7 +45,7 @@ local record pl
 
         foreach: function(List<T>, function(T, ...: any), ...: any)
         foreachm: function(List<table>, string, ...: any)
-        filter: function(List<T>, function(T, any): boolean, any): List<T>
+        filter: function<U>(List<T>, function(T, U): boolean, U): List<T>
         transform: function(List<T>, (function(T, ...: any): T), ...: any): List<T>
         map: function<U>(List<T>, (function(T, ...: any): U), ...: any): List<U>
         map2: function<U, V>(List<T>, (function(T, U, ...: any): V), List<U>, ...: any): List<V> -- this is ridiculous
@@ -99,45 +99,49 @@ local record pl
     end
 
     record array2d
-        type Array2D = {{any}}
+        record Array2D<T>
+            {{T}}
+        end
 
-        size: function(Array2D): number, number
-        column: function(Array2D, any): {any}
-        reduce_rows: function(function(any, any): any, Array2D): {any}
-        reduce_cols: function(function(any, any): any, Array2D): {any}
-        reduce2: function(function(any, any): any, function(any, any): any, Array2D): any
+        new: function<T>(number, number, T): Array2D<T>
 
-        map: function((function(any, ...: any): any), Array2D, ...: any): Array2D
+        size: function<T>(Array2D<T>): number, number
+        column: function<T>(Array2D<T>, number): List<T>
+        flatten: function<T>(Array2D<T>): List<T>
+        reshape: function<T>(Array2D<T>, number, boolean): Array2D<T>
+
+        swap_rows: function<T>(Array2D<T>, number, number)
+        swap_cols: function<T>(Array2D<T>, number, number)
+
+        reduce_rows: function<T>(function(T, T): T, Array2D<T>): List<T>
+        reduce_cols: function<T>(function(T, T): T, Array2D<T>): List<T>
+        reduce2: function<T>(function(T, T): T, function(T, T): T, Array2D<T>): T
+
+        map: function<T, U>((function<U>(T, ...: any): U), Array2D<T>, ...: any): Array2D<U>
+
+        -- Waaaaayyy too many possible branching return values
         map2: function((function(any, any, ...:any): any), number, number, table, table, ...: any): {any}
 
-        product: function(function(any, any): any, {any}, {any}): Array2D
-        flatten: function(Array2D): {any}
+        product: function<T, U, V>(function(T, U): V, {T}, {U}): Array2D<V>
 
-        reshape: function(Array2D, number, boolean): Array2D
+        extract_rows: function<T>(Array2D<T>, {number}): Array2D<T>
+        extract_cols: function<T>(Array2D<T>, {number}): Array2D<T>
 
-        swap_rows: function(Array2D, number, number)
-        swap_cols: function(Array2D, number, number)
-
-        extract_rows: function(Array2D, {number}): Array2D
-        extract_cols: function(Array2D, {number}): Array2D
-
-        remove_row: function(Array2D, number)
-        remove_col: function(Array2D, number)
+        remove_row: function<T>(Array2D<T>, number)
+        remove_col: function<T>(Array2D<T>, number)
 
         parse_range: function(string): number, number, number, number
-        range: function(Array2D, string): {any}
-        slice: function(Array2D, number, number, number, number): {any}
-        set: function(Array2D, any, number, number, number, number)
-        write: function(Array2D, FILE, string, number, number, number, number)
+        range: function<T>(Array2D<T>, string): {T}
+        slice: function<T>(Array2D<T>, number, number, number, number): {T}
+        set: function<T>(Array2D<T>, any, number, number, number, number)
+        write: function<T>(Array2D<T>, FILE, string, number, number, number, number)
 
-        forall: function(Array2D, function({any}, number), function(number), number, number, number, number)
-        move: function(Array2D, number, number, Array2D, number, number, number, number)
+        forall: function<T>(Array2D<T>, function({any}, number), function(number), number, number, number, number)
+        move: function<T>(Array2D<T>, number, number, Array2D, number, number, number, number)
 
-        iter: function(Array2D, boolean, number, number, number, number): (function(): any) | {number, number, any}
+        iter: function<T>(Array2D<T>, boolean, number, number, number, number): (function(): (T | {number, number, any}))
 
-        columns: function(Array2D): (function(): {any})
-
-        new: function(number, number, any): Array2D
+        columns: function<T>(Array2D<T>): (function(): List<T>)
     end
 
     -- TODO class
