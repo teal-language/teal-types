@@ -133,13 +133,13 @@ local record pl
         parse_range: function(string): number, number, number, number
         range: function<T>(Array2D<T>, string): {T}
         slice: function<T>(Array2D<T>, number, number, number, number): {T}
-        set: function<T>(Array2D<T>, any, number, number, number, number)
+        set: function<T>(Array2D<T>, T, number, number, number, number)
         write: function<T>(Array2D<T>, FILE, string, number, number, number, number)
 
-        forall: function<T>(Array2D<T>, function({any}, number), function(number), number, number, number, number)
+        forall: function<T>(Array2D<T>, function({T}, number), function(number), number, number, number, number)
         move: function<T>(Array2D<T>, number, number, Array2D, number, number, number, number)
 
-        iter: function<T>(Array2D<T>, boolean, number, number, number, number): (function(): (T | {number, number, any}))
+        iter: function<T>(Array2D<T>, boolean, number, number, number, number): (function(): (T | {number, number, T}))
 
         columns: function<T>(Array2D<T>): (function(): List<T>)
     end
