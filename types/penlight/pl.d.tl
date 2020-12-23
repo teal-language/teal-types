@@ -255,6 +255,62 @@ local record pl
         dirtree: function(string): (function(): string, boolean)
         getallfiles: function(string, string): List<string>
     end
+
+    record file
+        -- TODO copy declarations from other functions
+        -- this whole module is just renaming of other functions
+    end
+
+    record func
+        record PlaceholderExp end
+
+        -- FIXME properly define return type of this... thing
+        import: function(string, {any: function})
+        register: function(function, string): function
+
+        tail: function<T>({T}): {T}
+
+        isPE: function(table): boolean
+        repr: function(PlaceholderExp): string
+        instantiate: function(PlaceholderExp): function
+        I: function(PlaceholderExp): function
+
+        -- TODO is this worth it? It could aid error detection, but
+        -- where to stop?
+        bind1: function<T, U>((function(T): U), T): (function(): U)
+        bind1: function<T1, T2, U>((function(T1, T2): U), T1): (function(T2): U)
+        bind1: function<T1, T2, T3, U>((function(T1, T2, T3): U), T1): (function(T2, T3): U)
+        bind1: function<T1, T2, T3, T4, U>((function(T1, T2, T3, T4): U), T1): (function(T2, T3, T4): U)
+        bind1: function<T1, T2, T3, T4, T5, U>(
+                (function(T1, T2, T3, T4, T5): U), T1
+            ): (function(T2, T3, T4, T5): U)
+        bind1: function<T1, T2, T3, T4, T5, T6, U>(
+                (function(T1, T2, T3, T4, T5, T6): U), T1
+            ): (function(T2, T3, T4, T5, T6): U)
+
+        -- FIXME Will these screw up the above definiitons?
+        bind1: function<T, U>((function(...: T): U), T): (function(...: T): U)
+        bind1: function((function(...: any): any...), any): (function(...: any): any...)
+
+        compose: function<T, U, V>(
+            (function(T): U),
+            (function(U): V)
+        ): (function(T): V)
+        -- FIXME same as above
+        compose: function<T, U, V>(
+            (function(...: T): U...),
+            (function(...: U): V...)
+        ): (function(...: T): V...)
+        compose: function(
+            (function(...: any): any...),
+            (function(...: any): any...)
+        ): (function(...: any): any...)
+
+        -- FIXME same as above
+        bind: function<T, U>((function(T, ...: any): U), T): (function(...: any): U)
+        bind: function<T1, T2, U>((function(T1, T2, ...: any): U), T1, T2): (function(...: any): U)
+        bind: function<T1, T2, T3, U>((function(T1, T2, T3, ...: any): U), T1, T2, T3): (function(...: any): U)
+    end
 end
 
 return pl
