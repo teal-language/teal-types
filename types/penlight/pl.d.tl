@@ -330,6 +330,78 @@ local record pl
         -- FIXME declare return type with overloads for the first parameter
         fields: function({number} | number, string, source, {FieldsOpt: any}): (function(): string...)
     end
+
+    -- TODO lapp
+    -- TODO lexer
+    -- TODO luabalanced
+
+    record operator
+        enum OpRepr
+            '+'
+            '-'
+            '*'
+            '/'
+            '%'
+            '^'
+            '..'
+            '()'
+            '[]'
+            '<'
+            '<='
+            '>'
+            '>='
+            '=='
+            '~='
+            '#'
+            'and'
+            'or'
+            '{}'
+            '~'
+            ''
+        end
+
+        optable: {OpRepr: function}
+        type op = function | OpRepr
+
+        -- TODO properly annotate types as in func
+        call: function(function, ...: any): any...
+        index: function(table, any): any
+
+        eq: function(any, any): boolean
+        neq: function(any, any): boolean
+        lt: function(any, any): boolean
+        le: function(any, any): boolean
+        gt: function(any, any): boolean
+        ge: function(any, any): boolean
+
+        len: function(string | table): number
+
+        add: function(number, number): number
+        sub: function(number, number): number
+        mul: function(number, number): number
+        div: function(number, number): number
+        pow: function(number, number): number
+        mod: function(number, number): number
+        unm: function(number): number
+        concat: function(string, string): string
+
+        add: function(any, any): any
+        sub: function(any, any): any
+        mul: function(any, any): any
+        div: function(any, any): any
+        pow: function(any, any): any
+        mod: function(any, any): any
+        unm: function(any): any
+        concat: function(any, any): any
+
+        lnot: function(any): boolean
+        land: function(any, any): boolean
+        lor: function(any, any): boolean
+
+        table: function(...: any): {any}
+        match: function(string, string): boolean
+        nop: function(...: any)
+    end
 end
 
 return pl
