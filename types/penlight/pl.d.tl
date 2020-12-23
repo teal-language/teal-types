@@ -450,6 +450,11 @@ local record pl
         -- copy these and functions from lfs.d.tl?)
         -- TODO linkattrib
     end
+
+    record permute
+        iter: function({any}): (function(): {any})
+        table: function({any}): {{any}}
+    end
 end
 
 return pl
