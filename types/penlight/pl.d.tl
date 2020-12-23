@@ -402,6 +402,54 @@ local record pl
         match: function(string, string): boolean
         nop: function(...: any)
     end
+
+    record path
+        is_windows: boolean
+        sep: string
+        dirsep: string
+
+        dir: function(string): function(): string
+        mkdir: function(string): boolean, string
+        rmdir: function(string): boolean, string
+
+        currentdir: function(): string
+        chdir: function(string): boolean, string
+
+        getsize: function(string): number
+
+        isdir: function(string): boolean
+        isfile: function(string): boolean
+        isabs: function(string): boolean
+        exists: function(string): boolean
+
+        getatime: function(string): number
+        getmtime: function(string): number
+        getctime: function(string): number
+
+        splitpath: function(string): string, string
+        splitext: function(string): string, string
+
+        abspath: function(string, string): string
+        dirname: function(string): string
+        basename: function(string): string
+        extension: function(string): string
+
+        -- 2 mandatory parts
+        join: function(string, string, ...: string): string
+
+        normcase: function(string): string
+        normpath: function(string): string
+        relpath: function(string, string): string
+        expanduser: function(string): string
+
+        tmpname: function(): string
+        common_prefix: function(string, string): string
+        package_path: function(string): string, string
+
+        -- TODO attrib (is there a way to
+        -- copy these and functions from lfs.d.tl?)
+        -- TODO linkattrib
+    end
 end
 
 return pl
