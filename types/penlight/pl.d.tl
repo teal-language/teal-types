@@ -311,6 +311,25 @@ local record pl
         bind: function<T1, T2, U>((function(T1, T2, ...: any): U), T1, T2): (function(...: any): U)
         bind: function<T1, T2, T3, U>((function(T1, T2, T3, ...: any): U), T1, T2, T3): (function(...: any): U)
     end
+
+    import_into: function(table): (table, table)
+
+    record input
+        type linegetter = function(...: any): string
+        type source = string | table
+
+        enum FieldsOpt
+            'no_fail'
+        end
+
+        alltokens: function<T>(linegetter, string, function(string): T): (function(): T)
+        create_getter: function(source): linegetter
+        numbers: function(source): (function(): number)
+        words: function(source): (function(): string)
+
+        -- FIXME declare return type with overloads for the first parameter
+        fields: function({number} | number, string, source, {FieldsOpt: any}): (function(): string...)
+    end
 end
 
 return pl
