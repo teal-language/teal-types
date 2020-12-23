@@ -455,6 +455,21 @@ local record pl
         iter: function({any}): (function(): {any})
         table: function({any}): {{any}}
     end
+
+    record pretty
+        read: function(string): table, string
+        load: function(string, table, boolean): table, string
+        write: function(table, string, boolean): string, string
+        dump: function(table, string)
+        debug: function(...: any)
+
+        enum PrettyNumberKind
+            'N'
+            'M'
+            'T'
+        end
+        number: function(number, PrettyNumberKind, number)
+    end
 end
 
 return pl
