@@ -559,6 +559,45 @@ local record pl
         create: function(): WriteBuffer
         open: function(string): ReadBuffer
     end
+
+    record stringx
+        isalpha: function(string): boolean
+        isdigit: function(string): boolean
+        isalnum: function(string): boolean
+        isspace: function(string): boolean
+        islower: function(string): boolean
+        isupper: function(string): boolean
+        startswith: function(string): boolean
+        endswith: function(string): boolean
+
+        join: function(string, {string} | function(): string): string
+        splitlines: function(string, boolean): List<string>
+        split: function(string, string, string): List<string>
+        expandtabs: function(string, number): string
+
+        lfind: function(string, string, number, number): number
+        rfind: function(string, string, number, number): number
+        replace: function(string, string, string, number): string
+        count: function(string, string, boolean): number
+
+        ljust: function(string, number, string): string
+        rjust: function(string, number, string): string
+        center: function(string, number, string): string
+        lstrip: function(string, string): string
+        rstrip: function(string, string): string
+        strip: function(string, string): string
+
+        splitv: function(string, string): string, string...
+        partition: function(string, string): string, string, string
+        rpartition: function(string, string): string, string, string
+        at: function(string, number): string
+
+        lines: function(string): function(): string
+
+        title: function(string): string
+        shorten: function(string, number, boolean): string
+        quote_string: function(string): string
+    end
 end
 
 return pl
