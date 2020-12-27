@@ -537,6 +537,16 @@ local record pl
         match: function(string, string, table, {PatCompileOpt: boolean}): boolean
         match_at_start: function(string, string, table): boolean
     end
+
+    record strict
+        module: function(table): table
+        module: function(table, table): table
+        module: function(string, table, table): table
+
+        make_all_strict: function(table)
+
+        closed_module: function(table, string)
+    end
 end
 
 return pl
