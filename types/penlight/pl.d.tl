@@ -525,6 +525,18 @@ local record pl
 
         lines: function(string | FILE, ...: any): function(): any...
     end
+
+    record sip
+        enum PatCompileOpt
+            'at_start'
+        end
+        type matcher = function(string, table): boolean
+
+        create_pattern: function(string, {PatCompileOpt: boolean}): string, {string}|string, {any}
+        compile: function(string, {PatCompileOpt: boolean}): matcher, {string}|string
+        match: function(string, string, table, {PatCompileOpt: boolean}): boolean
+        match_at_start: function(string, string, table): boolean
+    end
 end
 
 return pl
