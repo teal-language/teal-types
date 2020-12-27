@@ -598,6 +598,92 @@ local record pl
         shorten: function(string, number, boolean): string
         quote_string: function(string): string
     end
+
+    record tablex
+        size: function(table): number
+
+        index_by: function(table, {any}): List<any>
+        index_by: function<T, U>({T: U}, {T}): List<T, U>
+
+        -- TODO check if these are OK
+        transform: function<T, U>((function(T): U), {any: T})
+        transform: function<T, A, U>((function(T, A): U), {any: T}, A)
+        transform: function<T, U>((function(T): U), {T})
+        transform: function<T, A, U>((function(T, A): U), {T}, A)
+        transform: function<A>((function(any, A)), table, A)
+
+        range: function(number, number, number): {number}
+        reduce: function<T, R>((function(R, T): R), {T}, R): R
+        index_map: function<T, U>({T: U}): {U: T}
+
+        makeset: function<T>({T}): {T: boolean}
+        union: function<T>({T: any}, {T: any}): {T: any}
+        intersection: function<T>({T: any}, {T: any}): {T: any}
+        merge: function<T>({T: any}, {T: any}, boolean): {T: any}
+        difference: function<T>({T: any}, {T: any}, boolean): {T: any}
+
+        count_map: function<T>({T}, function(T, T): boolean): {T: number}
+        set: function<T>({T}, T, number, number)
+        new: function<T>(number, T): {T}
+        clear: function<T>({T}, number)
+
+        removevalues: function<T>({T}, number, number)
+        readonly: function<T>(table): table
+
+        update: function(table, table): table
+        copy: function(table): table
+        deepcopy: function(table): table
+        icopy: function<T>({T}, {T}, number, number, number)
+
+        insertvalues: function<T>({T}, {T})
+        insertvalues: function<T>({T}, number, {T})
+
+        compare: function<T>({T}, {T}, function(T, T): boolean): boolean
+        deepcompare: function(table, table, boolean, number): boolean
+        compare_no_order: function<T>({T}, {T}, function(T, T): boolean): boolean
+
+        find: function<T>({T}, T, number): number
+        rfind: function<T>({T}, T, number): number
+
+        type cmpf = function<T, U>(T, U): boolean
+        find_if: function<T, U, R>({T}, cmpf<T, U>, U): number, R
+
+        search: function(table, any, {table}): string
+
+        map: function<K, T, R>((function(T): R), {K: T}): {K: R}
+        map: function<K, T, A, R>((function(T, A): R), {K: T}, A): {K: R}
+
+        imap: function<T, R>((function(T): R), {T}): {R}
+        imap: function<T, A, R>((function(T, A): R), {T}, A): {R}
+
+        map_named_method: function(string, {table}, ...: any): List<any>
+
+        map2: function<T, U, A, R>((function(T, U, A): R), {any: T}, {any: U}, A): {any: R}
+        imap2: function<T, U, A, R>((function(T, U, A): R), {T}, {U}, A): {R}
+        mapn: function<T, R>((function(...: T): R), ...: {T}): {R}
+        pairmap: function<K, V, R>((function(K, V): R)): {R}
+
+        filter: function<T>({T}, (function(T): boolean)): List<T>
+        filter: function<T, A>({T}, (function(T, A): boolean), A): List<T>
+
+        foreach: function<K, V>((function(V, K)), {K: V})
+        foreach: function<K, V, A>((function(V, K, A)), {K: V}, A)
+        foreachi: function<V>((function(V, number)), {V})
+        foreachi: function<V, A>((function(V, number, A)), {V}, A)
+
+        sort: function<K, V>({K: V}, cmpf): function(): K, V
+        sortv: function<K, V>({K: V}, cmpf): function(): K, V
+
+        keys: function({any}): List<number>
+        keys: function<K>({K: any}): List<K>
+        values: function<V>({any: V}): List<V>
+        values: function<V>({V}): List<V>
+
+        sub: function<V>({V}, number, number): List<V>
+        zip: function<T>(...: {T}): {{T}}
+        zip: function<T1, T2>({T1}, {T2}): {{T1, T2}}
+        zip: function<T1, T2, T3>({T1}, {T2}, {T3}): {{T1, T2, T3}}
+    end
 end
 
 return pl
