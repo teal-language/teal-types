@@ -547,6 +547,18 @@ local record pl
 
         closed_module: function(table, string)
     end
+
+    record stringio
+        record WriteBuffer
+            write: function(WriteBuffer, {string | number})
+        end
+        record ReadBuffer
+            read: function(...: string): any...
+        end
+
+        create: function(): WriteBuffer
+        open: function(string): ReadBuffer
+    end
 end
 
 return pl
