@@ -470,6 +470,61 @@ local record pl
         end
         number: function(number, PrettyNumberKind, number)
     end
+
+    record seq
+        matching: function(string): (function(string): number, number, any...)
+        list: function<T>({T}): (function(): T)
+
+        -- TODO check if this is an OK overload
+        keys: function(table): (function(): any)
+        keys: function<K>({K: any}): (function(): K)
+
+        range: function(number, number): (function(): number)
+        minmax: function<T>({T} | function(): T): T, T
+        sum: function<T>({T} | function(): T): T, number
+        sum: function<T, U>({T} | function(): T, function(T): U): U, number
+
+        copy: function<T>({T} | function(): T): List<T>
+        copy2: function<T1, T2, R1, R2>((function(T1, T2): R1, R2), T1, T2): {{R1, R2}}
+        copy_tuples: function(function(): any...): {{any}}
+
+        random: function(number, number, number): (function(): number)
+        sort: function<T>((function(): T), function(T, T): boolean): (function(): T)
+        zip: function<T, U>((function(): T), (function(): U)): (function(): T, U)
+        printall: function<T>({T} | function(): T, string, number, function(T): string)
+
+        -- The official documentation is wrong, this only returns 1 value
+        count_map: function<T>({T} | function(): T): Map<T, number>
+
+        -- TODO
+        map: function<T, U>((function(T): U), {T} | function(): T): (function(): U)
+        map: function<T1, T2, U>((function(T1, T2): U), ({T1} | function(): T1), T2): (function(): U)
+        map: function<T1, T2, U>((function(T1, T2): U), ({{T1, T2}} | function(): T1, T2)): (function(): U)
+
+        filter: function<T>(({T} | function(): T), (function(T): boolean)): (function(): T)
+        filter: function<T, U>(({T} | function(): T), (function(T, U): boolean), U): (function(): T)
+
+        reduce: function<T, R>((function(R, T): R), ({T} | function(): T), R): R
+        take: function<T>(({T} | function(): T), number): function(): T
+        take: function<T, U>((function(): T, U), number): function(): T, U
+
+        skip: function<T>({T}, number): {T}
+        skip: function<T>((function(): T), number): {T}
+
+        enum: function<T>(({T} | function(): T)): function(): number, T
+        enum: function<T, U>((function(): T, U)): function(): number, T, U
+
+        -- TODO Is this necessary?
+        mapmethod: function(({table} | function(): table), string): function(): any
+        mapmethod: function<T>(({table} | function(T): table), string, T): function(): any
+        mapmethod: function<T, U>(({table} | function(T, U): table), string, T, U): function(): any
+
+        last: function<T>(({T} | function(): T)): function(): T, T
+
+        foreach: function<T>(({T} | function(): T), (function(T)))
+
+        lines: function(string | FILE, ...: any): function(): any...
+    end
 end
 
 return pl
