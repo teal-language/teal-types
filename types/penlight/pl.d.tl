@@ -731,6 +731,20 @@ local record pl
             indent_substitute: function(Template, {string: any}): string
         end
     end
+
+    record types
+        type: function(any): string
+
+        is_type: function(any, any): boolean
+        is_callable: function(any): boolean
+        is_integer: function(number): boolean
+        is_empty: function(any, boolean)
+        is_indexable: function(any): boolean
+        is_iterable: function(any): boolean
+        is_writeable: function(any): boolean
+
+        to_bool: function(any, {string}, boolean): boolean
+    end
 end
 
 return pl
