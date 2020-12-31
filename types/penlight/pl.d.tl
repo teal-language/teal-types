@@ -715,6 +715,22 @@ local record pl
         timer: function(string, number, function): number
         timer: function<A>(string, number, function(A), A): number
     end
+
+    record text
+        format_operator: function
+
+        indent: function(string, number, string): string
+        dedent: function(string): string
+        wrap: function(string, number): List<string>
+        fill: function(string, number): string
+
+        record Template
+            -- metamethod __call -- TODO
+            substitute: function(Template, {string: any}): string
+            safe_substitute: function(Template, {string: any}): string
+            indent_substitute: function(Template, {string: any}): string
+        end
+    end
 end
 
 return pl
