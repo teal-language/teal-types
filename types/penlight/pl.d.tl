@@ -175,7 +175,11 @@ local record pl
         setfenv: function(function, {string: any})
     end
 
-    -- TODO comprehension
+    record comprehension
+        type generator = (function(): {any})
+        type parser = (function(string): generator) -- wtf
+        new: function(): parser
+    end
 
     record config
         enum ReadOpt
