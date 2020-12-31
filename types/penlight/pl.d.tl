@@ -684,6 +684,24 @@ local record pl
         zip: function<T1, T2>({T1}, {T2}): {{T1, T2}}
         zip: function<T1, T2, T3>({T1}, {T2}, {T3}): {{T1, T2, T3}}
     end
+
+    record template
+        record CompiledTemplate
+            render: function(CompiledTemplate, table, table, boolean): string
+        end
+
+        enum CompileOpt
+            'chunk_name'
+            'escape'
+            'inline_escape'
+            'inline_brackets'
+            'newline'
+            'debug'
+        end
+
+        substitute: function(string, table): string
+        compile: function(string, {CompileOpt: any}): CompiledTemplate, string, string
+    end
 end
 
 return pl
