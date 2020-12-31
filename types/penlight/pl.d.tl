@@ -745,6 +745,14 @@ local record pl
 
         to_bool: function(any, {string}, boolean): boolean
     end
+
+    record url
+        quote: function(string, boolean): string
+        unquote: function(string): string
+    end
+
+    -- TODO utils
+    -- TODO xml
 end
 
 return pl
