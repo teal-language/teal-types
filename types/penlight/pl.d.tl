@@ -343,7 +343,27 @@ local record pl
         fields: function({number} | number, string, source, {FieldsOpt: any}): (function(): string...)
     end
 
-    -- TODO lapp
+    record lapp
+        -- TODO metamethod __call alias for process_options_string
+
+        enum argtype
+            'string'
+            'number'
+            'file'
+            'file-in'
+            'boolean'
+        end
+
+        show_usage_error: boolean
+
+        quit: function(string, boolean)
+        open: function(string, string): FILE
+        error: function(string, boolean)
+        assert: function(boolean, string)
+        add_type: function(string, (argtype | function(string): any), function(any))
+        process_options_string: function(string, {string}): {string: any}
+    end
+
     -- TODO lexer
     -- TODO luabalanced
 
