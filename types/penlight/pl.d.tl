@@ -702,6 +702,19 @@ local record pl
         substitute: function(string, table): string
         compile: function(string, {CompileOpt: any}): CompiledTemplate, string, string
     end
+
+    record test
+        error_handler: function(string, number, string, string, string)
+        complain: function(any, any, string, number)
+        assertmatch: function(string, string, number)
+        assertraise: function(function, string, number)
+        asserteq: function(any, any, number, number)
+        asserteq2: function(any, any, any, any, number, number)
+        tuple: function(...: any): {any}
+
+        timer: function(string, number, function): number
+        timer: function<A>(string, number, function(A), A): number
+    end
 end
 
 return pl
