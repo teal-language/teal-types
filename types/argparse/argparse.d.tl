@@ -1,4 +1,39 @@
-global record ArgparseParser
+
+local record argparse
+	record Parser
+		name: function(self: Parser, name: string): Parser
+		description: function(self: Parser, description: string): Parser
+		epilog: function(self: Parser, epilog: string): Parser
+
+		flag: function(self: Parser, flag: string): Option
+		flag: function(self: Parser, shortalias: string, longalias: string): Option
+
+		parse: function(self: Parser, argv: {string}): {string:{string}|string|boolean}
+		pparse: function(self: Parser, argv: {string}): boolean, {string:{string}|string|boolean} | string
+
+		error: function(self: Parser, error: string)
+
+		argument: function(self: Parser, name: string, description: string)
+
+		get_usage: function(self: Parser): string
+
+		option: function(self: Parser, name: string, description: string, default: string, convert: function | {function}, args: {string}, count: number | string): Option
+		option: function(self: Parser, name: string, description: string, default: string, convert: {string:string}, args: {string}, count: number | string): Option
+
+		require_command: function(self: Parser, require_command: boolean): Parser
+		command_target: function(self: Parser, command_target: string): Parser
+
+		command: function(self: Parser, name: string, description: string, epilog: string): Command
+
+		record Opts
+			name: string
+			description: string
+			epilog: string
+		end
+		metamethod __call: function(Parser, Opts): Parser
+		metamethod __call: function(Parser, string, string, string): Parser
+	end
+
 	record Argument
 		choices: function(self: Argument, choices: {string}): Argument
 
@@ -30,32 +65,7 @@ global record ArgparseParser
 		option: function(self: Command, name: string, description: string): Option
 	end
 
-	-- FIXME: the config can also be set by calling the parser as a function
-	name: function(self: ArgparseParser, name: string): ArgparseParser
-	description: function(self: ArgparseParser, description: string): ArgparseParser
-	epilog: function(self: ArgparseParser, epilog: string): ArgparseParser
-
-	flag: function(self: ArgparseParser, flag: string): Option
-	flag: function(self: ArgparseParser, shortalias: string, longalias: string): Option
-
-	parse: function(self: ArgparseParser, argv: {string}): {string:{string}|string|boolean}
-	pparse: function(self: ArgparseParser, argv: {string}): boolean, {string:{string}|string|boolean} | string
-
-	error: function(self: ArgparseParser, error: string)
-
-	argument: function(self: ArgparseParser, name: string, description: string)
-
-	get_usage: function(self: ArgparseParser): string
-
-	option: function(self: ArgparseParser, name: string, description: string, default: string, convert: function | {function}, args: {string}, count: number | string): Option
-	option: function(self: ArgparseParser, name: string, description: string, default: string, convert: {string:string}, args: {string}, count: number | string): Option
-
-	require_command: function(self: ArgparseParser, require_command: boolean): ArgparseParser
-	command_target: function(self: ArgparseParser, command_target: string): ArgparseParser
-
-	command: function(self: ArgparseParser, name: string, description: string, epilog: string): Command
+	metamethod __call: function(self: argparse, name: string, description: string, epilog: string): Parser
 end
-
-local argparse: function(name: string, description: string, epilog: string): ArgparseParser
 
 return argparse
