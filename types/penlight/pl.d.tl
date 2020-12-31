@@ -50,10 +50,7 @@ local record pl
         map: function<U>(List<T>, (function(T, ...: any): U), ...: any): List<U>
         map2: function<U, V>(List<T>, (function(T, U, ...: any): V), List<U>, ...: any): List<V> -- this is ridiculous
 
-        -- TODO check if there isnt a way to infer type here
-        -- I expect there isnt a way, but just to make sure
-        mapm: function(List<T>, string, ...: any): List<any>
-
+        mapm: function<U>(List<T>, string, ...: any): List<U>
         reduce: function(List<T>, (function(T, T): T)): T
 
         -- TODO uncomment this after declaring MultiMap
@@ -144,7 +141,18 @@ local record pl
         columns: function<T>(Array2D<T>): (function(): List<T>)
     end
 
-    -- TODO class
+    record class
+        record Class
+            -- TODO {string: any} OR __index
+            class_of: function(Class, Instance): boolean
+            cast: function(Class, Instance)
+        end
+
+        record Instance
+            -- TODO {string: any} OR __index
+            is_a: function(Instance, Class): boolean
+        end
+    end
 
     record compat
         lua51: boolean
