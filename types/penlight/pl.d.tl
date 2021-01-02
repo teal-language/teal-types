@@ -6,10 +6,20 @@ local record pl
     -- so you need to retcon the existing functions with it, probably
     -- by creating a FunctionArg type, which is the union a function and
     -- the special strings enum
+    -- ===========
+    -- UPDATE ON THE ABOVE
+    -- Apparently any place which accepts a function does indeed accept
+    -- an op name AS WELL AS a lambda expression. Since apparently those
+    -- are pretty common, I've decided not to restrict those arguments to
+    -- function | opname, and instead opted to union the type string with
+    -- the respective function arguments
     record List<T>
         {T}
 
         new: function({T}): List<T>
+        metamethod __call: function({T}): List<T>
+        metamethod __concat: function(List<T>, List<T>): List<T>
+
         range: function(number, number, number): List<number>
         split: function(string, string): List<string>
 
@@ -30,8 +40,8 @@ local record pl
         splice: function(List<T>, number, List<T>): List<T>
 
         reverse: function(List<T>): List<T>
-        sorted: function(List<T>, function(T, T): boolean): List<T>
-        sort: function(List<T>, function(T, T): boolean): List<T>
+        sorted: function(List<T>, string | function(T, T): boolean): List<T>
+        sort: function(List<T>, string | function(T, T): boolean): List<T>
 
         clear: function(List<T>): List<T>
         contains: function(List<T>, T): boolean
@@ -43,15 +53,16 @@ local record pl
         concat: function(List<T>, string): string
         join: function(List<T>, string): string
 
-        foreach: function(List<T>, function(T, ...: any), ...: any)
+        foreach: function(List<T>, string | function(T, ...: any), ...: any)
         foreachm: function(List<table>, string, ...: any)
-        filter: function<U>(List<T>, function(T, U): boolean, U): List<T>
-        transform: function(List<T>, (function(T, ...: any): T), ...: any): List<T>
-        map: function<U>(List<T>, (function(T, ...: any): U), ...: any): List<U>
-        map2: function<U, V>(List<T>, (function(T, U, ...: any): V), List<U>, ...: any): List<V> -- this is ridiculous
+        filter: function<U>(List<T>, (string | function(T, U): boolean), U): List<T>
 
+        transform: function(List<T>, (string | function(T, ...: any): T), ...: any): List<T>
+
+        map: function<U>(List<T>, (string | function(T, ...: any): U), ...: any): List<U>
+        map2: function<U, V>(List<T>, (string | function(T, U, ...: any): V), List<U>, ...: any): List<V>
         mapm: function<U>(List<T>, string, ...: any): List<U>
-        reduce: function(List<T>, (function(T, T): T)): T
+        reduce: function(List<T>, (string | function(T, T): T)): T
 
         -- TODO uncomment this after declaring MultiMap
         -- The first type parameter is the key type, the second one is the value type
@@ -59,8 +70,6 @@ local record pl
 
         iter: function(List<T>): (function(): T)
         iterate: function(string | table | function) -- FILE is also considered a table
-
-        -- TODO metamethods when they get supported in Teal
     end
 
     record Map<K, V>
@@ -393,7 +402,6 @@ local record pl
         end
 
         optable: {OpRepr: function}
-        type op = function | OpRepr
 
         -- TODO properly annotate types as in func
         call: function(function, ...: any): any...
