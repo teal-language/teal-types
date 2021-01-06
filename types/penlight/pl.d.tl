@@ -378,13 +378,11 @@ local record pl
         numbers: function(source): (function(): number)
         words: function(source): (function(): string)
 
-        -- FIXME declare return type with overloads for the first parameter
+        -- TODO declare return type with overloads for the first parameter
         fields: function({number} | number, string, source, {FieldsOpt: any}): (function(): string...)
     end
 
     record lapp
-        -- TODO metamethod __call alias for process_options_string
-
         enum argtype
             'string'
             'number'
@@ -401,6 +399,8 @@ local record pl
         assert: function(boolean, string)
         add_type: function(string, (argtype | function(string): any), function(any))
         process_options_string: function(string, {string}): {string: any}
+
+        metamethod __call: function(lapp, string, {string}): {string: any}
     end
 
     -- TODO lexer
