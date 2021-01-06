@@ -13,11 +13,11 @@ local record pl
     -- are pretty common, I've decided not to restrict those arguments to
     -- function | opname, and instead opted to union the type string with
     -- the respective function arguments
+
     record List<T>
         {T}
 
         new: function({T}): List<T>
-        metamethod __call: function({T}): List<T>
         metamethod __concat: function(List<T>, List<T>): List<T>
 
         range: function(number, number, number): List<number>
@@ -73,12 +73,10 @@ local record pl
     end
 
     record Map<K, V>
-        -- TODO so uh, we have a problem
-        -- Map has no constructor, it can only be created by
-        -- manually setting the metatable of a regular {K: V},
-        -- of by calling the record which... is not supported yet
-        -- in Teal
         -- {K: V} -- TODO check if this is really not allowed
+
+        metamethod __index: function(Map<K, V>, K): V
+
         keys: List<K>
         values: List<V>
 
@@ -105,7 +103,7 @@ local record pl
     end
 
     record array2d
-        record Array2D<T>
+        record Array2D<T> -- record just for generics
             {{T}}
         end
 
@@ -123,12 +121,37 @@ local record pl
         reduce_cols: function<T>(function(T, T): T, Array2D<T>): List<T>
         reduce2: function<T>(function(T, T): T, function(T, T): T, Array2D<T>): T
 
-        map: function<T, U>((function<U>(T, ...: any): U), Array2D<T>, ...: any): Array2D<U>
+        map: function<T, R, A>(
+            (function<U>(T, ...: A): R),
+            Array2D<T>, ...: A
+        ): Array2D<R>
 
-        -- Waaaaayyy too many possible branching return values
-        map2: function((function(any, any, ...:any): any), number, number, table, table, ...: any): {any}
+        map2: function<T1, T2, R, A>(
+            (function({T1}, {T2}, ...: A): {R}),
+            number, number,
+            Array2D<T1>, Array2D<T2>,
+            ...: A
+        ): Array2D<R>
+        map2: function<T1, T2, R, A>(
+            (function({T1}, {T2}, ...: A): R),
+            number, number,
+            Array2D<T1>, {T2},
+            ...: A
+        ): Array2D<R>
+        map2: function<T1, T2, R, A>(
+            (function({T1}, {T2}, ...: A): R),
+            number, number,
+            {T1}, Array2D<T2>,
+            ...: A
+        ): Array2D<R>
+        map2: function<T1, T2, R, A>(
+            (function({T1}, {T2}, ...: A): R),
+            number, number,
+            {T1}, {T2},
+            ...: A
+        ): {R}
 
-        product: function<T, U, V>(function(T, U): V, {T}, {U}): Array2D<V>
+        product: function<T, U, R>((function(T, U): R), {T}, {U}): Array2D<R>
 
         extract_rows: function<T>(Array2D<T>, {number}): Array2D<T>
         extract_cols: function<T>(Array2D<T>, {number}): Array2D<T>
@@ -142,10 +165,23 @@ local record pl
         set: function<T>(Array2D<T>, T, number, number, number, number)
         write: function<T>(Array2D<T>, FILE, string, number, number, number, number)
 
-        forall: function<T>(Array2D<T>, function({T}, number), function(number), number, number, number, number)
-        move: function<T>(Array2D<T>, number, number, Array2D, number, number, number, number)
+        forall: function<T>(
+            Array2D<T>,
+            function({T}, number),
+            (function(number): any...),
+            number, number, number, number
+        )
+        move: function<T>(
+            Array2D<T>,
+            number, number,
+            Array2D<T>,
+            number, number, number, number
+        )
 
-        iter: function<T>(Array2D<T>, boolean, number, number, number, number): (function(): (T | {number, number, T}))
+        iter: function<T>(
+            Array2D<T>, boolean,
+            number, number, number, number
+        ): (function(): (T | {number, number, T}))
 
         columns: function<T>(Array2D<T>): (function(): List<T>)
     end
