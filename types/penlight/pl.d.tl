@@ -187,14 +187,18 @@ local record pl
     end
 
     record class
+        metamethod __index: function(any, string): Class
+        metamethod __call: function(any, Class): Class
+
         record Class
-            -- TODO {string: any} OR __index
             class_of: function(Class, Instance): boolean
             cast: function(Class, Instance)
         end
 
         record Instance
-            -- TODO {string: any} OR __index
+            -- TODO this is not ideal, but I can't think of a better solution...
+            metamethod __index: function(Instance, any): any
+
             is_a: function(Instance, Class): boolean
         end
     end
@@ -222,7 +226,7 @@ local record pl
 
     record comprehension
         type generator = (function(): {any})
-        type parser = (function(string): generator) -- wtf
+        type parser = (function(string): generator)
         new: function(): parser
     end
 
@@ -258,24 +262,22 @@ local record pl
             'csv'
         end
 
+        type rowiter = function(): any...
+
         record Data
-            -- TODO check if these methods return arrays and not lists
             {{any}}
 
-            -- TODO check if this is the right way to declare "methods"
-            column_by_name: function(Data, string): {any}
+            fieldnames: List<string>
+            original_fieldnames: {string}
 
-            -- FIXME not entirely sure these two are right...
-            -- Incomplete documentation, spaghetti code everywhere, no comments in sight
-            select: function(Data, string): function(): any...
+            column_by_name: function(Data, string): List<any>
+
+            select: function(Data, string): rowiter
             select_row: function(Data, string): function(): {any}
 
             copy_select: function(Data, string): Data
             column_names: function(Data): {string}
 
-            -- FIXME What is the purpose of this function?
-            -- Am I misunderstanding something? Or should this just
-            -- not need a Data instance to work?
             write_row: function(Data, FILE, {any})
 
             write: function(Data, FILE)
@@ -283,15 +285,9 @@ local record pl
         end
         write: function(array2d.Array2D, FILE, {string}, string): boolean, string
 
-        -- TODO documentation specifically mentions this is a {{any}}
-        -- Is an Array2D a better or worse description of it? Would it cause any conflicts?
-        new: function(array2d.Array2D, {string})
+        new: function({{any}}, {string})
 
-        -- TODO the second parameter could be specified better.
-        -- If it is a table, it does have a shallow structure which I haven't
-        -- identified properly, but shouldn't be too hard to understand
-        query: function(Data, string | table, {table}, boolean): function(): {any}, string
-
+        query: function(Data, (string | table), {table}, boolean): rowiter, string
         filter: function(string, FILE | string, FILE | string, boolean)
     end
 
