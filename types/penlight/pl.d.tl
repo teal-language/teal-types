@@ -1,18 +1,6 @@
 local record pl
-    -- TODO any function that accepts a function as argument (afaict)
-    -- also accepts a few key strings (such as '+') which are internally
-    -- converted into the respective function
-    -- These special strings are probably all defined in pl.operator,
-    -- so you need to retcon the existing functions with it, probably
-    -- by creating a FunctionArg type, which is the union a function and
-    -- the special strings enum
-    -- ===========
-    -- UPDATE ON THE ABOVE
-    -- Apparently any place which accepts a function does indeed accept
-    -- an op name AS WELL AS a lambda expression. Since apparently those
-    -- are pretty common, I've decided not to restrict those arguments to
-    -- function | opname, and instead opted to union the type string with
-    -- the respective function arguments
+    -- TODO should this be divided into further directories mirroring the
+    -- penlight lua file structure?
 
     record List<T>
         {T}
@@ -73,9 +61,11 @@ local record pl
     end
 
     record Map<K, V>
-        -- {K: V} -- TODO check if this is really not allowed
-
+        -- These two are substitutes for maprecords ({K: V})
         metamethod __index: function(Map<K, V>, K): V
+        metamethod __newindex: function(Map<K, V>, K, V)
+
+        -- TODO add constructor call on tl-0.10.1
 
         keys: List<K>
         values: List<V>
@@ -122,36 +112,39 @@ local record pl
         reduce2: function<T>(function(T, T): T, function(T, T): T, Array2D<T>): T
 
         map: function<T, R, A>(
-            (function<U>(T, ...: A): R),
+            (string | function<U>(T, ...: A): R),
             Array2D<T>, ...: A
         ): Array2D<R>
 
         map2: function<T1, T2, R, A>(
-            (function({T1}, {T2}, ...: A): {R}),
+            (string | function({T1}, {T2}, ...: A): {R}),
             number, number,
             Array2D<T1>, Array2D<T2>,
             ...: A
         ): Array2D<R>
         map2: function<T1, T2, R, A>(
-            (function({T1}, {T2}, ...: A): R),
+            (string | function({T1}, {T2}, ...: A): R),
             number, number,
             Array2D<T1>, {T2},
             ...: A
         ): Array2D<R>
         map2: function<T1, T2, R, A>(
-            (function({T1}, {T2}, ...: A): R),
+            (string | function({T1}, {T2}, ...: A): R),
             number, number,
             {T1}, Array2D<T2>,
             ...: A
         ): Array2D<R>
         map2: function<T1, T2, R, A>(
-            (function({T1}, {T2}, ...: A): R),
+            (string | function({T1}, {T2}, ...: A): R),
             number, number,
             {T1}, {T2},
             ...: A
         ): {R}
 
-        product: function<T, U, R>((function(T, U): R), {T}, {U}): Array2D<R>
+        product: function<T, U, R>(
+            (string | function(T, U): R),
+            {T}, {U}
+        ): Array2D<R>
 
         extract_rows: function<T>(Array2D<T>, {number}): Array2D<T>
         extract_cols: function<T>(Array2D<T>, {number}): Array2D<T>
@@ -167,7 +160,7 @@ local record pl
 
         forall: function<T>(
             Array2D<T>,
-            function({T}, number),
+            (function({T}, number): any...),
             (function(number): any...),
             number, number, number, number
         )
@@ -196,7 +189,7 @@ local record pl
         end
 
         record Instance
-            -- TODO this is not ideal, but I can't think of a better solution...
+            -- FIXME this is not ideal, but I can't think of a better solution...
             metamethod __index: function(Instance, any): any
 
             is_a: function(Instance, Class): boolean
@@ -206,7 +199,7 @@ local record pl
     record compat
         lua51: boolean
         jit: boolean
-        jit52: boolean | nil
+        jit52: boolean
         is_windows: boolean
 
         dir_separator: string
@@ -262,7 +255,7 @@ local record pl
             'csv'
         end
 
-        type rowiter = function(): any...
+        type rowiterator = function(): any...
 
         record Data
             {{any}}
@@ -272,7 +265,7 @@ local record pl
 
             column_by_name: function(Data, string): List<any>
 
-            select: function(Data, string): rowiter
+            select: function(Data, string): rowiterator
             select_row: function(Data, string): function(): {any}
 
             copy_select: function(Data, string): Data
@@ -287,7 +280,7 @@ local record pl
 
         new: function({{any}}, {string})
 
-        query: function(Data, (string | table), {table}, boolean): rowiter, string
+        query: function(Data, (string | table), {table}, boolean): rowiterator, string
         filter: function(string, FILE | string, FILE | string, boolean)
     end
 
@@ -328,12 +321,17 @@ local record pl
         instantiate: function(PlaceholderExp): function
         I: function(PlaceholderExp): function
 
-        -- TODO is this worth it? It could aid error detection, but
-        -- where to stop?
+        -- TODO is this worth it? It could aid error detection, but where to stop?
         bind1: function<T, U>((function(T): U), T): (function(): U)
         bind1: function<T1, T2, U>((function(T1, T2): U), T1): (function(T2): U)
-        bind1: function<T1, T2, T3, U>((function(T1, T2, T3): U), T1): (function(T2, T3): U)
-        bind1: function<T1, T2, T3, T4, U>((function(T1, T2, T3, T4): U), T1): (function(T2, T3, T4): U)
+        bind1: function<T1, T2, T3, U>(
+            (function(T1, T2, T3): U),
+            T1
+        ): (function(T2, T3): U)
+        bind1: function<T1, T2, T3, T4, U>(
+            (function(T1, T2, T3, T4): U),
+            T1
+        ): (function(T2, T3, T4): U)
         bind1: function<T1, T2, T3, T4, T5, U>(
                 (function(T1, T2, T3, T4, T5): U), T1
             ): (function(T2, T3, T4, T5): U)
@@ -341,7 +339,7 @@ local record pl
                 (function(T1, T2, T3, T4, T5, T6): U), T1
             ): (function(T2, T3, T4, T5, T6): U)
 
-        -- FIXME Will these screw up the above definiitons?
+        -- FIXME Will these screw up the above definitions?
         bind1: function<T, U>((function(...: T): U), T): (function(...: T): U)
         bind1: function((function(...: any): any...), any): (function(...: any): any...)
 
