@@ -473,7 +473,7 @@ local record pl
             ''
         end
 
-        optable: {OpRepr: function}
+        optable: {pl.operator.OpRepr: function}
 
         -- TODO properly annotate types as in func
         call: function(function, ...: any): any...
@@ -580,7 +580,7 @@ local record pl
             'M'
             'T'
         end
-        number: function(number, PrettyNumberKind, number)
+        number: function(number, pl.pretty.PrettyNumberKind, number)
     end
 
     record seq
@@ -644,8 +644,8 @@ local record pl
         end
         type matcher = function(string, table): boolean
 
-        create_pattern: function(string, {PatCompileOpt: boolean}): string, {string}|string, {any}
-        compile: function(string, {PatCompileOpt: boolean}): matcher, {string}|string
+        create_pattern: function(string, {pl.sip.PatCompileOpt: boolean}): string, {string}|string, {any}
+        compile: function(string, {pl.sip.PatCompileOpt: boolean}): matcher, {string}|string
         match: function(string, string, table, {PatCompileOpt: boolean}): boolean
         match_at_start: function(string, string, table): boolean
     end
@@ -662,14 +662,14 @@ local record pl
 
     record stringio
         record WriteBuffer
-            write: function(WriteBuffer, {string | number})
+            write: function(pl.stringio.WriteBuffer, {string | number})
         end
         record ReadBuffer
             read: function(...: string): any...
         end
 
-        create: function(): WriteBuffer
-        open: function(string): ReadBuffer
+        create: function(): pl.stringio.WriteBuffer
+        open: function(string): pl.stringio.ReadBuffer
     end
 
     record stringx
@@ -799,7 +799,7 @@ local record pl
 
     record template
         record CompiledTemplate
-            render: function(CompiledTemplate, table, table, boolean): string
+            render: function(pl.template.CompiledTemplate, table, table, boolean): string
         end
 
         enum CompileOpt
@@ -812,7 +812,7 @@ local record pl
         end
 
         substitute: function(string, table): string
-        compile: function(string, {CompileOpt: any}): CompiledTemplate, string, string
+        compile: function(string, {pl.template.CompileOpt: any}): pl.template.CompiledTemplate, string, string
     end
 
     record test
@@ -838,9 +838,9 @@ local record pl
 
         record Template
             -- metamethod __call -- TODO
-            substitute: function(Template, {string: any}): string
-            safe_substitute: function(Template, {string: any}): string
-            indent_substitute: function(Template, {string: any}): string
+            substitute: function(pl.text.Template, {string: any}): string
+            safe_substitute: function(pl.text.Template, {string: any}): string
+            indent_substitute: function(pl.text.Template, {string: any}): string
         end
     end
 
