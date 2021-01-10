@@ -263,24 +263,24 @@ local record pl
             fieldnames: pl.List<string>
             original_fieldnames: {string}
 
-            column_by_name: function(Data, string): pl.List<any>
+            column_by_name: function(pl.data.Data, string): pl.List<any>
 
-            select: function(Data, string): rowiterator
-            select_row: function(Data, string): function(): {any}
+            select: function(pl.data.Data, string): pl.data.rowiterator
+            select_row: function(pl.data.Data, string): function(): {any}
 
-            copy_select: function(Data, string): Data
-            column_names: function(Data): {string}
+            copy_select: function(pl.data.Data, string): Data
+            column_names: function(pl.data.Data): {string}
 
-            write_row: function(Data, FILE, {any})
+            write_row: function(pl.data.Data, FILE, {any})
 
-            write: function(Data, FILE)
-            read: function(FILE | string, {ReadOpt: any}): Data, string
+            write: function(pl.data.Data, FILE)
+            read: function(FILE | string, {pl.data.ReadOpt: any}): pl.data.Data, string
         end
         write: function(array2d.Array2D, FILE, {string}, string): boolean, string
 
         new: function({{any}}, {string})
 
-        query: function(Data, (string | table), {table}, boolean): rowiterator, string
+        query: function(pl.data.Data, (string | table), {table}, boolean): pl.data.rowiterator, string
         filter: function(string, FILE | string, FILE | string, boolean)
     end
 
