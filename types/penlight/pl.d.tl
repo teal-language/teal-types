@@ -308,7 +308,14 @@ local record pl
     end
 
     record func
-        record PlaceholderExp end
+        record PHExp end
+
+        _0: pl.func.PHExp
+        _1: pl.func.PHExp
+        _2: pl.func.PHExp
+        _3: pl.func.PHExp
+        _4: pl.func.PHExp
+        _5: pl.func.PHExp
 
         -- FIXME properly define return type of this... thing
         import: function(string, {any: function})
@@ -317,11 +324,11 @@ local record pl
         tail: function<T>({T}): {T}
 
         isPE: function(table): boolean
-        repr: function(PlaceholderExp): string
-        instantiate: function(PlaceholderExp): function
-        I: function(PlaceholderExp): function
+        repr: function(pl.func.PHExp): string
+        instantiate: function(pl.func.PHExp): function
+        I: function(pl.func.PHExp): function
 
-        -- TODO is this worth it? It could aid error detection, but where to stop?
+        -- FIXME this is horrible...
         bind1: function<T, U>((function(T): U), T): (function(): U)
         bind1: function<T1, T2, U>((function(T1, T2): U), T1): (function(T2): U)
         bind1: function<T1, T2, T3, U>(
@@ -347,6 +354,7 @@ local record pl
             (function(T): U),
             (function(U): V)
         ): (function(T): V)
+
         -- FIXME same as above
         compose: function<T, U, V>(
             (function(...: T): U...),
@@ -359,8 +367,18 @@ local record pl
 
         -- FIXME same as above
         bind: function<T, U>((function(T, ...: any): U), T): (function(...: any): U)
+
         bind: function<T1, T2, U>((function(T1, T2, ...: any): U), T1, T2): (function(...: any): U)
+        bind: function<T1, T2, U>((function(T1, T2, ...: any): U), pl.func.PHExp, T2): (function(T1, ...: any): U)
+
+        -- This is literally exponential, I am NOT doing a 4 parameter version
         bind: function<T1, T2, T3, U>((function(T1, T2, T3, ...: any): U), T1, T2, T3): (function(...: any): U)
+        bind: function<T1, T2, T3, U>((function(T1, T2, T3, ...: any): U), pl.func.PHExp, T2, T3): (function(T1, ...: any): U)
+        bind: function<T1, T2, T3, U>((function(T1, T2, T3, ...: any): U), T1, pl.func.PHExp, T3): (function(T2, ...: any): U)
+        bind: function<T1, T2, T3, U>((function(T1, T2, T3, ...: any): U), pl.func.PHExp, pl.func.PHExp, T3): (function(T1, T2, ...: any): U)
+        bind: function<T1, T2, T3, U>((function(T1, T2, T3, ...: any): U), T1, T2, pl.func.PHExp): (function(T3, ...: any): U)
+        bind: function<T1, T2, T3, U>((function(T1, T2, T3, ...: any): U), pl.func.PHExp, T2, pl.func.PHExp): (function(T1, T3, ...: any): U)
+        bind: function<T1, T2, T3, U>((function(T1, T2, T3, ...: any): U), T1, pl.func.PHExp, pl.func.PHExp): (function(T2, T3, ...: any): U)
     end
 
     import_into: function(table): (table, table)
