@@ -489,7 +489,24 @@ local record pl
             boolean
         ): pl.lexer.token
     end
-    -- TODO luabalanced
+
+    record luabalanced
+        match_string: function(string, number): string, number
+        match_bracketed: function(string, number): string, number
+        match_expression: function(string, number): string, number
+        match_namelist: function(string, number): string, number
+        match_explist: function(string, number): string, number
+
+        enum snippettype
+            'e'
+            'c'
+            's'
+        end
+        match_gsub: function(
+            string,
+            (function(pl.luabalanced.snippettype, string): string)
+        ): string
+    end
 
     record operator
         enum OpRepr
