@@ -239,8 +239,8 @@ local record pl
             'file is nil'
         end
 
-        lines: function(FILE | string): function(): string, ReadError
-        read: function(FILE | string, {ReadOpt: any}): table, ReadError
+        lines: function(FILE | string): function(): string, pl.config.ReadError
+        read: function(FILE | string, {pl.config.ReadOpt: any}): table, pl.config.ReadError
     end
 
     record data
@@ -260,10 +260,10 @@ local record pl
         record Data
             {{any}}
 
-            fieldnames: List<string>
+            fieldnames: pl.List<string>
             original_fieldnames: {string}
 
-            column_by_name: function(Data, string): List<any>
+            column_by_name: function(Data, string): pl.List<any>
 
             select: function(Data, string): rowiterator
             select_row: function(Data, string): function(): {any}
@@ -286,7 +286,7 @@ local record pl
 
     record dir
         fnmatch: function(string, string): boolean
-        filter: function({string}, string): List<string>
+        filter: function({string}, string): pl.List<string>
 
         copyfile: function(string, string, boolean): boolean
         movefile: function(string, string): boolean
@@ -294,12 +294,12 @@ local record pl
         rmtree: function(string): boolean, string
         clonetree: function(string, string, (function(string, string): any))
 
-        getfiles: function(string, string): List<string>
-        getdirectories: function(string): List<string>
-        walk: function(string, boolean, boolean): (function(): string, List<string>, List<string>)
+        getfiles: function(string, string): pl.List<string>
+        getdirectories: function(string): pl.List<string>
+        walk: function(string, boolean, boolean): (function(): string, pl.List<string>, pl.List<string>)
 
         dirtree: function(string): (function(): string, boolean)
-        getallfiles: function(string, string): List<string>
+        getallfiles: function(string, string): pl.List<string>
     end
 
     record file
@@ -578,7 +578,7 @@ local record pl
         sum: function<T>({T} | function(): T): T, number
         sum: function<T, U>({T} | function(): T, function(T): U): U, number
 
-        copy: function<T>({T} | function(): T): List<T>
+        copy: function<T>({T} | function(): T): pl.List<T>
         copy2: function<T1, T2, R1, R2>((function(T1, T2): R1, R2), T1, T2): {{R1, R2}}
         copy_tuples: function(function(): any...): {{any}}
 
@@ -588,7 +588,7 @@ local record pl
         printall: function<T>({T} | function(): T, string, number, function(T): string)
 
         -- The official documentation is wrong, this only returns 1 value
-        count_map: function<T>({T} | function(): T): Map<T, number>
+        count_map: function<T>({T} | function(): T): pl.Map<T, number>
 
         -- TODO
         map: function<T, U>((function(T): U), {T} | function(): T): (function(): U)
@@ -665,8 +665,8 @@ local record pl
         endswith: function(string): boolean
 
         join: function(string, {string} | function(): string): string
-        splitlines: function(string, boolean): List<string>
-        split: function(string, string, string): List<string>
+        splitlines: function(string, boolean): pl.List<string>
+        split: function(string, string, string): pl.List<string>
         expandtabs: function(string, number): string
 
         lfind: function(string, string, number, number): number
@@ -696,8 +696,8 @@ local record pl
     record tablex
         size: function(table): number
 
-        index_by: function(table, {any}): List<any>
-        index_by: function<T, U>({T: U}, {T}): List<T, U>
+        index_by: function(table, {any}): pl.List<any>
+        index_by: function<T, U>({T: U}, {T}): pl.List<T, U>
 
         -- TODO check if these are OK
         transform: function<T, U>((function(T): U), {any: T})
@@ -750,15 +750,15 @@ local record pl
         imap: function<T, R>((function(T): R), {T}): {R}
         imap: function<T, A, R>((function(T, A): R), {T}, A): {R}
 
-        map_named_method: function(string, {table}, ...: any): List<any>
+        map_named_method: function(string, {table}, ...: any): pl.List<any>
 
         map2: function<T, U, A, R>((function(T, U, A): R), {any: T}, {any: U}, A): {any: R}
         imap2: function<T, U, A, R>((function(T, U, A): R), {T}, {U}, A): {R}
         mapn: function<T, R>((function(...: T): R), ...: {T}): {R}
         pairmap: function<K, V, R>((function(K, V): R)): {R}
 
-        filter: function<T>({T}, (function(T): boolean)): List<T>
-        filter: function<T, A>({T}, (function(T, A): boolean), A): List<T>
+        filter: function<T>({T}, (function(T): boolean)): pl.List<T>
+        filter: function<T, A>({T}, (function(T, A): boolean), A): pl.List<T>
 
         foreach: function<K, V>((function(V, K)), {K: V})
         foreach: function<K, V, A>((function(V, K, A)), {K: V}, A)
@@ -768,12 +768,12 @@ local record pl
         sort: function<K, V>({K: V}, cmpf): function(): K, V
         sortv: function<K, V>({K: V}, cmpf): function(): K, V
 
-        keys: function({any}): List<number>
-        keys: function<K>({K: any}): List<K>
-        values: function<V>({any: V}): List<V>
-        values: function<V>({V}): List<V>
+        keys: function({any}): pl.List<number>
+        keys: function<K>({K: any}): pl.List<K>
+        values: function<V>({any: V}): pl.List<V>
+        values: function<V>({V}): pl.List<V>
 
-        sub: function<V>({V}, number, number): List<V>
+        sub: function<V>({V}, number, number): pl.List<V>
         zip: function<T>(...: {T}): {{T}}
         zip: function<T1, T2>({T1}, {T2}): {{T1, T2}}
         zip: function<T1, T2, T3>({T1}, {T2}, {T3}): {{T1, T2, T3}}
@@ -815,7 +815,7 @@ local record pl
 
         indent: function(string, number, string): string
         dedent: function(string): string
-        wrap: function(string, number): List<string>
+        wrap: function(string, number): pl.List<string>
         fill: function(string, number): string
 
         record Template
