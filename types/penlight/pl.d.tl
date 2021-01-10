@@ -5,82 +5,82 @@ local record pl
     record List<T>
         {T}
 
-        new: function({T}): List<T>
-        metamethod __concat: function(List<T>, List<T>): List<T>
+        new: function({T}): pl.List<T>
+        metamethod __call: function<T>(pl.List, {T}): pl.List<T>
+        metamethod __concat: function(pl.List<T>, pl.List<T>): pl.List<T>
 
-        range: function(number, number, number): List<number>
-        split: function(string, string): List<string>
+        range: function(number, number, number): pl.List<number>
+        split: function(string, string): pl.List<string>
 
-        len: function(List<T>): number
+        len: function(pl.List<T>): number
 
-        -- TODO check if this is how you declare methods
-        append: function(List<T>, T): List<T>
-        clone: function(List<T>): List<T>
-        extend: function(List<T>, List<T>): List<T>
-        insert: function(List<T>, number, T): List<T>
-        pop: function(List<T>, number): T
-        put: function(List<T>, T): List<T>
-        remove: function(List<T>, number): List<T>
-        remove_value: function(List<T>, T): List<T>
+        append: function(pl.List<T>, T): pl.List<T>
+        clone: function(pl.List<T>): pl.List<T>
+        extend: function(pl.List<T>, pl.List<T>): pl.List<T>
+        insert: function(pl.List<T>, number, T): pl.List<T>
+        pop: function(pl.List<T>, number): T
+        put: function(pl.List<T>, T): pl.List<T>
+        remove: function(pl.List<T>, number): pl.List<T>
+        remove_value: function(pl.List<T>, T): pl.List<T>
 
-        chop: function(List<T>, number, number): List<T>
-        slice_assign: function(List<T>, number, number, List<T>): List<T>
-        splice: function(List<T>, number, List<T>): List<T>
+        chop: function(pl.List<T>, number, number): pl.List<T>
+        slice_assign: function(pl.List<T>, number, number, pl.List<T>): pl.List<T>
+        splice: function(pl.List<T>, number, pl.List<T>): pl.List<T>
 
-        reverse: function(List<T>): List<T>
-        sorted: function(List<T>, string | function(T, T): boolean): List<T>
-        sort: function(List<T>, string | function(T, T): boolean): List<T>
+        reverse: function(pl.List<T>): pl.List<T>
+        sorted: function(pl.List<T>, string | function(T, T): boolean): pl.List<T>
+        sort: function(pl.List<T>, string | function(T, T): boolean): pl.List<T>
 
-        clear: function(List<T>): List<T>
-        contains: function(List<T>, T): boolean
-        count: function(List<T>, T): number
-        index: function(List<T>, T, number): number
-        minmax: function(List<T>): number, number
-        slice: function(List<T>, number, number): List<T>
+        clear: function(pl.List<T>): pl.List<T>
+        contains: function(pl.List<T>, T): boolean
+        count: function(pl.List<T>, T): number
+        index: function(pl.List<T>, T, number): number
+        minmax: function(pl.List<T>): number, number
+        slice: function(pl.List<T>, number, number): pl.List<T>
 
-        concat: function(List<T>, string): string
-        join: function(List<T>, string): string
+        concat: function(pl.List<T>, string): string
+        join: function(pl.List<T>, string): string
 
-        foreach: function(List<T>, string | function(T, ...: any), ...: any)
-        foreachm: function(List<table>, string, ...: any)
-        filter: function<U>(List<T>, (string | function(T, U): boolean), U): List<T>
+        foreach: function(pl.List<T>, string | function(T, ...: any), ...: any)
+        foreachm: function(pl.List<table>, string, ...: any)
+        filter: function<U>(pl.List<T>, (string | function(T, U): boolean), U): pl.List<T>
 
-        transform: function(List<T>, (string | function(T, ...: any): T), ...: any): List<T>
+        transform: function(pl.List<T>, (string | function(T, ...: any): T), ...: any): pl.List<T>
 
-        map: function<U>(List<T>, (string | function(T, ...: any): U), ...: any): List<U>
-        map2: function<U, V>(List<T>, (string | function(T, U, ...: any): V), List<U>, ...: any): List<V>
-        mapm: function<U>(List<T>, string, ...: any): List<U>
-        reduce: function(List<T>, (string | function(T, T): T)): T
+        map: function<U>(pl.List<T>, (string | function(T, ...: any): U), ...: any): pl.List<U>
+        map2: function<U, V>(pl.List<T>, (string | function(T, U, ...: any): V), pl.List<U>, ...: any): pl.List<V>
+        mapm: function<U>(pl.List<T>, string, ...: any): pl.List<U>
+        reduce: function(pl.List<T>, (string | function(T, T): T)): T
 
         -- TODO uncomment this after declaring MultiMap
         -- The first type parameter is the key type, the second one is the value type
         -- partition: function<K>(List<T>, (function(T, ...: any): K), ...: any): MultiMap<K, T>
 
-        iter: function(List<T>): (function(): T)
+        iter: function(pl.List<T>): (function(): T)
         iterate: function(string | table | function) -- FILE is also considered a table
     end
 
     record Map<K, V>
+        metamethod __call: function<K, V>(any, {K: V}): Map<K, V>
+
         -- These two are substitutes for maprecords ({K: V})
-        metamethod __index: function(Map<K, V>, K): V
-        metamethod __newindex: function(Map<K, V>, K, V)
+        metamethod __index: function(pl.Map<K, V>, K): V
+        metamethod __newindex: function(pl.Map<K, V>, K, V)
 
-        -- TODO add constructor call on tl-0.10.1
+        keys: pl.List<K>
+        values: pl.List<V>
 
-        keys: List<K>
-        values: List<V>
+        iter: function(pl.Map<K, V>): (function(): {K, V})
+        items: function(pl.Map<K, V>): (function(): {K, V})
 
-        iter: function(Map<K, V>): (function(): {K, V})
-        items: function(Map<K, V>): (function(): {K, V})
+        get: function(pl.Map<K, V>, K): V
+        set: function(pl.Map<K, V>, K, V)
+        setdefault: function(pl.Map<K, V>, K, V): V
 
-        get: function(Map<K, V>, K): V
-        set: function(Map<K, V>, K, V)
-        setdefault: function(Map<K, V>, K, V): V
+        getvalues: function(pl.Map<K, V>, {K}): pl.List<V>
+        update: function(pl.Map<K, V>, {K: V})
 
-        getvalues: function(Map<K, V>, {K}): List<V>
-        update: function(Map<K, V>, {K: V})
-
-        len: function(Map<K, V>): number
+        len: function(pl.Map<K, V>): number
     end
 
     record app
@@ -99,41 +99,41 @@ local record pl
 
         new: function<T>(number, number, T): Array2D<T>
 
-        size: function<T>(Array2D<T>): number, number
-        column: function<T>(Array2D<T>, number): List<T>
-        flatten: function<T>(Array2D<T>): List<T>
-        reshape: function<T>(Array2D<T>, number, boolean): Array2D<T>
+        size: function<T>(pl.array2d.Array2D<T>): number, number
+        column: function<T>(pl.array2d.Array2D<T>, number): List<T>
+        flatten: function<T>(pl.array2d.Array2D<T>): List<T>
+        reshape: function<T>(pl.array2d.Array2D<T>, number, boolean): pl.array2d.Array2D<T>
 
-        swap_rows: function<T>(Array2D<T>, number, number)
-        swap_cols: function<T>(Array2D<T>, number, number)
+        swap_rows: function<T>(pl.array2d.Array2D<T>, number, number)
+        swap_cols: function<T>(pl.array2d.Array2D<T>, number, number)
 
-        reduce_rows: function<T>(function(T, T): T, Array2D<T>): List<T>
-        reduce_cols: function<T>(function(T, T): T, Array2D<T>): List<T>
-        reduce2: function<T>(function(T, T): T, function(T, T): T, Array2D<T>): T
+        reduce_rows: function<T>(function(T, T): T, pl.array2d.Array2D<T>): pl.List<T>
+        reduce_cols: function<T>(function(T, T): T, pl.array2d.Array2D<T>): pl.List<T>
+        reduce2: function<T>(function(T, T): T, function(T, T): T, pl.array2d.Array2D<T>): T
 
         map: function<T, R, A>(
             (string | function<U>(T, ...: A): R),
-            Array2D<T>, ...: A
-        ): Array2D<R>
+            pl.array2d.Array2D<T>, ...: A
+        ): pl.array2d.Array2D<R>
 
         map2: function<T1, T2, R, A>(
             (string | function({T1}, {T2}, ...: A): {R}),
             number, number,
-            Array2D<T1>, Array2D<T2>,
+            pl.array2d.Array2D<T1>, pl.array2d.Array2D<T2>,
+            ...: A
+        ): pl.array2d.Array2D<R>
+        map2: function<T1, T2, R, A>(
+            (string | function({T1}, {T2}, ...: A): R),
+            number, number,
+            pl.array2d.Array2D<T1>, {T2},
             ...: A
         ): Array2D<R>
         map2: function<T1, T2, R, A>(
             (string | function({T1}, {T2}, ...: A): R),
             number, number,
-            Array2D<T1>, {T2},
+            {T1}, pl.array2d.Array2D<T2>,
             ...: A
-        ): Array2D<R>
-        map2: function<T1, T2, R, A>(
-            (string | function({T1}, {T2}, ...: A): R),
-            number, number,
-            {T1}, Array2D<T2>,
-            ...: A
-        ): Array2D<R>
+        ): pl.array2d.Array2D<R>
         map2: function<T1, T2, R, A>(
             (string | function({T1}, {T2}, ...: A): R),
             number, number,
@@ -144,39 +144,39 @@ local record pl
         product: function<T, U, R>(
             (string | function(T, U): R),
             {T}, {U}
-        ): Array2D<R>
+        ): pl.array2d.Array2D<R>
 
-        extract_rows: function<T>(Array2D<T>, {number}): Array2D<T>
-        extract_cols: function<T>(Array2D<T>, {number}): Array2D<T>
+        extract_rows: function<T>(pl.array2d.Array2D<T>, {number}): pl.array2d.Array2D<T>
+        extract_cols: function<T>(pl.array2d.Array2D<T>, {number}): pl.array2d.Array2D<T>
 
-        remove_row: function<T>(Array2D<T>, number)
-        remove_col: function<T>(Array2D<T>, number)
+        remove_row: function<T>(pl.array2d.Array2D<T>, number)
+        remove_col: function<T>(pl.array2d.Array2D<T>, number)
 
         parse_range: function(string): number, number, number, number
-        range: function<T>(Array2D<T>, string): {T}
-        slice: function<T>(Array2D<T>, number, number, number, number): {T}
-        set: function<T>(Array2D<T>, T, number, number, number, number)
-        write: function<T>(Array2D<T>, FILE, string, number, number, number, number)
+        range: function<T>(pl.array2d.Array2D<T>, string): {T}
+        slice: function<T>(pl.array2d.Array2D<T>, number, number, number, number): {T}
+        set: function<T>(pl.array2d.Array2D<T>, T, number, number, number, number)
+        write: function<T>(pl.array2d.Array2D<T>, FILE, string, number, number, number, number)
 
         forall: function<T>(
-            Array2D<T>,
+            pl.array2d.Array2D<T>,
             (function({T}, number): any...),
             (function(number): any...),
             number, number, number, number
         )
         move: function<T>(
-            Array2D<T>,
+            pl.array2d.Array2D<T>,
             number, number,
-            Array2D<T>,
+            pl.array2d.Array2D<T>,
             number, number, number, number
         )
 
         iter: function<T>(
-            Array2D<T>, boolean,
+            pl.array2d.Array2D<T>, boolean,
             number, number, number, number
         ): (function(): (T | {number, number, T}))
 
-        columns: function<T>(Array2D<T>): (function(): List<T>)
+        columns: function<T>(pl.array2d.Array2D<T>): (function(): List<T>)
     end
 
     record class
@@ -424,7 +424,7 @@ local record pl
         add_type: function(string, (argtype | function(string): any), function(any))
         process_options_string: function(string, {string}): {string: any}
 
-        metamethod __call: function(lapp, string, {string}): {string: any}
+        metamethod __call: function(pl.lapp, string, {string}): {string: any}
     end
 
     -- TODO lexer
