@@ -348,7 +348,6 @@ local record pl
 
         -- FIXME Will these screw up the above definitions?
         bind1: function<T, U>((function(...: T): U), T): (function(...: T): U)
-        bind1: function((function(...: any): any...), any): (function(...: any): any...)
 
         compose: function<T, U, V>(
             (function(T): U),
@@ -923,7 +922,82 @@ local record pl
         unquote: function(string): string
     end
 
-    -- TODO utils
+    record utils
+        record packedarray<T>
+            {T}
+            n: number
+        end
+        pack: function<T>(...: T): pl.utils.packedarray
+        unpack: function<T>({T}, number, number)
+        printf: function(string, ...: any)
+        fprintf: function(FILE, string, ...: any)
+        import: function(string | table, table)
+        choose: function<T>(boolean, T, T): T
+
+        array_tostring: function<T>({T}, table, function(T, number): string): string
+        is_type: function(any, string | metatable): boolean
+
+        enum knownpattern
+            'FLOAT'
+            'INTEGER'
+            'IDEN'
+            'FILE'
+        end
+        patterns: {pl.utils.knownpattern: string}
+
+        enum knownmt
+            'List'
+            'Map'
+            'Set'
+            'MultiMap'
+        end
+        record stdmt_entry
+            _name: string
+        end
+
+        stdmt: {pl.utils.knownmt: pl.utils.stdmt_entry}
+
+        function_arg: function(number, function | string, string): function
+        assert_arg: function<T>(
+            number,
+            T,
+            string | metatable,
+            (function(any): boolean),
+            string,
+            number
+        ): T
+        assert_string: function<T>(number, T): T
+
+        enum errormode
+            'default'
+            'error'
+            'quit'
+        end
+        on_error: function(pl.utils.errormode)
+        raise: function(string)
+
+        readfile: function(string, boolean): string
+        writefile: function(string, string, boolean): boolean, string
+        readlines: function(string, boolean): {string}
+
+        executeex: function(string, boolean): boolean, number, string, string
+        quote_arg: function(string | {string}): string
+        quit: function(string, ...: any)
+        quit: function(number, string, ...: any)
+
+        escape: function(string): string
+        split: function(string, string, boolean, number): {string}
+        splitv: function(string, string): string...
+
+        -- T must be callable, but this should be a good enough compromise
+        -- to guarantee function signature remains intace after memoization
+        memoize: function<T>(T): T
+
+        add_function_factory: function<T>(metatable, (function(T): function))
+        string_lambda: function(string): function(...: any): any...
+        bind1: function<T, U, R>((string | function(T, U, ...: any): R), T): function(U, ...: any): R
+        bind2: function<T, U, R>((string | function(T, U, ...: any): R), U): function(T, ...: any): R
+    end
     -- TODO xml
 end
 
