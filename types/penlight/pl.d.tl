@@ -391,36 +391,36 @@ local record pl
             'no_fail'
         end
 
-        alltokens: function<T>(linegetter, string, function(string): T): (function(): T)
-        create_getter: function(source): linegetter
+        alltokens: function<T>(pl.input.linegetter, string, function(string): T): (function(): T)
+        create_getter: function(source): pl.input.linegetter
         numbers: function(source): (function(): number)
         words: function(source): (function(): string)
 
         -- {fields, nil} is a hacky substitute for a 1-tuple type
-        fields: function({number, nil}, string, source, {FieldsOpt: any}): (function(): string)
+        fields: function({number, nil}, string, source, {pl.input.FieldsOpt: any}): (function(): string)
         fields: function(
             {number, number},
             string,
             source,
-            {FieldsOpt: any}
+            {pl.input.FieldsOpt: any}
         ): (function(): string, string)
         fields: function(
             {number, number, number},
             string,
             source,
-            {FieldsOpt: any}
+            {pl.input.FieldsOpt: any}
         ): (function(): string, string, string)
         fields: function(
             {number, number, number, number},
             string,
             source,
-            {FieldsOpt: any}
+            {pl.input.FieldsOpt: any}
         ): (function(): string, string, string, string)
         fields: function(
             {number} | number,
             string,
             source,
-            {FieldsOpt: any}
+            {pl.input.FieldsOpt: any}
         ): (function(): string...)
     end
 
