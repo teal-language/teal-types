@@ -378,8 +378,32 @@ local record pl
         numbers: function(source): (function(): number)
         words: function(source): (function(): string)
 
-        -- TODO declare return type with overloads for the first parameter
-        fields: function({number} | number, string, source, {FieldsOpt: any}): (function(): string...)
+        -- {fields, nil} is a hacky substitute for a 1-tuple type
+        fields: function({number, nil}, string, source, {FieldsOpt: any}): (function(): string)
+        fields: function(
+            {number, number},
+            string,
+            source,
+            {FieldsOpt: any}
+        ): (function(): string, string)
+        fields: function(
+            {number, number, number},
+            string,
+            source,
+            {FieldsOpt: any}
+        ): (function(): string, string, string)
+        fields: function(
+            {number, number, number, number},
+            string,
+            source,
+            {FieldsOpt: any}
+        ): (function(): string, string, string, string)
+        fields: function(
+            {number} | number,
+            string,
+            source,
+            {FieldsOpt: any}
+        ): (function(): string...)
     end
 
     record lapp
