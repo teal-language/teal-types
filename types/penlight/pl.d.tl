@@ -445,7 +445,50 @@ local record pl
         metamethod __call: function(pl.lapp, string, {string}): {string: any}
     end
 
-    -- TODO lexer
+    record lexer
+        type token = {string, string}
+        type tokenaction = function(string, {string: any}): (string, string)
+        type tokendesc = {string, pl.lexer.tokenaction}
+        type tokenstream = function(any): (string, string)
+
+        scan: function(
+            string | FILE,
+            {tokendesc, tokenaction},
+            {string: boolean},
+            {string: any}
+        ): tokenstream
+        lua: function(
+            string | FILE,
+            {string: boolean},
+            {string: any}
+        )
+        cpp: function(
+            string | FILE,
+            {string: boolean},
+            {string: any}
+        )
+
+        insert: function(pl.lexer.tokenstream, string, string)
+        insert: function(pl.lexer.tokenstream, {pl.lexer.token} | pl.lexer.tokenstream)
+
+        getline: function(pl.lexer.tokenstream): string
+        getrest: function(pl.lexer.tokenstream): string
+        lineno: function(pl.lexer.tokenstream): number, number
+        get_keywords: function(): {string: boolean}
+
+        get_separated_list: function(
+            pl.lexer.tokenstream,
+            string,
+            string
+        ): {{pl.lexer.token}}, pl.lexer.token
+
+        skipws: function(pl.lexer.tokenstream): pl.lexer.token
+        expecting: function(
+            pl.lexer.tokenstream,
+            string,
+            boolean
+        ): pl.lexer.token
+    end
     -- TODO luabalanced
 
     record operator
