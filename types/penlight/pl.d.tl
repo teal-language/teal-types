@@ -83,6 +83,69 @@ local record pl
         len: function(pl.Map<K, V>): number
     end
 
+    record Date
+        metamethod __call: function(pl.Date, number, boolean): pl.Date
+        metamethod __call: function(pl.Date, {pl.Date.datefield: number}, boolean): pl.Date
+        metamethod __call: function(pl.Date, number, number, number, number, number, number)
+
+        metamethod __lt: function(pl.Date, pl.Date): boolean
+        metamethod __add: function(pl.Date, pl.Date): pl.Date
+        metamethod __add: function(pl.Date, {pl.Date.datefield: number}): pl.Date
+        metamethod __sub: function(pl.Date, pl.Date): pl.Date
+
+        enum datefield
+            'year'
+            'month'
+            'day'
+            'hour'
+            'min'
+            'sec'
+        end
+
+        set: function(pl.Date, number)
+        tzone: function(pl.Date, number): number
+        toUTC: function(pl.Date): pl.Date
+        toLocal: function(pl.Date): pl.Date
+
+        year: function(pl.Date): number
+        month: function(pl.Date): number
+        day: function(pl.Date): number
+        hour: function(pl.Date): number
+        min: function(pl.Date): number
+        sec: function(pl.Date): number
+        yday: function(pl.Date): number
+
+        year: function(pl.Date, number)
+        month: function(pl.Date, number)
+        day: function(pl.Date, number)
+        hour: function(pl.Date, number)
+        min: function(pl.Date, number)
+        sec: function(pl.Date, number)
+        yday: function(pl.Date, number)
+
+        is_weekend: function(pl.Date): boolean
+        weekday_name: function(pl.Date, boolean): string
+        month_name: function(pl.Date, boolean): string
+
+        add: function(pl.Date, {pl.Date.datefield: number})
+        diff: function(pl.Date, pl.Date): pl.Date
+
+        last_day: function(pl.Date): number
+
+        Interval: function(number): pl.Date
+
+        record Format
+            metamethod __call: function(string): pl.Date.Format
+            parse: function(string): pl.Date
+            tostring: function(pl.Date): string
+            US_order: function(boolean)
+        end
+    end
+
+    -- TODO MultiMap
+    -- TODO OrderedMap
+    -- TODO Set
+
     record app
         script_name: function(): string
         require_here: function(string): any
@@ -990,7 +1053,7 @@ local record pl
         splitv: function(string, string): string...
 
         -- T must be callable, but this should be a good enough compromise
-        -- to guarantee function signature remains intace after memoization
+        -- to guarantee function signature remains intact after memoization
         memoize: function<T>(T): T
 
         add_function_factory: function<T>(metatable, (function(T): function))
