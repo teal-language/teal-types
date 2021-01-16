@@ -1,0 +1,257 @@
+-- vim: ft=teal expandtab sw=3 ts=3
+
+global record vim
+   -- TODO: Either find a way to generate these or at least find a comprehensive list to put a bunch of 'TODO' stub definitions here
+   --    Sadly, there doesn't seem to be a nice way to serialize all of these
+   --    since they're lazily brought in as you call them
+   --    this might be the only way since user defined functions are also called here
+   --    ex vim.fn["MyPlugin#MyFunction"]() so
+   -- VIM_fn = record -- if record maps were a thing
+   --    {string:function(...: any): (any)}
+   --    mode: function(): Mode
+   --    ...
+   -- end
+   fn: {string:function(...: any): (any)}
+
+   enum Mode
+      "n" -- Normal
+      "no" -- Operator-pending
+      "nov" -- Operator-pending (forced charwise |o_v|)
+      "noV" -- Operator-pending (forced linewise |o_V|)
+      "no" -- Operator-pending (forced blockwise |o_CTRL-V|)
+      "niI" -- Normal using |i_CTRL-O| in |Insert-mode|
+      "niR" -- Normal using |i_CTRL-O| in |Replace-mode|
+      "niV" -- Normal using |i_CTRL-O| in |Virtual-Replace-mode|
+      "v" -- Visual by character
+      "V" -- Visual by line
+      "" -- Visual blockwise
+      "s" -- Select by character
+      "S" -- Select by line
+      "" -- Select blockwise
+      "i" -- Insert
+      "ic" -- Insert mode completion |compl-generic|
+      "ix" -- Insert mode |i_CTRL-X| completion
+      "R" -- Replace |R|
+      "Rc" -- Replace mode completion |compl-generic|
+      "Rv" -- Virtual Replace |gR|
+      "Rx" -- Replace mode |i_CTRL-X| completion
+      "c" -- Command-line editing
+      "cv" -- Vim Ex mode |gQ|
+      "ce" -- Normal Ex mode |Q|
+      "r" -- Hit-enter prompt
+      "rm" -- The -- more -- prompt
+      "r?" -- |:confirm| query of some sort
+      "!" -- Shell or external command is executing
+      "t" -- Terminal mode: keys go to the job
+   end
+
+   record InspectOptions
+      depth: number
+      newline: string
+      indent: string
+      process: function
+   end
+   inspect: function(any, InspectOptions): string
+   paste: function({string}, number): boolean
+   schedule_wrap: function(function): function
+   deep_equal: function(any, any): boolean
+   deepcopy: function<T>(T): T
+   defer_fn: function(function, number)
+   startswith: function(string, string): boolean
+   endswith: function(string, string): boolean
+   gsplit: function(string, string, boolean): function(): string
+   is_callable: function(any): boolean
+   list_extend: function<T, K>({T}, {K}, number, number): {T|K}
+   pesc: function(string): string
+   split: function(string, string, boolean): {string}
+
+   tbl_add_reverse_lookup: function(table)
+   tbl_contains: function<T>({T}, T): boolean
+
+   enum ExtendBehavior
+      "error"
+      "keep"
+      "force"
+   end
+   tbl_extend: function(ExtendBehavior, table, table, ...: table)
+
+   tbl_flatten: function<T>({T|{T}}): {T}
+   tbl_flatten: function({any|{any}}): {any}
+
+   tbl_isempty: function(table): boolean
+
+   tbl_islist: function(table): boolean
+
+   tbl_keys: function<T>({T:any}): {T}
+
+   tbl_values: function<T>({any:T}): {T}
+
+   tbl_map: function<A, B, C>(function(B): (C), {A:B}): {A:C}
+   tbl_map: function(function(any): (any), table): table
+
+   trim: function(string): string
+
+   enum TypeName
+      "table" "t"
+      "string" "s"
+      "number" "n"
+      "boolean" "b"
+      "function" "f"
+      "nil"
+      "thread"
+      "userdata"
+   end
+   -- Technically, this should be a union of tuples since the types are dependent and this allows for invalid combos
+   validate: function({string:{any, TypeName | function(any): (boolean, string), boolean | string}})
+   -- should be {string:{any, TypeName, boolean} | {any, function(any): (boolean, string)}, string}}
+
+   record Regex
+      match_str: function(Regex, string): number, number
+      match_line: function(Regex, number, number, number, number): number, number
+   end
+   regex: function(string): Regex
+
+   -- TODO: these are a pitiful approximation of luv's types
+   -- once Teal has some form of type inheritance/composition and luv.d.tl is written
+   -- just steal from that
+   record loop
+      sleep: function(number)
+      record Handle
+         close: function(Handle)
+         is_closing: function(Timer)
+      end
+      record Pipe
+         read_start: function(Pipe, function(string, string))
+         read_stop: function(Pipe)
+         close: function(Pipe)
+      end
+      record Process
+         close: function(Process)
+      end
+      record Timer
+         start: function(Timer, number, number, function)
+         close: function(Timer)
+         stop: function(Timer)
+         is_closing: function(Timer)
+      end
+      new_timer: function(): Timer
+
+      new_pipe: function(boolean): Pipe
+
+      -- TODO: the rest of these
+      record SpawnOptions
+         cwd: string
+         args: {string}
+         stdio: {Pipe, Pipe, Pipe}
+      end
+      spawn: function(string, SpawnOptions, function): Process
+
+      read_start: function(Pipe, function(string, string))
+   end
+
+   call: function(string, ...: any): any
+   in_fast_event: function(): boolean
+
+   type NIL = record userdata end -- special nil for filling tables
+
+   empty_dict: function(): table
+   register_keystroke_callback: function(function(string), number): number
+
+   rpcnotify: function(number, string, ...: string)
+   rpcrequest: function(number, string, ...: string)
+
+   stricmp: function(string, string): number
+   str_utfindex: function(string, number): number, number
+   str_byteindex: function(string, number, boolean): number
+
+   schedule: function(function)
+
+   schedule_wrap: function(function): function
+
+   type_idx: boolean
+
+   val_idx: boolean
+
+   types: {string|number:string|number}
+
+   record EventData --TODO: this is a vim thing, so types aren't really documented
+      abort: any
+      chan: number
+      cmdlevel: any
+      cmdtype: any
+      cwd: string
+      inclusive: boolean
+      scope: any
+      operator: any
+      regcontents: any
+      regname: any
+      regtype: any
+      visual: any
+      completed_item: any
+      height: any
+      width: any
+      row: number
+      col: number
+      size: any
+      scrollbar: any
+      changed_window: any
+   end
+
+   record highlight
+      record Opts
+         higroup: string
+         timeout: number
+         on_macro: boolean
+         on_visual: boolean
+         event: EventData
+      end
+      on_yank: function(Opts)
+      range: function(
+         bufnr: number,
+         ns: number,
+         higroup: string,
+         start: {number, number},
+         finish: {number, number},
+         rtype: any,
+         inclusive: boolean
+      )
+   end
+
+   record lsp
+      record diagnostic
+         record ShowLineOpts
+            show_header: boolean
+         end
+         show_line_diagnostics: function(ShowLineOpts, number, number, number): number, number
+      end
+      buf_attach_client: function(bufnr: number, client_id: number)
+      buf_get_clients: function(bufnr: number)
+      buf_is_attached: function(bufnr: number, client_id: number)
+      buf_notify: function(bufnr: number, method: string, params: string): boolean
+      buf_request: function(bufnr: number, method: string, params: table, handler: function): {number:number}, function
+      buf_request_sync: function(bufnr: number, method: string, params: table, timeout_ms: number): {number:number}, string
+
+      record Client
+         request: function(Client)
+      end
+      client: function(): Client
+   end
+
+   g: {string:any}
+   t: {string:any}
+   v: {string:any}
+   env: {string:any}
+
+   o: {string:any}
+
+   --[[$BUFFER_OPTS$]]
+   b: BufferOptions
+   bo: BufferOptions
+
+   --[[$WINDOW_OPTS$]]
+   w: WindowOptions
+   wo: WindowOptions
+
+   --[[$API$]]
+end
+
