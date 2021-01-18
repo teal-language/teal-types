@@ -1,6 +1,7 @@
 local record pl
-    -- TODO should this be divided into further directories mirroring the
-    -- penlight lua file structure?
+    -- This is not divided into multiple files due to circular
+    -- dependency issues. For now, everything is declared here
+    -- and just reexported in the right file
 
     record List<T>
         {T}
@@ -52,9 +53,7 @@ local record pl
         mapm: function<U>(pl.List<T>, string, ...: any): pl.List<U>
         reduce: function(pl.List<T>, (string | function(T, T): T)): T
 
-        -- TODO uncomment this after declaring MultiMap
-        -- The first type parameter is the key type, the second one is the value type
-        -- partition: function<K>(List<T>, (function(T, ...: any): K), ...: any): MultiMap<K, T>
+        partition: function<K>(List<T>, (function(T, ...: any): K), ...: any): pl.Map<K, List<T> >
 
         iter: function(pl.List<T>): (function(): T)
         iterate: function(string | table | function) -- FILE is also considered a table
@@ -141,6 +140,9 @@ local record pl
             US_order: function(boolean)
         end
     end
+
+    -- MultiMap inherits from Map, so this is just a weird case that can't
+    -- really be easily described in teal for now. Same for OrderedMap and Set.
 
     -- TODO MultiMap
     -- TODO OrderedMap
@@ -1061,7 +1063,10 @@ local record pl
         bind1: function<T, U, R>((string | function(T, U, ...: any): R), T): function(U, ...: any): R
         bind2: function<T, U, R>((string | function(T, U, ...: any): R), U): function(T, ...: any): R
     end
-    -- TODO xml
+
+    record xml
+
+    end
 end
 
 return pl
