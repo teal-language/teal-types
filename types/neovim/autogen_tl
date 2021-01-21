@@ -1,0 +1,208 @@
+
+local record Func
+	method: boolean
+	name: string
+	parameters: {{string}}
+	return_type: string
+	since: number
+	deprecated_since: number
+end
+local record Type
+	id: number
+	prefix: string
+end
+
+local record Info
+	error_types: {string:{string:number}}
+	functions: {Func}
+	types: {string:Type}
+	ui_options: {string}
+	record Version
+		api_compatible: number
+		api_level: number
+		api_prerelease: boolean
+		major: number
+		minor: number
+		patch: number
+	end
+	version: Version
+end
+
+local record VimStub
+	record fn
+		api_info: function(): Info
+	end
+	record api
+		record OptInfo
+			name: string
+			shortname: string
+			type: string
+			scope: string
+		end
+		nvim_get_all_options_info: function(): {string:OptInfo}
+	end
+end
+
+global vim <const>: VimStub
+
+local substitutions <const>: {string:string} = {}
+
+do
+	local api_info <const> = vim.fn.api_info()
+
+	local typeMap <const>: {string:string} = setmetatable({
+		["String"] = "string",
+		["Number"] = "number",
+		["Float"] = "number",
+		["Integer"] = "number",
+		["Boolean"] = "boolean",
+		["Buffer"] = "number",
+		["Window"] = "number",
+		["Tabpage"] = "number",
+		["Dictionary"] = "{string:any}",
+	}, {
+		__index = function(): string
+			return "any"
+		end
+	})
+
+	local function getTypeName(name: string): string
+		local tname: string
+		if name:match("ArrayOf") then
+			local arrayType = name:gsub("ArrayOf%((.*)%)", "%1")
+			if arrayType:find(",") then
+				local elementName, _size = arrayType:match("(%S+)%s*,%s*(%d+)")
+				local size = tonumber(_size)
+				elementName = typeMap[elementName]
+
+				local tupleStr = {}
+				for _ = 1, size do
+					table.insert(tupleStr, elementName)
+				end
+				tname = "{" .. table.concat(tupleStr, ",") .. "}"
+			else
+				tname = "{" .. typeMap[arrayType] .. "}"
+			end
+		else
+			tname = typeMap[name]
+		end
+		return tname .. "--[[" .. name .. "]]"
+	end
+
+	local ins = table.insert
+	local buf: {string} = {}
+	local list: {string} = {}
+
+	ins(buf, ([===[
+record api
+      --[[
+         API version Information
+            neovim version: %s.%s.%s
+
+            compatible: %s
+            level: %s
+            prerelease: %s
+      --]]
+]===]):format(
+	api_info.version.major,
+	api_info.version.minor,
+	api_info.version.patch,
+
+	api_info.version.api_compatible,
+	api_info.version.api_level,
+	api_info.version.api_prerelease
+))
+
+	local typeArray: {{string}} = {}
+	for k, v in pairs(typeMap) do
+		table.insert(typeArray, {k, v})
+	end
+	table.sort(typeArray, function(a: {string}, b: {string}): boolean
+		return a[1] < b[1]
+	end)
+	ins(buf, [===[
+      --[[
+         Vim Type -> Teal Type]===])
+
+	for _, v in ipairs(typeArray) do
+		ins(buf, "         " .. v[1] .. " -> " .. v[2])
+	end
+	ins(buf, "         none of the above -> any")
+
+	ins(buf, "      --]]\n")
+
+	for _, f in ipairs(api_info.functions) do
+		if not f.deprecated_since then
+			local line: {string} = {}
+			ins(line, "      ")
+			ins(line, f.name)
+			ins(line, ": function(")
+			for idx, param in ipairs(f.parameters) do
+				ins(line, getTypeName(param[1]))
+				if idx < #f.parameters then
+					ins(line, ", ")
+				end
+			end
+			ins(line, ")")
+			if f.return_type and f.return_type ~= "void" then
+				ins(line, ": ")
+				ins(line , getTypeName(f.return_type))
+			elseif f.return_type == "void" then
+				ins(line, "--[[void]]")
+			end
+			ins(list, table.concat(line))
+		end
+	end
+	table.sort(list)
+	ins(buf, table.concat(list, "\n"))
+	ins(buf, "   end\n")
+
+	substitutions.API = table.concat(buf, "\n")
+end
+
+do
+	local opts <const> = vim.api.nvim_get_all_options_info()
+	opts[""] = nil
+
+	local wo <const>: {string} = {}
+	local bo <const>: {string} = {}
+
+	for _, opt in pairs(opts) do
+		local tab: {string}
+		if opt.scope == "win" then
+			tab = wo
+		elseif opt.scope == "buf" then
+			tab = bo
+		end
+		if tab then
+			if opt.shortname ~= "" then
+				table.insert(tab, string.format("      %s: %s", opt.shortname, opt.type))
+			end
+			table.insert(tab, string.format("      %s: %s", opt.name, opt.type))
+		end
+	end
+
+	table.sort(wo)
+	table.insert(wo, 1, "record WindowOptions")
+	table.insert(wo, "   end")
+	substitutions.WINDOW_OPTS = table.concat(wo, "\n")
+
+	table.sort(bo)
+	table.insert(bo, 1, "record BufferOptions")
+	table.insert(bo, "   end")
+	substitutions.BUFFER_OPTS = table.concat(bo, "\n")
+end
+
+local text: string
+do
+	local fh <const> = assert(io.open("template", "r"))
+	text = fh:read("*a"):gsub("%-%-%[%[%$(.-)%$%]%]", substitutions)
+	fh:close()
+end
+do
+	local fh <const> = assert(io.open("vim.d.tl", "w"))
+	fh:write(text)
+	fh:close()
+end
+
+-- vim: ft=teal sw=3 ts=3
