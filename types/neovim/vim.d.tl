@@ -147,6 +147,37 @@ global record vim
       spawn: function(string, SpawnOptions, function): Process
 
       read_start: function(Pipe, function(string, string))
+
+      record FsStat
+         record Time
+            sec: number
+            nsec: number
+         end
+         dev: number
+         mode: number
+         nlink: number
+         uid: number
+         gid: number
+         rdev: number
+         ino: number
+         size: number
+         blksize: number
+         blocks: number
+         flags: number
+         gen: number
+         atime: Time
+         mtime: Time
+         ctime: Time
+         birthtime: Time
+         type: string
+      end
+      fs_stat: function(string): FsStat
+
+      record Dir userdata end
+      fs_scandir: function(string, function(string, Dir)): Dir
+      fs_scandir_next: function(Dir): string, string, string
+
+      fs_mkdir: function(string, number, function(string, boolean)): boolean | Dir, string, string
    end
 
    call: function(string, ...: any): any
