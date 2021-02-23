@@ -1,5 +1,7 @@
 
 local record argparse
+	type Args = {string : {string} | string | boolean}
+
 	record Parser
 		name: function(self: Parser, name: string): Parser
 		description: function(self: Parser, description: string): Parser
@@ -8,14 +10,15 @@ local record argparse
 		flag: function(self: Parser, flag: string): Option
 		flag: function(self: Parser, shortalias: string, longalias: string): Option
 
-		parse: function(self: Parser, argv: {string}): {string:{string}|string|boolean}
-		pparse: function(self: Parser, argv: {string}): boolean, {string:{string}|string|boolean} | string
+		parse: function(self: Parser, argv: {string}): Args
+		pparse: function(self: Parser, argv: {string}): boolean, Args | string
 
 		error: function(self: Parser, error: string)
 
 		argument: function(self: Parser, name: string, description: string)
 
 		get_usage: function(self: Parser): string
+		get_help: function(self: Parser): string
 
 		option: function(self: Parser, name: string, description: string, default: string, convert: function | {function}, args: {string}, count: number | string): Option
 		option: function(self: Parser, name: string, description: string, default: string, convert: {string:string}, args: {string}, count: number | string): Option
@@ -34,6 +37,8 @@ local record argparse
 		metamethod __call: function(Parser, string, string, string): Parser
 	end
 
+	type ActionCallback = function(args: Args, index: string, val: string | boolean | {string}, overwrite: boolean)
+
 	record Argument
 		choices: function(self: Argument, choices: {string}): Argument
 
@@ -41,6 +46,8 @@ local record argparse
 		convert: function(self: Argument, convert: {string:string}): Argument
 
 		args: function(self: Argument, args: string | number): Argument
+
+		action: function(self: Argument, cb: ActionCallback)
 	end
 
 	record Option
@@ -51,9 +58,17 @@ local record argparse
 
 		count: function(self: Option, count: number | string): Option
 
+		choices: function(self: Option, {string}): Option
+
+		default: function(self: Option, string): Option
+
+		defmode: function(self: Option, string): Option
+
 		target: function(self: Option, target: string): Option
 
 		args: function(self: Option, args: string|number): Option
+
+		action: function(self: Option, cb: ActionCallback)
 	end
 
 	record Command
@@ -63,6 +78,8 @@ local record argparse
 		argument: function(self: Command, name: string, description: string): Argument
 
 		option: function(self: Command, name: string, description: string): Option
+
+		flag: function(self: Command, string, string): Option
 	end
 
 	metamethod __call: function(self: argparse, name: string, description: string, epilog: string): Parser
