@@ -1,39 +1,39 @@
 local ltn12 = require("ltn12")
-local Pump = ltn12.Pump
-local Sink = ltn12.Sink
+local type Pump = ltn12.Pump
+local type Sink = ltn12.Sink
 
 local record ftp
    get: function(string): string, string
    record FTPGetInfo
       host: string
-      sink: Sink<string>
+      sink: Sink
       argument: string
       path: string
       user: string
       password: string
       command: string
-      port: number
+      port: integer
       type: string
-      step: Pump<string>
+      step: Pump
       create: function()
    end
-   get: function(FTPGetInfo): number, string
+   get: function(FTPGetInfo): integer, string
 
    record FTPPutInfo
       host: string
-      source: Sink<string> -- yes, this is a sink
+      source: Sink -- yes, this is a sink
       argument: string
       path: string
       user: string
       password: string
       command: string
-      port: number
+      port: integer
       type: string
-      step: Pump<string>
+      step: Pump
       create: function()
    end
-   put: function(string, string): number, string
-   put: function(FTPPutInfo): number, string
+   put: function(string, string): integer, string
+   put: function(FTPPutInfo): integer, string
 end
 
 return ftp

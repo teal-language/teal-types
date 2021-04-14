@@ -1,9 +1,9 @@
 local ltn12 = require("ltn12")
-local Filter = ltn12.Filter
+local type Filter = ltn12.Filter
 
 local record mime
-   normalize: function(): Filter<string>
-   normalize: function(string): Filter<string>
+   normalize: function(): Filter
+   normalize: function(string): Filter
 
    enum Encoding
       "base64"
@@ -14,42 +14,29 @@ local record mime
       "binary"
    end
 
-   decode: function(Encoding): Filter<string>
-   encode: function(Encoding): Filter<string>
-   encode: function(Encoding, Mode): Filter<string>
+   decode: function(Encoding): Filter
+   encode: function(Encoding, Mode): Filter
 
-   stuff: function(): Filter<string>
+   stuff: function(): Filter
 
-   wrap: function(string, number): Filter<string>
-   wrap: function(Encoding): Filter<string>
+   wrap: function(string, integer): Filter
+   wrap: function(Encoding): Filter
 
-   b64: function(string): string, nil
    b64: function(string, string): string, string
 
-   dot: function(number): string, number
-   dot: function(number, string): string, number
+   dot: function(integer, string): string, integer
 
-   eol: function(number): string, number
-   eol: function(number, string): string, number
-   eol: function(number, string, string): string, number
+   eol: function(integer, string, string): string, integer
 
-   qp: function(string): string, string
-   qp: function(string, string): string, string
    qp: function(string, string, string): string, string
 
-   qpwrp: function(number): string, number
-   qpwrp: function(number, string): string, number
-   qpwrp: function(number, string, number): string, number
+   qpwrp: function(integer, string, integer): string, integer
 
-   unb64: function(string): string, string
    unb64: function(string, string): string, string
 
-   unqp: function(string): string, string
    unqp: function(string, string): string, string
 
-   wrp: function(number): string, number
-   wrp: function(number, string): string, number
-   wrp: function(number, string, number): string, number
+   wrp: function(integer, string, integer): string, integer
 end
 
 return mime

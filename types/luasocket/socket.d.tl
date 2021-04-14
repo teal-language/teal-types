@@ -5,12 +5,12 @@ local Source = ltn12.Source
 local record socket
    record TCP
       -- master methods
-      bind: function(TCP, string, number)
-      connect: function(TCP, string, number): number, string
-      listen: function(TCP, number): number, string
+      bind: function(TCP, string, integer)
+      connect: function(TCP, string, integer): integer, string
+      listen: function(TCP, integer): integer, string
 
       -- client methods
-      getpeername: function(TCP): string, number
+      getpeername: function(TCP): string, integer
 
       enum TCPReceivePattern
          "*l"
@@ -20,20 +20,16 @@ local record socket
          "closed"
          "timeout"
       end
-      receive: function(TCP): string, TCPReceiveError
-      receive: function(TCP, TCPReceivePattern|number): string, TCPReceiveError
-      receive: function(TCP, TCPReceivePattern|number, string): string, TCPReceiveError
+      receive: function(TCP, TCPReceivePattern|integer, string): string, TCPReceiveError
 
-      send: function(TCP, string): number, string, number
-      send: function(TCP, string, number): number, string, number
-      send: function(TCP, string, number, number): number, string, number
+      send: function(TCP, string, integer, integer): integer, string, integer
 
       enum TCPShutdownMode
          "both"
          "send"
          "receive"
       end
-      shutdown: function(TCP, TCPShutdownMode): number
+      shutdown: function(TCP, TCPShutdownMode): integer
 
       -- server methods
       accept: function(TCP): TCP, string
@@ -49,59 +45,55 @@ local record socket
       end
       record TCPLingerOption
          on: boolean
-         timeout: number
+         timeout: integer
       end
-      setoption: function(TCP, TCPOption): number
-      setoption: function(TCP, TCPLinger, TCPLingerOption): number
+      setoption: function(TCP, TCPOption): integer
+      setoption: function(TCP, TCPLinger, TCPLingerOption): integer
 
       -- master, client, and server methods
       close: function(TCP)
 
-      getsockname: function(TCP): string, number
+      getsockname: function(TCP): string, integer
 
-      getstats: function(TCP): number, number, number
+      getstats: function(TCP): integer, integer, integer
 
-      setstats: function(TCP, number, number, number): number
+      setstats: function(TCP, integer, integer, integer): integer
 
       enum TCPTimeoutMode
          "b"
          "t"
       end
-      settimeout: function(TCP, number, TCPTimeoutMode)
+      settimeout: function(TCP, integer, TCPTimeoutMode)
    end
    record UDP
       close: function(UDP)
 
-      getpeername: function(UDP): string, number
+      getpeername: function(UDP): string, integer
 
-      getsockname: function(UDP): string, number
+      getsockname: function(UDP): string, integer
 
       enum UDPTimeout
          "timeout"
       end
-      receive: function(UDP): string, UDPTimeout
-      receive: function(UDP, number): string, UDPTimeout
+      receive: function(UDP, integer): string, UDPTimeout
 
-      receivefrom: function(UDP): string, string, number, UDPTimeout
-      receivefrom: function(UDP, number): string, string, number, UDPTimeout
+      receivefrom: function(UDP, integer): string, string, integer, UDPTimeout
 
-      send: function(UDP, string): number, string
+      send: function(UDP, string): integer, string
 
-      sendto: function(UDP, string, string, number): number, string
+      sendto: function(UDP, string, string, integer): integer, string
 
-      setpeername: function(UDP, string): number, string
-      setpeername: function(UDP, string, number): number, string
+      setpeername: function(UDP, string, integer): integer, string
 
-      setsockname: function(UDP, string, number): number, string
+      setsockname: function(UDP, string, integer): integer, string
 
       enum UDPOptions
          "dontroute"
          "broadcast"
       end
-      setoption: function(UDP, UDPOptions): number, string
-      setoption: function(UDP, UDPOptions, boolean): number, string
+      setoption: function(UDP, UDPOptions, boolean): integer, string
 
-      settimeout: function(UDP, number)
+      settimeout: function(UDP, integer)
    end
    tcp: function(): TCP, string
 
@@ -118,12 +110,9 @@ local record socket
       gethostname: function(string): string, DNSResolved|string
    end
 
-   bind: function(string, number): TCP
-   bind: function(string, number, number): TCP
+   bind: function(string, integer, integer): TCP
 
-   connect: function(string, number): TCP
-   connect: function(string, number, string): TCP
-   connect: function(string, number, string, number): TCP
+   connect: function(string, integer, string, integer): TCP
 
    _DEBUG: boolean
 
@@ -134,10 +123,8 @@ local record socket
    -- tagged records/Table Union types would be nice here,
    -- as this should be {TCP|UDP}
    -- but I imagine this should be fine for most uses
-   select: function({UDP}, {UDP}): {UDP}, {UDP}, string
-   select: function({TCP}, {TCP}): {TCP}, {TCP}, string
-   select: function({UDP}, {UDP}, number): {UDP}, {UDP}, string
-   select: function({TCP}, {TCP}, number): {TCP}, {TCP}, string
+   select: function({UDP}, {UDP}, integer): {UDP}, {UDP}, string
+   select: function({TCP}, {TCP}, integer): {TCP}, {TCP}, string
 
    enum SinkMode
       "http-chunked"
@@ -145,12 +132,12 @@ local record socket
       "keep-open"
    end
 
-   sink: function(SinkMode, UDP): Sink<string>
-   sink: function(SinkMode, TCP): Sink<string>
+   sink: function(SinkMode, UDP): Sink
+   sink: function(SinkMode, TCP): Sink
 
-   skip: function(number, ...: any): any...
+   skip: function(integer, ...: any): any...
 
-   sleep: function(number)
+   sleep: function(integer)
 
    enum SourceMode
       "http-chunked"
@@ -158,12 +145,10 @@ local record socket
       "until-closed"
    end
 
-   source: function(SourceMode, TCP): Source<string>
-   source: function(SourceMode, UDP): Source<string>
-   source: function(SourceMode, TCP, number): Source<string>
-   source: function(SourceMode, UDP, number): Source<string>
+   source: function(SourceMode, TCP, integer): Source
+   source: function(SourceMode, UDP, integer): Source
 
-   gettime: function(): number
+   gettime: function(): integer
 
    try: function(...: any): any...
 
