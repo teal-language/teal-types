@@ -15,7 +15,7 @@ local record argparse
 
 		error: function(self: Parser, error: string)
 
-		argument: function(self: Parser, name: string, description: string)
+		argument: function(self: Parser, name: string, description: string): Argument
 
 		get_usage: function(self: Parser): string
 		get_help: function(self: Parser): string
@@ -27,6 +27,8 @@ local record argparse
 		command_target: function(self: Parser, command_target: string): Parser
 
 		command: function(self: Parser, name: string, description: string, epilog: string): Command
+
+		add_help: function(self: Parser, boolean)
 
 		record Opts
 			name: string
@@ -54,7 +56,7 @@ local record argparse
 		name: function(self: Option, name: string): Option
 		description: function(self: Option, description: string): Option
 
-		argname: function(self: Option, argname: string): Option
+		argname: function(self: Option, argname: string | {string}): Option
 
 		count: function(self: Option, count: number | string): Option
 
