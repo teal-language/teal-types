@@ -6,6 +6,12 @@ Teal Types
 A collaborative repository containing Teal type definitions for Lua
 libraries!
 
+## How to use
+
+To learn more about declaration files in Teal, see the [declaration files](https://github.com/teal-language/tl/blob/master/docs/declaration_files.md) page.
+
+For the time being, the best way to install the declaration files on your machine is to copy them into your project. In the future, this step may be automated (see [issue #21](https://github.com/teal-language/teal-types/issues/21))
+
 ## Contribution guidelines
 
 * For each Lua or C module, add one corresponding .d.tl file with the same name: e.g. for `lfs.so`, `lfs.d.tl`
