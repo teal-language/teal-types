@@ -73,7 +73,7 @@ global record vim
       "keep"
       "force"
    end
-   tbl_extend: function(ExtendBehavior, table, table, ...: table)
+   tbl_extend: function(ExtendBehavior, table, table, ...: table): table
 
    tbl_flatten: function<T>({T|{T}}): {T}
    tbl_flatten: function({any|{any}}): {any}
@@ -427,6 +427,10 @@ global record vim
       ul: number
       undofile: boolean
       undolevels: number
+      varsofttabstop: string
+      vartabstop: string
+      vsts: string
+      vts: string
       wm: number
       wrapmargin: number
    end
@@ -521,11 +525,11 @@ global record vim
    record api
       --[[
          API version Information
-            neovim version: 0.5.0
+            neovim version: 0.5.1
 
             compatible: 0
             level: 7
-            prerelease: true
+            prerelease: false
       --]]
 
       --[[
@@ -576,12 +580,14 @@ global record vim
       nvim_call_atomic: function(any--[[Array]]): any--[[Array]]
       nvim_call_dict_function: function(any--[[Object]], string--[[String]], any--[[Array]]): any--[[Object]]
       nvim_call_function: function(string--[[String]], any--[[Array]]): any--[[Object]]
+      nvim_chan_send: function(number--[[Integer]], string--[[String]])--[[void]]
       nvim_command: function(string--[[String]])--[[void]]
       nvim_create_buf: function(boolean--[[Boolean]], boolean--[[Boolean]]): number--[[Buffer]]
       nvim_create_namespace: function(string--[[String]]): number--[[Integer]]
       nvim_del_current_line: function()--[[void]]
       nvim_del_keymap: function(string--[[String]], string--[[String]])--[[void]]
       nvim_del_var: function(string--[[String]])--[[void]]
+      nvim_echo: function(any--[[Array]], boolean--[[Boolean]], {string:any}--[[Dictionary]])--[[void]]
       nvim_err_write: function(string--[[String]])--[[void]]
       nvim_err_writeln: function(string--[[String]])--[[void]]
       nvim_eval: function(string--[[String]]): any--[[Object]]
@@ -621,6 +627,8 @@ global record vim
       nvim_list_uis: function(): any--[[Array]]
       nvim_list_wins: function(): {number}--[[ArrayOf(Window)]]
       nvim_load_context: function({string:any}--[[Dictionary]]): any--[[Object]]
+      nvim_notify: function(string--[[String]], number--[[Integer]], {string:any}--[[Dictionary]]): any--[[Object]]
+      nvim_open_term: function(number--[[Buffer]], {string:any}--[[Dictionary]]): number--[[Integer]]
       nvim_open_win: function(number--[[Buffer]], boolean--[[Boolean]], {string:any}--[[Dictionary]]): number--[[Window]]
       nvim_out_write: function(string--[[String]])--[[void]]
       nvim_parse_expression: function(string--[[String]], string--[[String]], boolean--[[Boolean]]): {string:any}--[[Dictionary]]
@@ -636,7 +644,6 @@ global record vim
       nvim_set_current_win: function(number--[[Window]])--[[void]]
       nvim_set_decoration_provider: function(number--[[Integer]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_hl: function(number--[[Integer]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_set_hl_ns: function(number--[[Integer]])--[[void]]
       nvim_set_keymap: function(string--[[String]], string--[[String]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_option: function(string--[[String]], any--[[Object]])--[[void]]
       nvim_set_var: function(string--[[String]], any--[[Object]])--[[void]]
@@ -658,6 +665,7 @@ global record vim
       nvim_ui_try_resize: function(number--[[Integer]], number--[[Integer]])--[[void]]
       nvim_ui_try_resize_grid: function(number--[[Integer]], number--[[Integer]], number--[[Integer]])--[[void]]
       nvim_unsubscribe: function(string--[[String]])--[[void]]
+      nvim_win_call: function(number--[[Window]], any--[[LuaRef]]): any--[[Object]]
       nvim_win_close: function(number--[[Window]], boolean--[[Boolean]])--[[void]]
       nvim_win_del_var: function(number--[[Window]], string--[[String]])--[[void]]
       nvim_win_get_buf: function(number--[[Window]]): number--[[Buffer]]
@@ -670,6 +678,7 @@ global record vim
       nvim_win_get_tabpage: function(number--[[Window]]): number--[[Tabpage]]
       nvim_win_get_var: function(number--[[Window]], string--[[String]]): any--[[Object]]
       nvim_win_get_width: function(number--[[Window]]): number--[[Integer]]
+      nvim_win_hide: function(number--[[Window]])--[[void]]
       nvim_win_is_valid: function(number--[[Window]]): boolean--[[Boolean]]
       nvim_win_set_buf: function(number--[[Window]], number--[[Buffer]])--[[void]]
       nvim_win_set_config: function(number--[[Window]], {string:any}--[[Dictionary]])--[[void]]
