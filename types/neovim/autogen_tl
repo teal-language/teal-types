@@ -4,26 +4,26 @@ local record Func
 	name: string
 	parameters: {{string}}
 	return_type: string
-	since: number
-	deprecated_since: number
+	since: integer
+	deprecated_since: integer
 end
 local record Type
-	id: number
+	id: integer
 	prefix: string
 end
 
 local record Info
-	error_types: {string:{string:number}}
+	error_types: {string:{string:integer}}
 	functions: {Func}
 	types: {string:Type}
 	ui_options: {string}
 	record Version
-		api_compatible: number
-		api_level: number
+		api_compatible: integer
+		api_level: integer
 		api_prerelease: boolean
-		major: number
-		minor: number
-		patch: number
+		major: integer
+		minor: integer
+		patch: integer
 	end
 	version: Version
 end
@@ -54,11 +54,11 @@ do
 		["String"] = "string",
 		["Number"] = "number",
 		["Float"] = "number",
-		["Integer"] = "number",
+		["Integer"] = "integer",
 		["Boolean"] = "boolean",
-		["Buffer"] = "number",
-		["Window"] = "number",
-		["Tabpage"] = "number",
+		["Buffer"] = "integer",
+		["Window"] = "integer",
+		["Tabpage"] = "integer",
 		["Dictionary"] = "{string:any}",
 	}, {
 		__index = function(): string
