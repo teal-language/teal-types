@@ -74,6 +74,7 @@ global record vim
       "force"
    end
    tbl_extend: function(ExtendBehavior, table, table, ...: table): table
+   tbl_deep_extend: function(ExtendBehavior, table, table, ...: table): table
 
    tbl_flatten: function<T>({T|{T}}): {T}
    tbl_flatten: function({any|{any}}): {any}
