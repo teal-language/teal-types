@@ -64,6 +64,7 @@ global record vim
    list_extend: function<T, K>({T}, {K}, number, number): {T|K}
    pesc: function(string): string
    split: function(string, string, boolean): {string}
+   wait: function(integer)
 
    tbl_add_reverse_lookup: function(table)
    tbl_contains: function<T>({T}, T): boolean
@@ -115,6 +116,7 @@ global record vim
    -- once Teal has some form of type inheritance/composition and luv.d.tl is written
    -- just steal from that
    record loop
+      cwd: function(): string
       sleep: function(number)
       record Handle
          close: function(Handle)
@@ -251,9 +253,15 @@ global record vim
    record lsp
       record diagnostic
          record ShowLineOpts
+            focusable: boolean
             show_header: boolean
          end
+         goto_prev: function
+         goto_next: function
          show_line_diagnostics: function(ShowLineOpts, number, number, number): number, number
+      end
+      record buf
+         hover: function
       end
       buf_attach_client: function(bufnr: number, client_id: number)
       buf_get_clients: function(bufnr: number)
