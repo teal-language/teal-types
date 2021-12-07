@@ -30,6 +30,9 @@ local record argparse
 
 		add_help: function(self: Parser, boolean)
 
+		-- TODO: should be Argument | Option
+		mutex: function(self: Parser, ...: any)
+
 		record Opts
 			name: string
 			description: string
