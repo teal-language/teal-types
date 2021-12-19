@@ -12,6 +12,8 @@ global record vim
    --    ...
    -- end
    fn: {string:function(...: any): (any)}
+   cmd: function(cmd: string)
+   call: function(func: string, ...: any)
 
    enum Mode
       "n" -- Normal
@@ -52,6 +54,17 @@ global record vim
       process: function
    end
    inspect: function(any, InspectOptions): string
+
+   record log
+      record levels
+         DEBUG: integer
+         INFO: integer
+         HINT: integer
+         WARN: integer
+         ERROR: integer
+      end
+   end
+   notify: function(msg: string, log_level: integer, opts: table|nil)
    paste: function({string}, number): boolean
    schedule_wrap: function(function): function
    deep_equal: function(any, any): boolean
@@ -62,6 +75,7 @@ global record vim
    gsplit: function(string, string, boolean): function(): string
    is_callable: function(any): boolean
    list_extend: function<T, K>({T}, {K}, number, number): {T|K}
+   list_slice: function<T>({T}, number, number): {T}
    pesc: function(string): string
    split: function(string, string, boolean): {string}
    wait: function(integer)
@@ -69,12 +83,24 @@ global record vim
    tbl_add_reverse_lookup: function(table)
    tbl_contains: function<T>({T}, T): boolean
 
+   tbl_count: function(table): integer
+
    enum ExtendBehavior
       "error"
       "keep"
       "force"
    end
    tbl_extend: function(ExtendBehavior, table, table, ...: table): table
+   tbl_extend: function<T>(ExtendBehavior, {T:any}, {T:any}, ...: {T:any}): {T:any}
+   tbl_extend: function<T>(ExtendBehavior, {any:T}, {any:T}, ...: {any:T}): {any:T}
+   tbl_extend: function<T,V>(ExtendBehavior, {T:V}, {T:V}, ...: {T:V}): {T:V}
+   tbl_deep_extend: function(ExtendBehavior, table, table, ...: table): table
+   tbl_deep_extend: function<T>(ExtendBehavior, {T:any}, {T:any}, ...: {T:any}): {T:any}
+   tbl_deep_extend: function<T>(ExtendBehavior, {any:T}, {any:T}, ...: {any:T}): {any:T}
+   tbl_deep_extend: function<T,V>(ExtendBehavior, {T:V}, {T:V}, ...: {T:V}): {T:V}
+
+   tbl_filter: function<T>(function(T): (boolean), {T})
+   tbl_filter: function(function(any): (boolean), {any})
 
    tbl_flatten: function<T>({T|{T}}): {T}
    tbl_flatten: function({any|{any}}): {any}
@@ -240,7 +266,7 @@ global record vim
       end
       on_yank: function(Opts)
       range: function(
-         bufnr: number,
+         bufnr: integer,
          ns: number,
          higroup: string,
          start: {number, number},
@@ -250,25 +276,121 @@ global record vim
       )
    end
 
-   record lsp
-      record diagnostic
-         record ShowLineOpts
-            focusable: boolean
-            show_header: boolean
-         end
-         goto_prev: function
-         goto_next: function
-         show_line_diagnostics: function(ShowLineOpts, number, number, number): number, number
+   record diagnostic
+      record Severity -- would be great if this could be a tuplerecord
+         {string}
+         ERROR: integer
+         WARN: integer
+         INFO: integer
+         HINT: integer
+         E: integer
+         W: integer
+         I: integer
+         H: integer
       end
+      severity: Severity
+
+      record Diagnostic
+         lnum: integer -- The starting line of the diagnostic
+         end_lnum: integer -- The final line of the diagnostic
+         col: integer -- The starting column of the diagnostic
+         end_col: integer -- The final column of the diagnostic
+         severity: integer -- The severity of the diagnostic |vim.diagnostic.severity|
+         message: string -- The diagnostic text
+         source: string -- The source of the diagnostic
+      end
+      record ConfigOpts
+         record UnderlineOpts
+            severity: integer -- vim.diagnostic.severity
+         end
+         record VirtualTextOpts
+            severity: integer -- vim.diagnostic.severity
+            source: string
+            format: function(diagnostic: Diagnostic): string
+         end
+         record SignsOpts
+            severity: integer
+            priority: integer
+         end
+
+         underline: boolean|UnderlineOpts
+         virtual_text: boolean|VirtualTextOpts
+         signs: boolean|SignsOpts
+         float: OpenFloatOpts
+         update_in_insert: boolean
+         severity_sort: boolean
+      end
+      record GetOpts
+         namespace: integer
+         lnum: integer
+         severity: integer -- vim.diagnostic.severity
+      end
+      record GotoOpts
+         namespace: integer
+         cursor_position: {integer, integer}
+         wrap: boolean
+         severity: integer -- vim.diagnostic.severity
+         float: boolean|OpenFloatOpts
+         win_id: integer
+      end
+      record OpenFloatOpts
+         namespace: integer
+         scope: string -- "buffer", "line" or "cursor"
+         pos: integer|{integer, integer}
+         severity_sort: boolean
+         severity: integer -- vim.diagnostic.severity
+         header: string|{string, string}
+         source: string
+         format: function(diagnostic: Diagnostic): string
+         prefix: string|{string, string}|function(diagnostic: Diagnostic, i: integer, total: integer): string, string|nil
+      end
+      record SetLocListOpts
+         namespace: integer
+         winnr: integer
+         open: boolean
+         title: string
+         severity: integer -- vim.diagnostic.severity
+      end
+      record SetQfListOpts
+         namespace: integer
+         open: boolean
+         title: string
+         severity: integer -- vim.diagnostic.severity
+      end
+      config: function(opts: ConfigOpts, namespace: integer|nil)
+      disable: function(bufnr: integer|nil, namespace: integer|nil)
+      disable: function(bufnr: integer|nil, namespace: integer|nil)
+      fromqflist: function(list: {any}): {Diagnostic}
+      get: function(bufnr: integer|nil, opts: GetOpts)
+      get_namespace: function(namespace: integer): {string:integer}
+      get_namespace: function(namespace: integer): {{string:integer}}
+      get_next: function(opts: GotoOpts): Diagnostic
+      get_next_pos: function(opts: GotoOpts): {integer, integer}
+      get_prev: function(opts: GotoOpts): Diagnostic
+      get_prev_pos: function(opts: GotoOpts): {integer, integer}
+      goto_next: function(opts: GotoOpts)
+      goto_prev: function(opts: GotoOpts)
+      hide: function(namespace: integer|nil, bufnr: integer|nil)
+      match: function(str: string, pat: string, groups: {string}, severity_map: {string:string}, defaults: {string:any}): Diagnostic|nil
+      open_float: function(bufnr: integer|nil, opts: OpenFloatOpts): {integer, integer}
+      reset: function(namespace: integer|nil, bufnr: integer|nil)
+      set: function(namespace: integer, bufnr: integer, diagnostics: {Diagnostic}, opts: ConfigOpts|nil)
+      setloclist: function(opts: SetLocListOpts)
+      setqflist: function(opts: SetQfListOpts)
+      show: function(namespace: integer|nil, bufnr: integer|nil, diagnostics: {Diagnostic}|nil, opts: ConfigOpts|nil)
+      toqflist: function({Diagnostic}): {string:any}
+   end
+
+   record lsp
       record buf
          hover: function
       end
-      buf_attach_client: function(bufnr: number, client_id: number)
-      buf_get_clients: function(bufnr: number)
-      buf_is_attached: function(bufnr: number, client_id: number)
-      buf_notify: function(bufnr: number, method: string, params: string): boolean
-      buf_request: function(bufnr: number, method: string, params: table, handler: function): {number:number}, function
-      buf_request_sync: function(bufnr: number, method: string, params: table, timeout_ms: number): {number:number}, string
+      buf_attach_client: function(bufnr: integer, client_id: integer)
+      buf_get_clients: function(bufnr: integer)
+      buf_is_attached: function(bufnr: integer, client_id: integer)
+      buf_notify: function(bufnr: integer, method: string, params: string): boolean
+      buf_request: function(bufnr: integer, method: string, params: table, handler: function): {number:number}, function
+      buf_request_sync: function(bufnr: integer, method: string, params: table, timeout_ms: number): {number:number}, string
 
       record Client
          request: function(Client)
