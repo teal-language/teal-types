@@ -335,8 +335,14 @@ global record vim
          win_id: integer
       end
       record OpenFloatOpts
+         enum Scope
+            "buffer"
+            "line"
+            "cursor"
+         end
+
          namespace: integer
-         scope: string -- "buffer", "line" or "cursor"
+         scope: Scope
          pos: integer|{integer, integer}
          severity_sort: boolean
          severity: integer -- vim.diagnostic.severity
@@ -360,7 +366,7 @@ global record vim
       end
       config: function(opts: ConfigOpts, namespace: integer|nil)
       disable: function(bufnr: integer|nil, namespace: integer|nil)
-      disable: function(bufnr: integer|nil, namespace: integer|nil)
+      enable: function(bufnr: integer|nil, namespace: integer|nil)
       fromqflist: function(list: {any}): {Diagnostic}
       get: function(bufnr: integer|nil, opts: GetOpts)
       get_namespace: function(namespace: integer): {string:integer}
