@@ -64,7 +64,7 @@ global record vim
          ERROR: integer
       end
    end
-   notify: function(msg: string, log_level: integer, opts: table|nil)
+   notify: function(msg: string, log_level: integer, opts: table)
    paste: function({string}, number): boolean
    schedule_wrap: function(function): function
    deep_equal: function(any, any): boolean
@@ -349,7 +349,7 @@ global record vim
          header: string|{string, string}
          source: string
          format: function(diagnostic: Diagnostic): string
-         prefix: string|{string, string}|function(diagnostic: Diagnostic, i: integer, total: integer): string, string|nil
+         prefix: string|{string, string}|function(diagnostic: Diagnostic, i: integer, total: integer): string, string
       end
       record SetLocListOpts
          namespace: integer
@@ -364,11 +364,11 @@ global record vim
          title: string
          severity: integer -- vim.diagnostic.severity
       end
-      config: function(opts: ConfigOpts, namespace: integer|nil)
-      disable: function(bufnr: integer|nil, namespace: integer|nil)
-      enable: function(bufnr: integer|nil, namespace: integer|nil)
+      config: function(opts: ConfigOpts, namespace: integer)
+      disable: function(bufnr: integer, namespace: integer)
+      enable: function(bufnr: integer, namespace: integer)
       fromqflist: function(list: {any}): {Diagnostic}
-      get: function(bufnr: integer|nil, opts: GetOpts)
+      get: function(bufnr: integer, opts: GetOpts)
       get_namespace: function(namespace: integer): {string:integer}
       get_namespace: function(namespace: integer): {{string:integer}}
       get_next: function(opts: GotoOpts): Diagnostic
@@ -377,14 +377,14 @@ global record vim
       get_prev_pos: function(opts: GotoOpts): {integer, integer}
       goto_next: function(opts: GotoOpts)
       goto_prev: function(opts: GotoOpts)
-      hide: function(namespace: integer|nil, bufnr: integer|nil)
-      match: function(str: string, pat: string, groups: {string}, severity_map: {string:string}, defaults: {string:any}): Diagnostic|nil
-      open_float: function(bufnr: integer|nil, opts: OpenFloatOpts): {integer, integer}
-      reset: function(namespace: integer|nil, bufnr: integer|nil)
-      set: function(namespace: integer, bufnr: integer, diagnostics: {Diagnostic}, opts: ConfigOpts|nil)
+      hide: function(namespace: integer, bufnr: integer)
+      match: function(str: string, pat: string, groups: {string}, severity_map: {string:string}, defaults: {string:any}): Diagnostic
+      open_float: function(bufnr: integer, opts: OpenFloatOpts): {integer, integer}
+      reset: function(namespace: integer, bufnr: integer)
+      set: function(namespace: integer, bufnr: integer, diagnostics: {Diagnostic}, opts: ConfigOpts)
       setloclist: function(opts: SetLocListOpts)
       setqflist: function(opts: SetQfListOpts)
-      show: function(namespace: integer|nil, bufnr: integer|nil, diagnostics: {Diagnostic}|nil, opts: ConfigOpts|nil)
+      show: function(namespace: integer, bufnr: integer, diagnostics: {Diagnostic}, opts: ConfigOpts)
       toqflist: function({Diagnostic}): {string:any}
    end
 
