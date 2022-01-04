@@ -366,7 +366,7 @@ global record vim
       end
       config: function(opts: ConfigOpts, namespace: integer|nil)
       disable: function(bufnr: integer|nil, namespace: integer|nil)
-      disable: function(bufnr: integer|nil, namespace: integer|nil)
+      enable: function(bufnr: integer|nil, namespace: integer|nil)
       fromqflist: function(list: {any}): {Diagnostic}
       get: function(bufnr: integer|nil, opts: GetOpts)
       get_namespace: function(namespace: integer): {string:integer}
