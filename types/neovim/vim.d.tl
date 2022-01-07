@@ -48,7 +48,7 @@ global record vim
    end
 
    record InspectOptions
-      depth: number
+      depth: integer
       newline: string
       indent: string
       process: function
@@ -65,18 +65,18 @@ global record vim
       end
    end
    notify: function(msg: string, log_level: integer, opts: table)
-   paste: function({string}, number): boolean
+   paste: function({string}, integer): boolean
    schedule_wrap: function(function): function
    deep_equal: function(any, any): boolean
    deepcopy: function<T>(T): T
-   defer_fn: function(function, number)
+   defer_fn: function(function, integer)
    startswith: function(string, string): boolean
    endswith: function(string, string): boolean
    gsplit: function(string, string, boolean): function(): string
    is_callable: function(any): boolean
-   list_extend: function<T>({T}, {T}, number, number): {T}
-   list_extend: function<T, K>({T}, {K}, number, number): {T|K}
-   list_slice: function<T>({T}, number, number): {T}
+   list_extend: function<T>({T}, {T}, integer, integer): {T}
+   list_extend: function<T, K>({T}, {K}, integer, integer): {T|K}
+   list_slice: function<T>({T}, integer, integer): {T}
    pesc: function(string): string
    split: function(string, string, boolean): {string}
    wait: function(integer)
@@ -134,8 +134,8 @@ global record vim
    -- should be {string:{any, TypeName, boolean} | {any, function(any): (boolean, string)}, string}}
 
    record Regex
-      match_str: function(Regex, string): number, number
-      match_line: function(Regex, number, number, number, number): number, number
+      match_str: function(Regex, string): integer, integer
+      match_line: function(Regex, integer, integer, integer, integer): integer, integer
    end
    regex: function(string): Regex
 
@@ -144,7 +144,7 @@ global record vim
    -- just steal from that
    record loop
       cwd: function(): string
-      sleep: function(number)
+      sleep: function(integer)
       record Handle
          close: function(Handle)
          is_closing: function(Timer)
@@ -158,7 +158,7 @@ global record vim
          close: function(Process)
       end
       record Timer
-         start: function(Timer, number, number, function)
+         start: function(Timer, integer, integer, function)
          close: function(Timer)
          stop: function(Timer)
          is_closing: function(Timer)
@@ -179,21 +179,21 @@ global record vim
 
       record FsStat
          record Time
-            sec: number
-            nsec: number
+            sec: integer
+            nsec: integer
          end
-         dev: number
-         mode: number
-         nlink: number
-         uid: number
-         gid: number
-         rdev: number
-         ino: number
-         size: number
-         blksize: number
-         blocks: number
-         flags: number
-         gen: number
+         dev: integer
+         mode: integer
+         nlink: integer
+         uid: integer
+         gid: integer
+         rdev: integer
+         ino: integer
+         size: integer
+         blksize: integer
+         blocks: integer
+         flags: integer
+         gen: integer
          atime: Time
          mtime: Time
          ctime: Time
@@ -206,7 +206,7 @@ global record vim
       fs_scandir: function(string, function(string, Dir)): Dir
       fs_scandir_next: function(Dir): string, string, string
 
-      fs_mkdir: function(string, number, function(string, boolean)): boolean | Dir, string, string
+      fs_mkdir: function(string, integer, function(string, boolean)): boolean | Dir, string, string
    end
 
    call: function(string, ...: any): any
@@ -215,14 +215,14 @@ global record vim
    type NIL = record userdata end -- special nil for filling tables
 
    empty_dict: function(): table
-   register_keystroke_callback: function(function(string), number): number
+   on_key: function(function(string), integer): integer
 
-   rpcnotify: function(number, string, ...: string)
-   rpcrequest: function(number, string, ...: string)
+   rpcnotify: function(integer, string, ...: string)
+   rpcrequest: function(integer, string, ...: string)
 
-   stricmp: function(string, string): number
-   str_utfindex: function(string, number): number, number
-   str_byteindex: function(string, number, boolean): number
+   stricmp: function(string, string): integer
+   str_utfindex: function(string, integer): integer, integer
+   str_byteindex: function(string, integer, boolean): integer
 
    schedule: function(function)
 
@@ -232,11 +232,11 @@ global record vim
 
    val_idx: boolean
 
-   types: {string|number:string|number}
+   types: {string|integer:string|integer}
 
    record EventData --TODO: this is a vim thing, so types aren't really documented
       abort: any
-      chan: number
+      chan: integer
       cmdlevel: any
       cmdtype: any
       cwd: string
@@ -250,8 +250,8 @@ global record vim
       completed_item: any
       height: any
       width: any
-      row: number
-      col: number
+      row: integer
+      col: integer
       size: any
       scrollbar: any
       changed_window: any
@@ -260,7 +260,7 @@ global record vim
    record highlight
       record Opts
          higroup: string
-         timeout: number
+         timeout: integer
          on_macro: boolean
          on_visual: boolean
          event: EventData
@@ -268,10 +268,10 @@ global record vim
       on_yank: function(Opts)
       range: function(
          bufnr: integer,
-         ns: number,
+         ns: integer,
          higroup: string,
-         start: {number, number},
-         finish: {number, number},
+         start: {integer, integer},
+         finish: {integer, integer},
          rtype: any,
          inclusive: boolean
       )
@@ -396,8 +396,8 @@ global record vim
       buf_get_clients: function(bufnr: integer)
       buf_is_attached: function(bufnr: integer, client_id: integer)
       buf_notify: function(bufnr: integer, method: string, params: string): boolean
-      buf_request: function(bufnr: integer, method: string, params: table, handler: function): {number:number}, function
-      buf_request_sync: function(bufnr: integer, method: string, params: table, timeout_ms: number): {number:number}, string
+      buf_request: function(bufnr: integer, method: string, params: table, handler: function): {integer:integer}, function
+      buf_request_sync: function(bufnr: integer, method: string, params: table, timeout_ms: integer): {integer:integer}, string
 
       record Client
          request: function(Client)
@@ -668,11 +668,11 @@ global record vim
    record api
       --[[
          API version Information
-            neovim version: 0.6.0
+            neovim version: 0.7.0
 
             compatible: 0
-            level: 8
-            prerelease: false
+            level: 9
+            prerelease: true
       --]]
 
       --[[
@@ -689,13 +689,16 @@ global record vim
          none of the above -> any
       --]]
 
+      nvim_add_user_command: function(string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_buf_add_highlight: function(integer--[[Buffer]], integer--[[Integer]], string--[[String]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]]): integer--[[Integer]]
+      nvim_buf_add_user_command: function(integer--[[Buffer]], string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_buf_attach: function(integer--[[Buffer]], boolean--[[Boolean]], {string:any}--[[Dictionary]]): boolean--[[Boolean]]
       nvim_buf_call: function(integer--[[Buffer]], any--[[LuaRef]]): any--[[Object]]
       nvim_buf_clear_namespace: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]])--[[void]]
       nvim_buf_del_extmark: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]]): boolean--[[Boolean]]
       nvim_buf_del_keymap: function(integer--[[Buffer]], string--[[String]], string--[[String]])--[[void]]
       nvim_buf_del_mark: function(integer--[[Buffer]], string--[[String]]): boolean--[[Boolean]]
+      nvim_buf_del_user_command: function(integer--[[Buffer]], string--[[String]])--[[void]]
       nvim_buf_del_var: function(integer--[[Buffer]], string--[[String]])--[[void]]
       nvim_buf_delete: function(integer--[[Buffer]], {string:any}--[[Dictionary]])--[[void]]
       nvim_buf_detach: function(integer--[[Buffer]]): boolean--[[Boolean]]
@@ -731,6 +734,7 @@ global record vim
       nvim_del_current_line: function()--[[void]]
       nvim_del_keymap: function(string--[[String]], string--[[String]])--[[void]]
       nvim_del_mark: function(string--[[String]]): boolean--[[Boolean]]
+      nvim_del_user_command: function(string--[[String]])--[[void]]
       nvim_del_var: function(string--[[String]])--[[void]]
       nvim_echo: function(any--[[Array]], boolean--[[Boolean]], {string:any}--[[Dictionary]])--[[void]]
       nvim_err_write: function(string--[[String]])--[[void]]
@@ -760,6 +764,7 @@ global record vim
       nvim_get_namespaces: function(): {string:any}--[[Dictionary]]
       nvim_get_option: function(string--[[String]]): any--[[Object]]
       nvim_get_option_info: function(string--[[String]]): {string:any}--[[Dictionary]]
+      nvim_get_option_value: function(string--[[String]], {string:any}--[[Dictionary]]): any--[[Object]]
       nvim_get_proc: function(integer--[[Integer]]): any--[[Object]]
       nvim_get_proc_children: function(integer--[[Integer]]): any--[[Array]]
       nvim_get_runtime_file: function(string--[[String]], boolean--[[Boolean]]): {string}--[[ArrayOf(String)]]
@@ -793,6 +798,7 @@ global record vim
       nvim_set_hl: function(integer--[[Integer]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_keymap: function(string--[[String]], string--[[String]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_option: function(string--[[String]], any--[[Object]])--[[void]]
+      nvim_set_option_value: function(string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_var: function(string--[[String]], any--[[Object]])--[[void]]
       nvim_set_vvar: function(string--[[String]], any--[[Object]])--[[void]]
       nvim_strwidth: function(string--[[String]]): integer--[[Integer]]
@@ -850,5 +856,20 @@ global record vim
       encode: function(string)
       decode: function(string, DecodeOpts)
    end
-end
 
+   record ui
+      record InputOpts
+         prompt: string
+         completion: string
+         highlight: function()
+      end
+      input: function(InputOpts, function(string))
+
+      record SelectOpts
+         prompt: string
+         format_item: function(any): string
+         kind: string
+      end
+      select: function(any, SelectOpts, function(any, integer))
+   end
+end

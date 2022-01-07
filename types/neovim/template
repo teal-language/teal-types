@@ -435,5 +435,20 @@ global record vim
       encode: function(string)
       decode: function(string, DecodeOpts)
    end
-end
 
+   record ui
+      record InputOpts
+         prompt: string
+         completion: string
+         highlight: function()
+      end
+      input: function(InputOpts, function(string))
+
+      record SelectOpts
+         prompt: string
+         format_item: function(any): string
+         kind: string
+      end
+      select: function(any, SelectOpts, function(any, integer))
+   end
+end
