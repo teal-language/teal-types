@@ -200,10 +200,17 @@ global record vim
          birthtime: Time
          type: string
       end
-      fs_stat: function(string): FsStat
+      fs_stat: function(string): FsStat, string, string
+      fs_stat: function(string, function(string, FsStat))
+
+      fs_lstat: function(string): FsStat, string, string
+      fs_lstat: function(string, function(string, FsStat))
+
+      fs_fstat: function(integer): FsStat, string, string
+      fs_fstat: function(integer, function(string, FsStat))
 
       record Dir userdata end
-      fs_scandir: function(string, function(string, Dir)): Dir
+      fs_scandir: function(string, function(string, Dir)): Dir, string, string
       fs_scandir_next: function(Dir): string, string, string
 
       fs_mkdir: function(string, integer, function(string, boolean)): boolean | Dir, string, string
