@@ -386,7 +386,7 @@ global record vim
       goto_prev: function(opts: GotoOpts)
       hide: function(namespace: integer, bufnr: integer)
       match: function(str: string, pat: string, groups: {string}, severity_map: {string:string}, defaults: {string:any}): Diagnostic
-      open_float: function(bufnr: integer, opts: OpenFloatOpts): {integer, integer}
+      open_float: function(opts: OpenFloatOpts): {integer, integer}
       reset: function(namespace: integer, bufnr: integer)
       set: function(namespace: integer, bufnr: integer, diagnostics: {Diagnostic}, opts: ConfigOpts)
       setloclist: function(opts: SetLocListOpts)

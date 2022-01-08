@@ -386,7 +386,7 @@ global record vim
       goto_prev: function(opts: GotoOpts)
       hide: function(namespace: integer, bufnr: integer)
       match: function(str: string, pat: string, groups: {string}, severity_map: {string:string}, defaults: {string:any}): Diagnostic
-      open_float: function(bufnr: integer, opts: OpenFloatOpts): {integer, integer}
+      open_float: function(opts: OpenFloatOpts): {integer, integer}
       reset: function(namespace: integer, bufnr: integer)
       set: function(namespace: integer, bufnr: integer, diagnostics: {Diagnostic}, opts: ConfigOpts)
       setloclist: function(opts: SetLocListOpts)
@@ -675,11 +675,11 @@ global record vim
    record api
       --[[
          API version Information
-            neovim version: 0.7.0
+            neovim version: 0.6.1
 
             compatible: 0
-            level: 9
-            prerelease: true
+            level: 8
+            prerelease: false
       --]]
 
       --[[
@@ -696,16 +696,13 @@ global record vim
          none of the above -> any
       --]]
 
-      nvim_add_user_command: function(string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_buf_add_highlight: function(integer--[[Buffer]], integer--[[Integer]], string--[[String]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]]): integer--[[Integer]]
-      nvim_buf_add_user_command: function(integer--[[Buffer]], string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_buf_attach: function(integer--[[Buffer]], boolean--[[Boolean]], {string:any}--[[Dictionary]]): boolean--[[Boolean]]
       nvim_buf_call: function(integer--[[Buffer]], any--[[LuaRef]]): any--[[Object]]
       nvim_buf_clear_namespace: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]])--[[void]]
       nvim_buf_del_extmark: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]]): boolean--[[Boolean]]
       nvim_buf_del_keymap: function(integer--[[Buffer]], string--[[String]], string--[[String]])--[[void]]
       nvim_buf_del_mark: function(integer--[[Buffer]], string--[[String]]): boolean--[[Boolean]]
-      nvim_buf_del_user_command: function(integer--[[Buffer]], string--[[String]])--[[void]]
       nvim_buf_del_var: function(integer--[[Buffer]], string--[[String]])--[[void]]
       nvim_buf_delete: function(integer--[[Buffer]], {string:any}--[[Dictionary]])--[[void]]
       nvim_buf_detach: function(integer--[[Buffer]]): boolean--[[Boolean]]
@@ -741,7 +738,6 @@ global record vim
       nvim_del_current_line: function()--[[void]]
       nvim_del_keymap: function(string--[[String]], string--[[String]])--[[void]]
       nvim_del_mark: function(string--[[String]]): boolean--[[Boolean]]
-      nvim_del_user_command: function(string--[[String]])--[[void]]
       nvim_del_var: function(string--[[String]])--[[void]]
       nvim_echo: function(any--[[Array]], boolean--[[Boolean]], {string:any}--[[Dictionary]])--[[void]]
       nvim_err_write: function(string--[[String]])--[[void]]
@@ -771,7 +767,6 @@ global record vim
       nvim_get_namespaces: function(): {string:any}--[[Dictionary]]
       nvim_get_option: function(string--[[String]]): any--[[Object]]
       nvim_get_option_info: function(string--[[String]]): {string:any}--[[Dictionary]]
-      nvim_get_option_value: function(string--[[String]], {string:any}--[[Dictionary]]): any--[[Object]]
       nvim_get_proc: function(integer--[[Integer]]): any--[[Object]]
       nvim_get_proc_children: function(integer--[[Integer]]): any--[[Array]]
       nvim_get_runtime_file: function(string--[[String]], boolean--[[Boolean]]): {string}--[[ArrayOf(String)]]
@@ -805,7 +800,6 @@ global record vim
       nvim_set_hl: function(integer--[[Integer]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_keymap: function(string--[[String]], string--[[String]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_option: function(string--[[String]], any--[[Object]])--[[void]]
-      nvim_set_option_value: function(string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_var: function(string--[[String]], any--[[Object]])--[[void]]
       nvim_set_vvar: function(string--[[String]], any--[[Object]])--[[void]]
       nvim_strwidth: function(string--[[String]]): integer--[[Integer]]
