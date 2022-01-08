@@ -1,6 +1,9 @@
 # vim: ft=sh
 # compile autogen_tl, make neovim run it
+
+NVIM_BIN=${NVIM_BIN:-nvim}
+
 tl check autogen_tl -q && \
 	tl gen autogen_tl --skip-compat53 -q -o autogen_lua && \
-	nvim --noplugin -u NORC --headless -n autogen_lua "+luafile %" "+q" && \
+	$NVIM_BIN --noplugin -u NORC --headless -n autogen_lua "+luafile %" "+q" && \
 	rm autogen_lua
