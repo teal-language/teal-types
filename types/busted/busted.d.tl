@@ -7,19 +7,56 @@ global setup: function(function())
 global teardown: function(function())
 global async: function()
 global done: function()
+global insulate: function(string, function())
+global expose: function(string, function())
+global randomize: function()
+global finally: function(function())
+global pending: function(string)
+
+global record mock
+   revert:function(any)
+
+   new:function<T>(T, boolean):T
+end
+
+local record Stub
+   was_called:function(string)
+   was_not_called:function(string)
+
+   was_called_with:function(any, string)
+   was_not_called_with:function(any, string)
+
+   revert:function(self:Stub)
+end
+
+global stub: function(any, string):Stub
+
+local record Spy
+   was_called:function(integer)
+   was_not_called:function()
+
+   was_called_with:function(...:any)
+   was_not_called_with:function(...:any)
+
+   clear:function(self:Spy)
+   revert:function(self:Spy)
+
+   metamethod __call: function(self: Spy, ...:any)
+end
 
 global record spy
-   on:function(any, any)
+   on:function(any, any):Spy
+   new:function(function()):Spy
 end
 
 global record assert
-   is_not_true:function(boolean, string)
-   is_true:function(boolean, string)
-   True:function(boolean, string)
+   is_not_true:function(any, string)
+   is_true:function(any, string)
+   True:function(any, string)
 
-   is_not_false:function(boolean, string)
-   is_false:function(boolean, string)
-   False:function(boolean, string)
+   is_not_false:function(any, string)
+   is_false:function(any, string)
+   False:function(any, string)
 
    is_nil:function(any, string)
    is_not_nil:function(any, string)
@@ -54,23 +91,6 @@ global record assert
    has_holes:function({any}, string)
    has_no_holes:function({any}, string)
 
-   record Spy
-      was_called:function(string)
-      was_not_called:function(string)
-
-      was_called_with:function(any, string)
-      was_not_called_with:function(any, string)
-   end
-
    spy:function(any):Spy
-
-   record Stub
-      was_called:function(string)
-      was_not_called:function(string)
-
-      was_called_with:function(any, string)
-      was_not_called_with:function(any, string)
-   end
-
    stub:function(any):Stub
 end
