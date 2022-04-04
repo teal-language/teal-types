@@ -289,6 +289,28 @@ global record vim
 
    types: {string|integer:string|integer}
 
+   record KeyMap
+      record DelOptions
+         buffer:boolean
+      end
+
+      record SetOptions
+         unique:boolean
+         expr:boolean
+         script:boolean
+         nowait:boolean
+         remap:boolean
+         replace_keycodes:boolean
+         silent:boolean
+         buffer:boolean
+      end
+
+      set:function(mode:string|{string}, lhs:string, rhs:string|function(), opts:SetOptions)
+      del:function(modes:string|{string}, lhs:string, opts:DelOptions)
+   end
+
+   keymap: KeyMap
+
    record EventData --TODO: this is a vim thing, so types aren't really documented
       abort: any
       chan: integer
@@ -508,3 +530,4 @@ global record vim
       select: function(any, SelectOpts, function(any, integer))
    end
 end
+
