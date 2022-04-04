@@ -132,19 +132,29 @@ local record asserts
    has_error:function(Callable, any, string):{any}
    has_errors:function(Callable, any, string):{any}
 
+   -- Errors matches
+   does_error_match:function(function(), string, string)
+   matches_error:function(function(), string, string)
+   has_no_error_match:function(function(), string, string)
+   does_not_match_error:function(function(), string, string)
+
+   error_matches:function(function(), string, string):{any}
+   no_error_matches:function(function(), string, string):{any}
+
+   -- Errors matches callable
+   does_error_match:function(Callable, string, string)
+   matches_error:function(Callable, string, string)
+   has_no_error_match:function(Callable, string, string)
+   does_not_match_error:function(Callable, string, string)
+
+   error_matches:function(Callable, string, string):{any}
+   no_error_matches:function(Callable, string, string):{any}
+
    -- matches
    matches:function(string, string, string)
 
    has_match:function(string, string, string):{string}
    has_no_match:function(string, string, string):{string}
-
-   does_error_match:function(any, string, string)
-   matches_error:function(any, string, string)
-   has_no_error_match:function(any, string, string)
-   does_not_match_error:function(any, string, string)
-
-   error_matches:function(any, string, string):{any}
-   no_error_matches:function(any, string, string):{any}
 
    -- type checking
    is_boolean:function(any, string):any, string

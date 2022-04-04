@@ -13,9 +13,6 @@ global record vim
    -- end
 
    -- TODO:
-   -- vim.opt
-   -- vim.opt_global
-   -- vim.opt_local
    -- vim.treesitter
 
    fn: {string:function(...: any): (any)}
@@ -482,20 +479,28 @@ global record vim
       client: function(): Client
    end
 
+   -- TODO:
+   -- vim.opt
+   -- vim.opt_global
+   -- vim.opt_local
+
    g: {string:any}
-   go: {string:any}
    t: {string:any}
    v: {string:any}
+   b: {string:any}
+   w: {string:any}
    env: {string:any}
 
-   o: {string:any}
+   --[[$ALL_OPTS$]]
+   o: AllOptions
+
+   --[[$GLOBAL_OPTS$]]
+   go: GlobalOptions
 
    --[[$BUFFER_OPTS$]]
-   b: BufferOptions
    bo: BufferOptions
 
    --[[$WINDOW_OPTS$]]
-   w: WindowOptions
    wo: WindowOptions
 
    --[[$API$]]

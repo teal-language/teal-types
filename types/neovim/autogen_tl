@@ -164,23 +164,41 @@ do
 	local opts <const> = vim.api.nvim_get_all_options_info()
 	opts[""] = nil
 
+	local go <const>: {string} = {}
+	local o <const>: {string} = {}
 	local wo <const>: {string} = {}
 	local bo <const>: {string} = {}
 
 	for _, opt in pairs(opts) do
-		local tab: {string}
+		local tables: {{string}} = {}
+
+      table.insert(tables, o)
+
 		if opt.scope == "win" then
-			tab = wo
+         table.insert(tables, wo)
 		elseif opt.scope == "buf" then
-			tab = bo
+         table.insert(tables, bo)
+		elseif opt.scope == "global" then
+         table.insert(tables, go)
 		end
-		if tab then
+
+      for _, tab in ipairs(tables) do
 			if opt.shortname ~= "" then
-				table.insert(tab, string.format("      %s: %s", opt.shortname, opt.type))
-			end
+			 	table.insert(tab, string.format("      %s: %s", opt.shortname, opt.type))
+			 end
 			table.insert(tab, string.format("      %s: %s", opt.name, opt.type))
-		end
+      end
 	end
+
+	table.sort(o)
+	table.insert(o, 1, "record AllOptions")
+	table.insert(o, "   end")
+	substitutions.ALL_OPTS = table.concat(o, "\n")
+
+	table.sort(go)
+	table.insert(go, 1, "record GlobalOptions")
+	table.insert(go, "   end")
+	substitutions.GLOBAL_OPTS = table.concat(go, "\n")
 
 	table.sort(wo)
 	table.insert(wo, 1, "record WindowOptions")
