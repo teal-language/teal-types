@@ -1,0 +1,5 @@
+#!/bin/sh
+set -ex
+cd `dirname $BASH_SOURCE`
+cyan build --prune
+busted build

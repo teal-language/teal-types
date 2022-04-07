@@ -1,1 +1,1 @@
-return require "pl".tablex
+return require("pl").tablex
