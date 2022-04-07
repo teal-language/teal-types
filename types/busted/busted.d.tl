@@ -13,4 +13,3 @@ global randomize: function()
 global finally: function(function())
 global pending: function(string)
 
-require("luassert")
