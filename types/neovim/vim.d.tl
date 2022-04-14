@@ -70,7 +70,7 @@ global record vim
       end
    end
    notify: function(msg: string, log_level: integer, opts: table)
-   notify_once: function(msg:string, level:integer, opt:table)
+   notify_once: function(msg: string, level: integer, opt: table)
    paste: function({string}, integer): boolean
    schedule_wrap: function(function): function
    deep_equal: function(any, any): boolean
@@ -145,44 +145,44 @@ global record vim
    end
    regex: function(string): Regex
 
-   diff: function(a:string, b:string):string
+   diff: function(a: string, b: string): string
    -- TODO
-   -- diff: function(a:string, b:string, options:DiffOptions):string | {integer}
+   -- diff: function(a: string, b: string, options: DiffOptions): string | {integer}
 
    record VersionInfo
-      api_compatible:integer
-      api_level:integer
-      api_prerelease:integer
-      major:integer
-      minor:integer
-      patch:integer
+      api_compatible: integer
+      api_level: integer
+      api_prerelease: integer
+      major: integer
+      minor: integer
+      patch: integer
    end
 
-   version:function():VersionInfo
+   version: function(): VersionInfo
 
-   uri_from_bufnr:function(bufnr:integer):string
-   uri_from_fname:function(path:string):string
-   uri_to_bufnr:function(uri:string):integer
-   uri_to_fname:function(uri:string):string
+   uri_from_bufnr: function(bufnr: integer): string
+   uri_from_fname: function(path: string): string
+   uri_to_bufnr: function(uri: string): integer
+   uri_to_fname: function(uri: string): string
 
-   pretty_print:function(obj:any):string
+   pretty_print: function(obj: any): string
 
-   region:function(bufnr:integer, pos1:{integer}, pos2:{integer}, regtype:string, inclusive:boolean):{integer:{integer}}
+   region: function(bufnr: integer, pos1: {integer}, pos2: {integer}, regtype: string, inclusive: boolean): {integer:{integer}}
 
    record filetype
       -- TODO - replace table with options record
-      add: function(filetypes:table)
+      add: function(filetypes: table)
 
-      match: function(name:string, bufnr:integer)
+      match: function(name: string, bufnr: integer)
    end
 
    record mpack
-      encode: function(obj:any):string
-      decode: function(str:string):any
+      encode: function(obj: any): string
+      decode: function(str: string): any
    end
 
    record spell
-      check: function(str:string):{{string | integer}}
+      check: function(str: string): {{string | integer}}
    end
 
    -- TODO: these are a pitiful approximation of luv's types
@@ -223,6 +223,19 @@ global record vim
 
       read_start: function(Pipe, function(string, string))
 
+      record Fs userdata end
+      fs_open: function(string, string|integer, integer): integer, string, string
+      fs_open: function(string, string|integer, integer, function(string, integer)): Fs
+
+      fs_close: function(integer): boolean, string, string
+      fs_close: function(integer, function(string, boolean)): Fs
+
+      fs_read: function(integer, integer, integer): string, string, string
+      fs_read: function(integer, integer, integer, function(string, integer)): Fs
+
+      fs_write: function(integer, string|{string}, integer): integer, string, string
+      fs_write: function(integer, string|{string}, integer, function(string, integer)): Fs
+
       record FsStat
          record Time
             sec: integer
@@ -255,11 +268,11 @@ global record vim
       fs_fstat: function(integer): FsStat, string, string
       fs_fstat: function(integer, function(string, FsStat))
 
-      record Dir userdata end
-      fs_scandir: function(string, function(string, Dir)): Dir, string, string
-      fs_scandir_next: function(Dir): string, string, string
+      fs_scandir: function(string, function(string, Fs)): Fs, string, string
+      fs_scandir_next: function(Fs): string, string, string
 
-      fs_mkdir: function(string, integer, function(string, boolean)): boolean | Dir, string, string
+      fs_mkdir: function(string, integer): boolean, string, string
+      fs_mkdir: function(string, integer, function(string, boolean)): Fs
    end
 
    in_fast_event: function(): boolean
@@ -286,27 +299,27 @@ global record vim
 
    types: {string|integer:string|integer}
 
-   record KeyMap
+   record keymap
       record DelOptions
-         buffer:boolean
+         buffer: boolean | integer
       end
 
       record SetOptions
-         unique:boolean
-         expr:boolean
-         script:boolean
-         nowait:boolean
-         remap:boolean
-         replace_keycodes:boolean
-         silent:boolean
-         buffer:boolean
+         buffer: boolean | integer
+         callback: function
+         desc: string
+         expr: boolean
+         nowait: boolean
+         remap: boolean
+         replace_keycodes: boolean
+         script: boolean
+         silent: boolean
+         unique: boolean
       end
 
-      set:function(mode:string|{string}, lhs:string, rhs:string|function(), opts:SetOptions)
-      del:function(modes:string|{string}, lhs:string, opts:DelOptions)
+      set: function(mode: string|{string}, lhs: string, rhs: string|function(), opts: SetOptions)
+      del: function(modes: string|{string}, lhs: string, opts: DelOptions)
    end
-
-   keymap: KeyMap
 
    record EventData --TODO: this is a vim thing, so types aren't really documented
       abort: any
@@ -550,8 +563,6 @@ global record vim
       cc: string
       ccv: string
       cd: string
-      cdh: boolean
-      cdhome: boolean
       cdpath: string
       cedit: string
       cf: boolean
@@ -1228,8 +1239,6 @@ global record vim
       cb: string
       ccv: string
       cd: string
-      cdh: boolean
-      cdhome: boolean
       cdpath: string
       cedit: string
       cf: boolean
@@ -1594,6 +1603,7 @@ global record vim
       vb: boolean
       vbs: number
       vdir: string
+      ve: string
       verbose: number
       verbosefile: string
       vfile: string
@@ -1603,6 +1613,7 @@ global record vim
       vif: string
       viminfo: string
       viminfofile: string
+      virtualedit: string
       visualbell: boolean
       vop: string
       wa: boolean
@@ -1885,8 +1896,6 @@ global record vim
       spell: boolean
       statusline: string
       stl: string
-      ve: string
-      virtualedit: string
       wfh: boolean
       wfw: boolean
       winbl: number
@@ -1902,11 +1911,11 @@ global record vim
    record api
       --[[
          API version Information
-            neovim version: 0.7.0
+            neovim version: 0.6.1
 
             compatible: 0
-            level: 9
-            prerelease: true
+            level: 8
+            prerelease: false
       --]]
 
       --[[
@@ -1923,16 +1932,13 @@ global record vim
          none of the above -> any
       --]]
 
-      nvim_add_user_command: function(string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_buf_add_highlight: function(integer--[[Buffer]], integer--[[Integer]], string--[[String]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]]): integer--[[Integer]]
-      nvim_buf_add_user_command: function(integer--[[Buffer]], string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_buf_attach: function(integer--[[Buffer]], boolean--[[Boolean]], {string:any}--[[Dictionary]]): boolean--[[Boolean]]
       nvim_buf_call: function(integer--[[Buffer]], any--[[LuaRef]]): any--[[Object]]
       nvim_buf_clear_namespace: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]])--[[void]]
       nvim_buf_del_extmark: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]]): boolean--[[Boolean]]
       nvim_buf_del_keymap: function(integer--[[Buffer]], string--[[String]], string--[[String]])--[[void]]
       nvim_buf_del_mark: function(integer--[[Buffer]], string--[[String]]): boolean--[[Boolean]]
-      nvim_buf_del_user_command: function(integer--[[Buffer]], string--[[String]])--[[void]]
       nvim_buf_del_var: function(integer--[[Buffer]], string--[[String]])--[[void]]
       nvim_buf_delete: function(integer--[[Buffer]], {string:any}--[[Dictionary]])--[[void]]
       nvim_buf_detach: function(integer--[[Buffer]]): boolean--[[Boolean]]
@@ -1946,7 +1952,6 @@ global record vim
       nvim_buf_get_name: function(integer--[[Buffer]]): string--[[String]]
       nvim_buf_get_offset: function(integer--[[Buffer]], integer--[[Integer]]): integer--[[Integer]]
       nvim_buf_get_option: function(integer--[[Buffer]], string--[[String]]): any--[[Object]]
-      nvim_buf_get_text: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]], {string:any}--[[Dictionary]]): {string}--[[ArrayOf(String)]]
       nvim_buf_get_var: function(integer--[[Buffer]], string--[[String]]): any--[[Object]]
       nvim_buf_is_loaded: function(integer--[[Buffer]]): boolean--[[Boolean]]
       nvim_buf_is_valid: function(integer--[[Buffer]]): boolean--[[Boolean]]
@@ -1963,19 +1968,12 @@ global record vim
       nvim_call_dict_function: function(any--[[Object]], string--[[String]], any--[[Array]]): any--[[Object]]
       nvim_call_function: function(string--[[String]], any--[[Array]]): any--[[Object]]
       nvim_chan_send: function(integer--[[Integer]], string--[[String]])--[[void]]
-      nvim_clear_autocmds: function({string:any}--[[Dictionary]])--[[void]]
       nvim_command: function(string--[[String]])--[[void]]
-      nvim_create_augroup: function(string--[[String]], {string:any}--[[Dictionary]]): integer--[[Integer]]
-      nvim_create_autocmd: function(any--[[Object]], {string:any}--[[Dictionary]]): integer--[[Integer]]
       nvim_create_buf: function(boolean--[[Boolean]], boolean--[[Boolean]]): integer--[[Buffer]]
       nvim_create_namespace: function(string--[[String]]): integer--[[Integer]]
-      nvim_del_augroup_by_id: function(integer--[[Integer]])--[[void]]
-      nvim_del_augroup_by_name: function(string--[[String]])--[[void]]
-      nvim_del_autocmd: function(integer--[[Integer]])--[[void]]
       nvim_del_current_line: function()--[[void]]
       nvim_del_keymap: function(string--[[String]], string--[[String]])--[[void]]
       nvim_del_mark: function(string--[[String]]): boolean--[[Boolean]]
-      nvim_del_user_command: function(string--[[String]])--[[void]]
       nvim_del_var: function(string--[[String]])--[[void]]
       nvim_echo: function(any--[[Array]], boolean--[[Boolean]], {string:any}--[[Dictionary]])--[[void]]
       nvim_err_write: function(string--[[String]])--[[void]]
@@ -1983,12 +1981,10 @@ global record vim
       nvim_eval: function(string--[[String]]): any--[[Object]]
       nvim_eval_statusline: function(string--[[String]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
       nvim_exec: function(string--[[String]], boolean--[[Boolean]]): string--[[String]]
-      nvim_exec_autocmds: function(any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_exec_lua: function(string--[[String]], any--[[Array]]): any--[[Object]]
       nvim_feedkeys: function(string--[[String]], string--[[String]], boolean--[[Boolean]])--[[void]]
       nvim_get_all_options_info: function(): {string:any}--[[Dictionary]]
       nvim_get_api_info: function(): any--[[Array]]
-      nvim_get_autocmds: function({string:any}--[[Dictionary]]): any--[[Array]]
       nvim_get_chan_info: function(integer--[[Integer]]): {string:any}--[[Dictionary]]
       nvim_get_color_by_name: function(string--[[String]]): integer--[[Integer]]
       nvim_get_color_map: function(): {string:any}--[[Dictionary]]
@@ -2007,7 +2003,6 @@ global record vim
       nvim_get_namespaces: function(): {string:any}--[[Dictionary]]
       nvim_get_option: function(string--[[String]]): any--[[Object]]
       nvim_get_option_info: function(string--[[String]]): {string:any}--[[Dictionary]]
-      nvim_get_option_value: function(string--[[String]], {string:any}--[[Dictionary]]): any--[[Object]]
       nvim_get_proc: function(integer--[[Integer]]): any--[[Object]]
       nvim_get_proc_children: function(integer--[[Integer]]): any--[[Array]]
       nvim_get_runtime_file: function(string--[[String]], boolean--[[Boolean]]): {string}--[[ArrayOf(String)]]
@@ -2041,7 +2036,6 @@ global record vim
       nvim_set_hl: function(integer--[[Integer]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_keymap: function(string--[[String]], string--[[String]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_option: function(string--[[String]], any--[[Object]])--[[void]]
-      nvim_set_option_value: function(string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_var: function(string--[[String]], any--[[Object]])--[[void]]
       nvim_set_vvar: function(string--[[String]], any--[[Object]])--[[void]]
       nvim_strwidth: function(string--[[String]]): integer--[[Integer]]
