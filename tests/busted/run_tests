@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 set -ex
 cd `dirname $BASH_SOURCE`
 cyan build --prune
