@@ -29,49 +29,11 @@ local record Log
    OFF: Level
 end
 
-local enum ConsoleDestination
-   "stdout"
-   "stderr"
-end
-
-local record ConsoleParameters
-   destination: ConsoleDestination
-   logPattern: string
-   logPatterns: { Level: string }
-   timestampPattern: string
-   logLevel: Level
-end
-
-local record FileParameters
-   filename: string
-   datePattern: string
-   logPattern: string
-   logPatterns: { Level: string }
-   timestampPattern: string
-   logLevel: Level
-end
-
-local record RollingFileParameters
-   filename: string
-   maxFileSize: number
-   maxBackupIndex: number
-   logPattern: string
-   logPatterns: { Level: string }
-   timestampPattern: string
-   logLevel: Level
-end
-
-local record Types
+local record logging
    Level: Level
    Append: Append
    Log: Log
-   ConsoleDestination: ConsoleDestination
-   ConsoleParameters: ConsoleParameters
-   FileParameters: FileParameters
-   RollingFileParameters: RollingFileParameters
-end
 
-local record logging
    _COPYRIGHT: string
    _DESCRIPTION: string
    _VERSION: string
@@ -94,12 +56,42 @@ local record logging
    getDeprecatedParams: function(lst: table, ...: any)
 
    -- Appenders (dynamically added to logging when required)
-   console: Append<ConsoleParameters>
-   file: Append<FileParameters>
-   rolling_file: Append<RollingFileParameters>
-   -- TODO : add more appenders
+   record ConsoleParameters
+      enum ConsoleDestination
+         "stdout"
+         "stderr"
+      end
 
-   __types: Types
+      destination: ConsoleDestination
+      logPattern: string
+      logPatterns: { Level: string }
+      timestampPattern: string
+      logLevel: Level
+   end
+   console: Append<ConsoleParameters>
+
+   record FileParameters
+      filename: string
+      datePattern: string
+      logPattern: string
+      logPatterns: { Level: string }
+      timestampPattern: string
+      logLevel: Level
+   end
+   file: Append<FileParameters>
+
+   record RollingFileParameters
+      filename: string
+      maxFileSize: number
+      maxBackupIndex: number
+      logPattern: string
+      logPatterns: { Level: string }
+      timestampPattern: string
+      logLevel: Level
+   end
+   rolling_file: Append<RollingFileParameters>
+
+   -- TODO : add more appenders
 end
 
 return logging
