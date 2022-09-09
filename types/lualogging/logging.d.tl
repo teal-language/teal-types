@@ -64,7 +64,7 @@ local record logging
 
       destination: ConsoleDestination
       logPattern: string
-      logPatterns: { Level: string }
+      logPatterns: { Level : string }
       timestampPattern: string
       logLevel: Level
    end
@@ -74,7 +74,7 @@ local record logging
       filename: string
       datePattern: string
       logPattern: string
-      logPatterns: { Level: string }
+      logPatterns: { Level : string }
       timestampPattern: string
       logLevel: Level
    end
@@ -85,7 +85,7 @@ local record logging
       maxFileSize: number
       maxBackupIndex: number
       logPattern: string
-      logPatterns: { Level: string }
+      logPatterns: { Level : string }
       timestampPattern: string
       logLevel: Level
    end
