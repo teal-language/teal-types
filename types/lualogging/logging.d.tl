@@ -90,11 +90,6 @@ local record logging
    defaultLevel: function(level: Level): Level
    defaultLogger: function(logger: Log): Log
 
-   -- undocumented/private APIs
-   compilePattern: function(pattern: any): function(): string
-   prepareLogMsg: function(lpattern: string, dpattern: string, level: Level, message: string): string
-   tostring: function(value: any): string
-
    -- Deprecated
    getDeprecatedParams: function(lst: table, ...: any)
 
