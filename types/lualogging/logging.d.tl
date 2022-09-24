@@ -47,6 +47,7 @@ local record logging
 
    new: function(append: function(self: Log, level: Level, msg: string | function), startLevel: Level): Log
    buildLogPatterns: function(patterns: table, default: string): table
+   date: function(format: string, time: integer | string): string
    defaultLogPatterns: function(patt: string | table): table
    defaultTimestampPattern: function(patt: string): string
    defaultLevel: function(level: Level): Level
