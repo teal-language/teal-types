@@ -1,9 +1,14 @@
 local record json
-    -- Returns a string representing value encoded in JSON.
-    encode: function(value: any): string
-
-    -- Returns a value representing the decoded JSON string.
-    decode: function(str: string): any
+	type Array = {Value}
+	type Object = {string:Value}
+	
+	-- Workaround for not being able to union Array and Object
+	type Mixed = {string|integer:Value}
+	
+	type Value = number | string | boolean | Mixed
+	
+	encode: function(value: Value): string
+	decode: function(str: string): Value
 end
 
 return json
