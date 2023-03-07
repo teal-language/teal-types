@@ -7,7 +7,16 @@ local record json
 	
 	type Value = number | string | boolean | Mixed
 	
-	encode: function(value: Value): string
+	-- For convenience, encode takes any type and may throw an error at runtime.
+	-- You can enforce correctness yourself by specifying types on variables or records.
+	--
+	-- For example:
+	--     local obj: json.Object = {value = 'data'}
+	--     local encoded = json.encode(obj)
+	
+	encode: function(value: any): string
+	-- encode: function(value: Value): string
+	
 	decode: function(str: string): Value
 end
 
