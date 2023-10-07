@@ -2720,7 +2720,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_close:function(fd:integer):boolean, string
-   fs_close:function(fd:integer, callback:function()):Fs
+   fs_close:function(fd:integer, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_open(path, flags, mode, [callback])`
    -- 
@@ -2744,7 +2744,7 @@ local record uv
    -- not supported.
    -- 
    fs_open:function(path:string, flags:string|integer, mode:integer):integer, string
-   fs_open:function(path:string, flags:string|integer, mode:integer, callback:function()):Fs
+   fs_open:function(path:string, flags:string|integer, mode:integer, callback:function(string, integer)):Fs
 
    --- ### `uv.fs_read(fd, size, [offset], [callback])`
    -- 
@@ -2766,7 +2766,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_read:function(fd:integer, size:integer, offset:integer):string, string
-   fs_read:function(fd:integer, size:integer, offset:integer, callback:function()):Fs
+   fs_read:function(fd:integer, size:integer, offset:integer, callback:function(string, string)):Fs
 
    --- ### `uv.fs_unlink(path, [callback])`
    -- 
@@ -2782,7 +2782,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_unlink:function(path:string):boolean, string
-   fs_unlink:function(path:string, callback:function()):Fs
+   fs_unlink:function(path:string, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_write(fd, data, [offset], [callback])`
    -- 
@@ -2804,7 +2804,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_write:function(fd:integer, data:any, offset:integer):integer, string
-   fs_write:function(fd:integer, data:any, offset:integer, callback:function()):Fs
+   fs_write:function(fd:integer, data:any, offset:integer, callback:function(string, integer)):Fs
 
    --- ### `uv.fs_mkdir(path, mode, [callback])`
    -- 
@@ -2821,7 +2821,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_mkdir:function(path:string, mode:integer):boolean, string
-   fs_mkdir:function(path:string, mode:integer, callback:function()):Fs
+   fs_mkdir:function(path:string, mode:integer, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_mkdtemp(template, [callback])`
    -- 
@@ -2837,7 +2837,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_mkdtemp:function(template:string):string, string
-   fs_mkdtemp:function(template:string, callback:function()):Fs
+   fs_mkdtemp:function(template:string, callback:function(string, string)):Fs
 
    --- ### `uv.fs_mkstemp(template, [callback])`
    -- 
@@ -2854,7 +2854,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_mkstemp:function(template:string):integer | string, string
-   fs_mkstemp:function(template:string, callback:function()):Fs
+   fs_mkstemp:function(template:string, callback:function(string, integer | string)):Fs
 
    --- ### `uv.fs_rmdir(path, [callback])`
    -- 
@@ -2870,7 +2870,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_rmdir:function(path:string):boolean, string
-   fs_rmdir:function(path:string, callback:function()):Fs
+   fs_rmdir:function(path:string, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_scandir(path, [callback])`
    -- 
@@ -2888,7 +2888,7 @@ local record uv
    -- 
    -- @return `uv_fs_t userdata` or `fail`
    -- 
-   fs_scandir:function(path:string, callback:function()):Fs, string
+   fs_scandir:function(path:string, callback:function(string, Fs)):Fs, string
 
    --- ### `uv.fs_scandir_next(fs)`
    -- 
@@ -2944,7 +2944,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_stat:function(path:string):fs_stats_t
-   fs_stat:function(path:string, callback:function()):Fs
+   fs_stat:function(path:string, callback:function(string, fs_stats_t)):Fs
 
    --- ### `uv.fs_fstat(fd, [callback])`
    -- 
@@ -2959,8 +2959,8 @@ local record uv
    -- 
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
-   fs_fstat:function(fd:integer):any, string
-   fs_fstat:function(fd:integer, callback:function()):Fs
+   fs_fstat:function(fd:integer):fs_stats_t, string
+   fs_fstat:function(fd:integer, callback:function(string, fs_stats_t)):Fs
 
    --- ### `uv.fs_lstat(path, [callback])`
    -- 
@@ -2975,8 +2975,8 @@ local record uv
    -- 
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
-   fs_lstat:function(path:string):any, string
-   fs_lstat:function(path:string, callback:function()):Fs
+   fs_lstat:function(path:string):fs_stats_t, string
+   fs_lstat:function(path:string, callback:function(string, fs_stats_t)):Fs
 
    --- ### `uv.fs_rename(path, new_path, [callback])`
    -- 
@@ -2993,7 +2993,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_rename:function(path:string, new_path:string):boolean, string
-   fs_rename:function(path:string, new_path:string, callback:function()):Fs
+   fs_rename:function(path:string, new_path:string, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_fsync(fd, [callback])`
    -- 
@@ -3009,7 +3009,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_fsync:function(fd:integer):boolean, string
-   fs_fsync:function(fd:integer, callback:function()):Fs
+   fs_fsync:function(fd:integer, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_fdatasync(fd, [callback])`
    -- 
@@ -3025,7 +3025,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_fdatasync:function(fd:integer):boolean, string
-   fs_fdatasync:function(fd:integer, callback:function()):Fs
+   fs_fdatasync:function(fd:integer, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_ftruncate(fd, offset, [callback])`
    -- 
@@ -3042,7 +3042,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_ftruncate:function(fd:integer, offset:integer):boolean, string
-   fs_ftruncate:function(fd:integer, offset:integer, callback:function()):Fs
+   fs_ftruncate:function(fd:integer, offset:integer, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_sendfile(out_fd, in_fd, in_offset, size, [callback])`
    -- 
@@ -3061,7 +3061,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_sendfile:function(out_fd:integer, in_fd:integer, in_offset:integer, size:integer):integer, string
-   fs_sendfile:function(out_fd:integer, in_fd:integer, in_offset:integer, size:integer, callback:function()):Fs
+   fs_sendfile:function(out_fd:integer, in_fd:integer, in_offset:integer, size:integer, callback:function(string, integer)):Fs
 
    --- ### `uv.fs_access(path, mode, [callback])`
    -- 
@@ -3080,7 +3080,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_access:function(path:string, mode:integer):boolean, string
-   fs_access:function(path:string, mode:integer, callback:function()):Fs
+   fs_access:function(path:string, mode:integer, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_chmod(path, mode, [callback])`
    -- 
@@ -3097,7 +3097,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_chmod:function(path:string, mode:integer):boolean, string
-   fs_chmod:function(path:string, mode:integer, callback:function()):Fs
+   fs_chmod:function(path:string, mode:integer, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_fchmod(fd, mode, [callback])`
    -- 
@@ -3114,7 +3114,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_fchmod:function(fd:integer, mode:integer):boolean, string
-   fs_fchmod:function(fd:integer, mode:integer, callback:function()):Fs
+   fs_fchmod:function(fd:integer, mode:integer, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_utime(path, atime, mtime, [callback])`
    -- 
@@ -3132,7 +3132,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_utime:function(path:string, atime:number, mtime:number):boolean, string
-   fs_utime:function(path:string, atime:number, mtime:number, callback:function()):Fs
+   fs_utime:function(path:string, atime:number, mtime:number, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_futime(fd, atime, mtime, [callback])`
    -- 
@@ -3150,7 +3150,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_futime:function(fd:integer, atime:number, mtime:number):boolean, string
-   fs_futime:function(fd:integer, atime:number, mtime:number, callback:function()):Fs
+   fs_futime:function(fd:integer, atime:number, mtime:number, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_lutime(path, atime, mtime, [callback])`
    -- 
@@ -3168,7 +3168,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_lutime:function(path:string, atime:number, mtime:number):boolean, string
-   fs_lutime:function(path:string, atime:number, mtime:number, callback:function()):Fs
+   fs_lutime:function(path:string, atime:number, mtime:number, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_link(path, new_path, [callback])`
    -- 
@@ -3185,7 +3185,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_link:function(path:string, new_path:string):boolean, string
-   fs_link:function(path:string, new_path:string, callback:function()):Fs
+   fs_link:function(path:string, new_path:string, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_symlink(path, new_path, [flags], [callback])`
    -- 
@@ -3205,7 +3205,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_symlink:function(path:string, new_path:string, flags:any):boolean, string
-   fs_symlink:function(path:string, new_path:string, flags:any, callback:function()):Fs
+   fs_symlink:function(path:string, new_path:string, flags:any, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_readlink(path, [callback])`
    -- 
@@ -3221,7 +3221,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_readlink:function(path:string):string, string
-   fs_readlink:function(path:string, callback:function()):Fs
+   fs_readlink:function(path:string, callback:function(string, string)):Fs
 
    --- ### `uv.fs_realpath(path, [callback])`
    -- 
@@ -3237,7 +3237,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_realpath:function(path:string):string, string
-   fs_realpath:function(path:string, callback:function()):Fs
+   fs_realpath:function(path:string, callback:function(string, string)):Fs
 
    --- ### `uv.fs_chown(path, uid, gid, [callback])`
    -- 
@@ -3255,7 +3255,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_chown:function(path:string, uid:integer, gid:integer):boolean, string
-   fs_chown:function(path:string, uid:integer, gid:integer, callback:function()):Fs
+   fs_chown:function(path:string, uid:integer, gid:integer, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_fchown(fd, uid, gid, [callback])`
    -- 
@@ -3273,7 +3273,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_fchown:function(fd:integer, uid:integer, gid:integer):boolean, string
-   fs_fchown:function(fd:integer, uid:integer, gid:integer, callback:function()):Fs
+   fs_fchown:function(fd:integer, uid:integer, gid:integer, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_lchown(fd, uid, gid, [callback])`
    -- 
@@ -3291,7 +3291,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_lchown:function(fd:integer, uid:integer, gid:integer):boolean, string
-   fs_lchown:function(fd:integer, uid:integer, gid:integer, callback:function()):Fs
+   fs_lchown:function(fd:integer, uid:integer, gid:integer, callback:function(string, boolean)):Fs
 
    --- ### `uv.fs_copyfile(path, new_path, [flags], [callback])`
    -- 
@@ -3312,7 +3312,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_copyfile:function(path:string, new_path:string, flags:any):boolean, string
-   fs_copyfile:function(path:string, new_path:string, flags:any, callback:function()):Fs
+   fs_copyfile:function(path:string, new_path:string, flags:any, callback:function(string, boolean)):Fs
 
    record Ldir
       --- ### `uv.fs_readdir(dir, [callback])`
@@ -3337,7 +3337,7 @@ local record uv
       -- **Returns (async version):** `uv_fs_t userdata`
       -- 
       readdir:function(Ldir):any, string
-      readdir:function(Ldir, callback:function()):Fs
+      readdir:function(Ldir, callback:function(string, any)):Fs
 
       --- ### `uv.fs_closedir(dir, [callback])`
       -- 
@@ -3355,7 +3355,7 @@ local record uv
       -- **Returns (async version):** `uv_fs_t userdata`
       -- 
       closedir:function(Ldir):any, string
-      closedir:function(Ldir, callback:function()):Fs
+      closedir:function(Ldir, callback:function(string, any)):Fs
    end
 
    --- ### `uv.fs_opendir(path, [callback, [entries]])`
@@ -3375,7 +3375,7 @@ local record uv
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
    fs_opendir:function(path:string, entries:integer):Ldir, string
-   fs_opendir:function(path:string, callback:function(), entries:integer):Fs
+   fs_opendir:function(path:string, callback:function(string, Ldir), entries:integer):Fs
 
    --- ### `uv.fs_statfs(path, [callback])`
    -- 
@@ -3395,7 +3395,7 @@ local record uv
    -- - `files` : `integer`
    -- - `ffree` : `integer`
    -- 
-   fs_statfs:function(path:string, callback:function()):any
+   fs_statfs:function(path:string, callback:function(string, any)):any
 
    --- ## Thread pool work scheduling
    -- 
@@ -3502,7 +3502,7 @@ local record uv
    -- 
    -- **Returns (async version):** `uv_getaddrinfo_t userdata` or `fail`
    -- 
-   getaddrinfo:function(host:string, service:string, hints:any, callback:function())
+   getaddrinfo:function(host:string, service:string, hints:any, callback:function(string, any))
 
    --- ### `uv.getnameinfo(address, [callback])`
    -- 
@@ -3531,7 +3531,7 @@ local record uv
    -- Libuv provides cross-platform implementations for multiple threading an
    --  synchronization primitives. The API largely follows the pthreads API.
    -- 
-   getnameinfo:function(address:any, callback:function())
+   getnameinfo:function(address:any, callback:function(err:string, host:string, service:string))
 
    record Lthread
       --- ### `uv.thread_equal(thread, other_thread)`
@@ -4168,7 +4168,7 @@ local record uv
    -- 
    -- **Returns (async version):** `0` or `fail`
    -- 
-   random:function(len:integer, flags:any, callback:function()):string | integer, string
+   random:function(len:integer, flags:any, callback:function(string, string)):string | integer, string
 
    --- ### `uv.translate_sys_error(errcode)`
    -- 
