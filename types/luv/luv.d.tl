@@ -2567,18 +2567,18 @@ local record uv
    -- `uv_fs_event_t`, fs poll handles use `stat` to detect when a file has changed so
    -- they can work on file systems where fs event handles can't.
    -- 
-   record us_fs_poll_t
+   record FsPoll
       -- Handle functions
-      is_active:function(us_fs_poll_t):boolean, string
-      is_closing:function(us_fs_poll_t):boolean, string
-      close:function(us_fs_poll_t, callback:function())
-      ref:function(us_fs_poll_t)
-      unref:function(us_fs_poll_t)
-      has_ref:function(us_fs_poll_t):boolean, string
-      send_buffer_size:function(us_fs_poll_t, size:integer):integer, string
-      recv_buffer_size:function(us_fs_poll_t, size:integer):integer, string
-      fileno:function(us_fs_poll_t):integer, string
-      get_type:function(us_fs_poll_t):string, integer
+      is_active:function(FsPoll):boolean, string
+      is_closing:function(FsPoll):boolean, string
+      close:function(FsPoll, callback:function())
+      ref:function(FsPoll)
+      unref:function(FsPoll)
+      has_ref:function(FsPoll):boolean, string
+      send_buffer_size:function(FsPoll, size:integer):integer, string
+      recv_buffer_size:function(FsPoll, size:integer):integer, string
+      fileno:function(FsPoll):integer, string
+      get_type:function(FsPoll):string, integer
 
       --- ### `uv.fs_poll_start(fs_poll, path, interval, callback)`
       -- 
@@ -2599,7 +2599,7 @@ local record uv
       -- 
       -- @return `0` or `fail`
       -- 
-      start:function(us_fs_poll_t, path:string, interval:integer, callback:function()):integer, string
+      start:function(FsPoll, path:string, interval:integer, callback:function()):integer, string
 
       --- ### `uv.fs_poll_stop()`
       -- 
@@ -2609,7 +2609,7 @@ local record uv
       -- 
       -- @return `0` or `fail`
       -- 
-      stop:function(us_fs_poll_t):integer, string
+      stop:function(FsPoll):integer, string
 
       --- ### `uv.fs_poll_getpath()`
       -- 
@@ -2619,7 +2619,7 @@ local record uv
       -- 
       -- @return `string` or `fail`
       -- 
-      getpath:function(us_fs_poll_t):string, string
+      getpath:function(FsPoll):string, string
    end
 
    --- ### `uv.new_fs_poll()`
@@ -2629,9 +2629,9 @@ local record uv
    -- 
    -- @return `uv_fs_poll_t userdata` or `fail`
    -- 
-   new_fs_poll:function():us_fs_poll_t, string
+   new_fs_poll:function():FsPoll, string
 
-   record fs_stats_t
+   record FsStats
       record TimeInfo
          sec:integer
          nsec:integer
@@ -2943,8 +2943,8 @@ local record uv
    -- 
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
-   fs_stat:function(path:string):fs_stats_t
-   fs_stat:function(path:string, callback:function(string, fs_stats_t)):Fs
+   fs_stat:function(path:string):FsStats
+   fs_stat:function(path:string, callback:function(string, FsStats)):Fs
 
    --- ### `uv.fs_fstat(fd, [callback])`
    -- 
@@ -2959,8 +2959,8 @@ local record uv
    -- 
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
-   fs_fstat:function(fd:integer):fs_stats_t, string
-   fs_fstat:function(fd:integer, callback:function(string, fs_stats_t)):Fs
+   fs_fstat:function(fd:integer):FsStats, string
+   fs_fstat:function(fd:integer, callback:function(string, FsStats)):Fs
 
    --- ### `uv.fs_lstat(path, [callback])`
    -- 
@@ -2975,8 +2975,8 @@ local record uv
    -- 
    -- **Returns (async version):** `uv_fs_t userdata`
    -- 
-   fs_lstat:function(path:string):fs_stats_t, string
-   fs_lstat:function(path:string, callback:function(string, fs_stats_t)):Fs
+   fs_lstat:function(path:string):FsStats, string
+   fs_lstat:function(path:string, callback:function(string, FsStats)):Fs
 
    --- ### `uv.fs_rename(path, new_path, [callback])`
    -- 
@@ -3874,6 +3874,11 @@ local record uv
    -- 
    hrtime:function():number
 
+   record ClockTime
+      sec:integer
+      nsec:integer
+   end
+
    --- ### `uv.clock_gettime(clock_id)`
    -- 
    -- @param `clock_id`: `string`
@@ -3891,7 +3896,7 @@ local record uv
    -- - `sec`: `integer`
    -- - `nsec`: `integer`
    -- 
-   clock_gettime:function(clock_id:string):any
+   clock_gettime:function(clock_id:string):ClockTime
 
    --- ### `uv.uptime()`
    -- 
