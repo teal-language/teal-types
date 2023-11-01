@@ -34,7 +34,7 @@ local record LuaLDAP
       close: function(self: Cnx): integer
       compare: function(self: Cnx, name: DistinguishedName, attribute: string, value: string): function(): boolean, string
       delete: function(self: Cnx, name: DistinguishedName): function(): boolean, string
-      modify: function(self: Cnx, ...: DistinguishedName|{integer|string:string|{string}}): function(): boolean, string
+      modify: function(self: Cnx, name: DistinguishedName, ...: {integer|string:string|{string}}): function(): boolean, string
       rename: function(self: Cnx, name: DistinguishedName, new_relative_dn: DistinguishedName, new_parent: DistinguishedName, delete_old: integer): function(): boolean, string
       search: function(self: Cnx, params: Search): function(): DistinguishedName, {string:string|{string}}
    end
