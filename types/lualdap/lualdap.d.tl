@@ -12,6 +12,10 @@ local record LuaLDAP
    record Cnx
       userdata
 
+      type TableOfAttributes = {string:string|{string}}
+      type TableOfOperations = {integer|string:string|{string}}
+      type ResultFunction = function(): boolean, string
+
       record Search
          enum Scope
             "base"
@@ -29,14 +33,14 @@ local record LuaLDAP
          timeout: number
       end
 
-      add: function(self: Cnx, name: DistinguishedName, table_of_attributes: {string:string|{string}}): function(): boolean, string
+      add: function(self: Cnx, name: DistinguishedName, attributes: TableOfAttributes): ResultFunction
       bind_simple: function(self: Cnx, who: DistinguishedName, password: string): Cnx, string
       close: function(self: Cnx): integer
-      compare: function(self: Cnx, name: DistinguishedName, attribute: string, value: string): function(): boolean, string
-      delete: function(self: Cnx, name: DistinguishedName): function(): boolean, string
-      modify: function(self: Cnx, name: DistinguishedName, ...: {integer|string:string|{string}}): function(): boolean, string
-      rename: function(self: Cnx, name: DistinguishedName, new_relative_dn: DistinguishedName, new_parent: DistinguishedName, delete_old: integer): function(): boolean, string
-      search: function(self: Cnx, params: Search): function(): DistinguishedName, {string:string|{string}}
+      compare: function(self: Cnx, name: DistinguishedName, attribute: string, value: string): ResultFunction
+      delete: function(self: Cnx, name: DistinguishedName): ResultFunction
+      modify: function(self: Cnx, name: DistinguishedName, ...: TableOfOperations): ResultFunction
+      rename: function(self: Cnx, name: DistinguishedName, new_rdn: DistinguishedName, new_parent: DistinguishedName, delete_old: integer): ResultFunction
+      search: function(self: Cnx, params: Search): function(): DistinguishedName, TableOfAttributes
    end
 
    open: function(hostname: string, usetls:boolean, timeout: number): Cnx, string
