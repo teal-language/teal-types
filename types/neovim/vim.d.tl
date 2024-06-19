@@ -136,7 +136,7 @@ global record vim
       "userdata"
    end
    -- Technically, this should be a union of tuples since the types are dependent and this allows for invalid combos
-   validate: function({string:{any, TypeName | function(any): (boolean, string), boolean | string}})
+   validate: function({string:{any, TypeName | {TypeName} | function(any): (boolean, string), boolean | string}})
    -- should be {string:{any, TypeName, boolean} | {any, function(any): (boolean, string)}, string}}
 
    record Regex
@@ -611,21 +611,7 @@ global record vim
       cpoptions: string
       cpt: string
       crb: boolean
-      cscopepathcomp: number
-      cscopeprg: string
-      cscopequickfix: string
-      cscoperelative: boolean
-      cscopetag: boolean
-      cscopetagorder: number
-      cscopeverbose: boolean
       csl: string
-      cspc: number
-      csprg: string
-      csqf: string
-      csre: boolean
-      cst: boolean
-      csto: number
-      csverb: boolean
       cuc: boolean
       cul: boolean
       culopt: string
@@ -665,7 +651,9 @@ global record vim
       emoji: boolean
       enc: string
       encoding: string
+      endoffile: boolean
       endofline: boolean
+      eof: boolean
       eol: boolean
       ep: string
       equalalways: boolean
@@ -824,6 +812,7 @@ global record vim
       lines: number
       linespace: number
       lisp: boolean
+      lispoptions: string
       lispwords: string
       list: boolean
       listchars: string
@@ -831,6 +820,7 @@ global record vim
       lmap: string
       lnr: boolean
       loadplugins: boolean
+      lop: string
       lpl: boolean
       lrm: boolean
       ls: number
@@ -874,8 +864,11 @@ global record vim
       mousefocus: boolean
       mousehide: boolean
       mousem: string
+      mousemev: boolean
       mousemodel: string
+      mousemoveevent: boolean
       mouses: string
+      mousescroll: string
       mouseshape: string
       mouset: number
       mousetime: number
@@ -904,30 +897,14 @@ global record vim
       patchmode: string
       path: string
       pb: number
-      pdev: string
-      penc: string
       pex: string
-      pexpr: string
-      pfn: string
       ph: number
-      pheader: string
       pi: boolean
       pm: string
-      pmbcs: string
-      pmbfn: string
-      popt: string
       pp: string
       preserveindent: boolean
       previewheight: number
       previewwindow: boolean
-      printdevice: string
-      printencoding: string
-      printexpr: string
-      printfont: string
-      printheader: string
-      printmbcharset: string
-      printmbfont: string
-      printoptions: string
       prompt: boolean
       pt: string
       pumblend: number
@@ -1010,6 +987,7 @@ global record vim
       shortmess: string
       showbreak: string
       showcmd: boolean
+      showcmdloc: string
       showfulltag: boolean
       showmatch: boolean
       showmode: boolean
@@ -1022,12 +1000,15 @@ global record vim
       siso: number
       sj: number
       slm: string
+      sloc: string
       sm: boolean
       smartcase: boolean
       smartindent: boolean
       smarttab: boolean
       smc: number
       smd: boolean
+      smoothscroll: boolean
+      sms: boolean
       so: number
       softtabstop: number
       sol: boolean
@@ -1040,8 +1021,10 @@ global record vim
       spelloptions: string
       spellsuggest: string
       spf: string
+      spk: string
       spl: string
       splitbelow: boolean
+      splitkeep: string
       splitright: boolean
       spo: string
       spr: boolean
@@ -1054,7 +1037,9 @@ global record vim
       sta: boolean
       stal: number
       startofline: boolean
+      statuscolumn: string
       statusline: string
+      stc: string
       stl: string
       stmp: boolean
       sts: number
@@ -1092,6 +1077,7 @@ global record vim
       termencoding: string
       termguicolors: boolean
       termpastefilter: string
+      termsync: boolean
       terse: boolean
       textwidth: number
       tf: boolean
@@ -1143,12 +1129,8 @@ global record vim
       verbose: number
       verbosefile: string
       vfile: string
-      vi: string
       viewdir: string
       viewoptions: string
-      vif: string
-      viminfo: string
-      viminfofile: string
       virtualedit: string
       visualbell: boolean
       vop: string
@@ -1158,9 +1140,11 @@ global record vim
       wak: string
       warn: boolean
       wb: boolean
+      wbr: string
       wc: number
       wcm: number
       wd: number
+      wfb: boolean
       wfh: boolean
       wfw: boolean
       wh: number
@@ -1177,9 +1161,11 @@ global record vim
       wildoptions: string
       wim: string
       winaltkeys: string
+      winbar: string
       winbl: number
       winblend: number
       window: number
+      winfixbuf: boolean
       winfixheight: boolean
       winfixwidth: boolean
       winheight: number
@@ -1264,21 +1250,7 @@ global record vim
       cp: boolean
       cpo: string
       cpoptions: string
-      cscopepathcomp: number
-      cscopeprg: string
-      cscopequickfix: string
-      cscoperelative: boolean
-      cscopetag: boolean
-      cscopetagorder: number
-      cscopeverbose: boolean
       csl: string
-      cspc: number
-      csprg: string
-      csqf: string
-      csre: boolean
-      cst: boolean
-      csto: number
-      csverb: boolean
       cwh: number
       debug: string
       deco: boolean
@@ -1429,8 +1401,11 @@ global record vim
       mousefocus: boolean
       mousehide: boolean
       mousem: string
+      mousemev: boolean
       mousemodel: string
+      mousemoveevent: boolean
       mouses: string
+      mousescroll: string
       mouseshape: string
       mouset: number
       mousetime: number
@@ -1447,27 +1422,11 @@ global record vim
       patchexpr: string
       patchmode: string
       pb: number
-      pdev: string
-      penc: string
       pex: string
-      pexpr: string
-      pfn: string
       ph: number
-      pheader: string
       pm: string
-      pmbcs: string
-      pmbfn: string
-      popt: string
       pp: string
       previewheight: number
-      printdevice: string
-      printencoding: string
-      printexpr: string
-      printfont: string
-      printheader: string
-      printmbcharset: string
-      printmbfont: string
-      printoptions: string
       prompt: boolean
       pt: string
       pumblend: number
@@ -1528,6 +1487,7 @@ global record vim
       shm: string
       shortmess: string
       showcmd: boolean
+      showcmdloc: string
       showfulltag: boolean
       showmatch: boolean
       showmode: boolean
@@ -1536,6 +1496,7 @@ global record vim
       sidescroll: number
       sj: number
       slm: string
+      sloc: string
       sm: boolean
       smartcase: boolean
       smarttab: boolean
@@ -1543,7 +1504,9 @@ global record vim
       sol: boolean
       sp: string
       spellsuggest: string
+      spk: string
       splitbelow: boolean
+      splitkeep: string
       splitright: boolean
       spr: boolean
       sps: string
@@ -1576,6 +1539,7 @@ global record vim
       termencoding: string
       termguicolors: boolean
       termpastefilter: string
+      termsync: boolean
       terse: boolean
       tf: boolean
       tgc: boolean
@@ -1612,12 +1576,8 @@ global record vim
       verbose: number
       verbosefile: string
       vfile: string
-      vi: string
       viewdir: string
       viewoptions: string
-      vif: string
-      viminfo: string
-      viminfofile: string
       visualbell: boolean
       vop: string
       wa: boolean
@@ -1703,7 +1663,9 @@ global record vim
       dict: string
       dictionary: string
       efm: string
+      endoffile: boolean
       endofline: boolean
+      eof: boolean
       eol: boolean
       ep: string
       equalprg: string
@@ -1749,7 +1711,9 @@ global record vim
       kmp: string
       kp: string
       lisp: boolean
+      lispoptions: string
       lispwords: string
+      lop: string
       lw: string
       ma: boolean
       makeencoding: string
@@ -1898,16 +1862,24 @@ global record vim
       sidescrolloff: number
       signcolumn: string
       siso: number
+      smoothscroll: boolean
+      sms: boolean
       so: number
       spell: boolean
+      statuscolumn: string
       statusline: string
+      stc: string
       stl: string
       ve: string
       virtualedit: string
+      wbr: string
+      wfb: boolean
       wfh: boolean
       wfw: boolean
+      winbar: string
       winbl: number
       winblend: number
+      winfixbuf: boolean
       winfixheight: boolean
       winfixwidth: boolean
       winhighlight: string
@@ -1919,11 +1891,11 @@ global record vim
    record api
       --[[
          API version Information
-            neovim version: 0.7.0
+            neovim version: 0.10.0
 
             compatible: 0
-            level: 9
-            prerelease: false
+            level: 12
+            prerelease: vim.NIL
       --]]
 
       --[[
@@ -1961,7 +1933,6 @@ global record vim
       nvim_buf_get_mark: function(integer--[[Buffer]], string--[[String]]): {integer,integer}--[[ArrayOf(Integer, 2)]]
       nvim_buf_get_name: function(integer--[[Buffer]]): string--[[String]]
       nvim_buf_get_offset: function(integer--[[Buffer]], integer--[[Integer]]): integer--[[Integer]]
-      nvim_buf_get_option: function(integer--[[Buffer]], string--[[String]]): any--[[Object]]
       nvim_buf_get_text: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]], {string:any}--[[Dictionary]]): {string}--[[ArrayOf(String)]]
       nvim_buf_get_var: function(integer--[[Buffer]], string--[[String]]): any--[[Object]]
       nvim_buf_is_loaded: function(integer--[[Buffer]]): boolean--[[Boolean]]
@@ -1972,14 +1943,13 @@ global record vim
       nvim_buf_set_lines: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], boolean--[[Boolean]], {string}--[[ArrayOf(String)]])--[[void]]
       nvim_buf_set_mark: function(integer--[[Buffer]], string--[[String]], integer--[[Integer]], integer--[[Integer]], {string:any}--[[Dictionary]]): boolean--[[Boolean]]
       nvim_buf_set_name: function(integer--[[Buffer]], string--[[String]])--[[void]]
-      nvim_buf_set_option: function(integer--[[Buffer]], string--[[String]], any--[[Object]])--[[void]]
       nvim_buf_set_text: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]], {string}--[[ArrayOf(String)]])--[[void]]
       nvim_buf_set_var: function(integer--[[Buffer]], string--[[String]], any--[[Object]])--[[void]]
-      nvim_call_atomic: function(any--[[Array]]): any--[[Array]]
       nvim_call_dict_function: function(any--[[Object]], string--[[String]], any--[[Array]]): any--[[Object]]
       nvim_call_function: function(string--[[String]], any--[[Array]]): any--[[Object]]
       nvim_chan_send: function(integer--[[Integer]], string--[[String]])--[[void]]
       nvim_clear_autocmds: function({string:any}--[[Dictionary]])--[[void]]
+      nvim_cmd: function({string:any}--[[Dictionary]], {string:any}--[[Dictionary]]): string--[[String]]
       nvim_command: function(string--[[String]])--[[void]]
       nvim_create_augroup: function(string--[[String]], {string:any}--[[Dictionary]]): integer--[[Integer]]
       nvim_create_autocmd: function(any--[[Object]], {string:any}--[[Dictionary]]): integer--[[Integer]]
@@ -1999,7 +1969,7 @@ global record vim
       nvim_err_writeln: function(string--[[String]])--[[void]]
       nvim_eval: function(string--[[String]]): any--[[Object]]
       nvim_eval_statusline: function(string--[[String]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
-      nvim_exec: function(string--[[String]], boolean--[[Boolean]]): string--[[String]]
+      nvim_exec2: function(string--[[String]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
       nvim_exec_autocmds: function(any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_exec_lua: function(string--[[String]], any--[[Array]]): any--[[Object]]
       nvim_feedkeys: function(string--[[String]], string--[[String]], boolean--[[Boolean]])--[[void]]
@@ -2015,15 +1985,14 @@ global record vim
       nvim_get_current_line: function(): string--[[String]]
       nvim_get_current_tabpage: function(): integer--[[Tabpage]]
       nvim_get_current_win: function(): integer--[[Window]]
-      nvim_get_hl_by_id: function(integer--[[Integer]], boolean--[[Boolean]]): {string:any}--[[Dictionary]]
-      nvim_get_hl_by_name: function(string--[[String]], boolean--[[Boolean]]): {string:any}--[[Dictionary]]
+      nvim_get_hl: function(integer--[[Integer]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
       nvim_get_hl_id_by_name: function(string--[[String]]): integer--[[Integer]]
+      nvim_get_hl_ns: function({string:any}--[[Dictionary]]): integer--[[Integer]]
       nvim_get_keymap: function(string--[[String]]): {{string:any}}--[[ArrayOf(Dictionary)]]
       nvim_get_mark: function(string--[[String]], {string:any}--[[Dictionary]]): any--[[Array]]
       nvim_get_mode: function(): {string:any}--[[Dictionary]]
       nvim_get_namespaces: function(): {string:any}--[[Dictionary]]
-      nvim_get_option: function(string--[[String]]): any--[[Object]]
-      nvim_get_option_info: function(string--[[String]]): {string:any}--[[Dictionary]]
+      nvim_get_option_info2: function(string--[[String]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
       nvim_get_option_value: function(string--[[String]], {string:any}--[[Dictionary]]): any--[[Object]]
       nvim_get_proc: function(integer--[[Integer]]): any--[[Object]]
       nvim_get_proc_children: function(integer--[[Integer]]): any--[[Array]]
@@ -2043,6 +2012,7 @@ global record vim
       nvim_open_term: function(integer--[[Buffer]], {string:any}--[[Dictionary]]): integer--[[Integer]]
       nvim_open_win: function(integer--[[Buffer]], boolean--[[Boolean]], {string:any}--[[Dictionary]]): integer--[[Window]]
       nvim_out_write: function(string--[[String]])--[[void]]
+      nvim_parse_cmd: function(string--[[String]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
       nvim_parse_expression: function(string--[[String]], string--[[String]], boolean--[[Boolean]]): {string:any}--[[Dictionary]]
       nvim_paste: function(string--[[String]], boolean--[[Boolean]], integer--[[Integer]]): boolean--[[Boolean]]
       nvim_put: function({string}--[[ArrayOf(String)]], string--[[String]], boolean--[[Boolean]], boolean--[[Boolean]])--[[void]]
@@ -2056,8 +2026,9 @@ global record vim
       nvim_set_current_win: function(integer--[[Window]])--[[void]]
       nvim_set_decoration_provider: function(integer--[[Integer]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_hl: function(integer--[[Integer]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
+      nvim_set_hl_ns: function(integer--[[Integer]])--[[void]]
+      nvim_set_hl_ns_fast: function(integer--[[Integer]])--[[void]]
       nvim_set_keymap: function(string--[[String]], string--[[String]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_set_option: function(string--[[String]], any--[[Object]])--[[void]]
       nvim_set_option_value: function(string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
       nvim_set_var: function(string--[[String]], any--[[Object]])--[[void]]
       nvim_set_vvar: function(string--[[String]], any--[[Object]])--[[void]]
@@ -2070,11 +2041,14 @@ global record vim
       nvim_tabpage_is_valid: function(integer--[[Tabpage]]): boolean--[[Boolean]]
       nvim_tabpage_list_wins: function(integer--[[Tabpage]]): {integer}--[[ArrayOf(Window)]]
       nvim_tabpage_set_var: function(integer--[[Tabpage]], string--[[String]], any--[[Object]])--[[void]]
+      nvim_tabpage_set_win: function(integer--[[Tabpage]], integer--[[Window]])--[[void]]
       nvim_ui_attach: function(integer--[[Integer]], integer--[[Integer]], {string:any}--[[Dictionary]])--[[void]]
       nvim_ui_detach: function()--[[void]]
       nvim_ui_pum_set_bounds: function(number--[[Float]], number--[[Float]], number--[[Float]], number--[[Float]])--[[void]]
       nvim_ui_pum_set_height: function(integer--[[Integer]])--[[void]]
+      nvim_ui_set_focus: function(boolean--[[Boolean]])--[[void]]
       nvim_ui_set_option: function(string--[[String]], any--[[Object]])--[[void]]
+      nvim_ui_term_event: function(string--[[String]], any--[[Object]])--[[void]]
       nvim_ui_try_resize: function(integer--[[Integer]], integer--[[Integer]])--[[void]]
       nvim_ui_try_resize_grid: function(integer--[[Integer]], integer--[[Integer]], integer--[[Integer]])--[[void]]
       nvim_unsubscribe: function(string--[[String]])--[[void]]
@@ -2086,7 +2060,6 @@ global record vim
       nvim_win_get_cursor: function(integer--[[Window]]): {integer,integer}--[[ArrayOf(Integer, 2)]]
       nvim_win_get_height: function(integer--[[Window]]): integer--[[Integer]]
       nvim_win_get_number: function(integer--[[Window]]): integer--[[Integer]]
-      nvim_win_get_option: function(integer--[[Window]], string--[[String]]): any--[[Object]]
       nvim_win_get_position: function(integer--[[Window]]): {integer,integer}--[[ArrayOf(Integer, 2)]]
       nvim_win_get_tabpage: function(integer--[[Window]]): integer--[[Tabpage]]
       nvim_win_get_var: function(integer--[[Window]], string--[[String]]): any--[[Object]]
@@ -2097,9 +2070,10 @@ global record vim
       nvim_win_set_config: function(integer--[[Window]], {string:any}--[[Dictionary]])--[[void]]
       nvim_win_set_cursor: function(integer--[[Window]], {integer,integer}--[[ArrayOf(Integer, 2)]])--[[void]]
       nvim_win_set_height: function(integer--[[Window]], integer--[[Integer]])--[[void]]
-      nvim_win_set_option: function(integer--[[Window]], string--[[String]], any--[[Object]])--[[void]]
+      nvim_win_set_hl_ns: function(integer--[[Window]], integer--[[Integer]])--[[void]]
       nvim_win_set_var: function(integer--[[Window]], string--[[String]], any--[[Object]])--[[void]]
       nvim_win_set_width: function(integer--[[Window]], integer--[[Integer]])--[[void]]
+      nvim_win_text_height: function(integer--[[Window]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
    end
 
 
