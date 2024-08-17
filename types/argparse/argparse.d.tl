@@ -30,6 +30,10 @@ local record argparse
 
 		add_help: function(self: Parser, boolean)
 
+		help_max_width: function(self: Parser, number): Parser
+		add_help_command: function(self: Parser, string | {string: any}): Parser
+		add_complete_command: function(self: Parser, string | {string: any}): Parser
+
 		-- TODO: should be Argument | Option
 		mutex: function(self: Parser, ...: any)
 
@@ -74,6 +78,12 @@ local record argparse
 		args: function(self: Option, args: string|integer): Option
 
 		action: function(self: Option, cb: ActionCallback)
+
+		hidden_name: function(self: Option, string)
+
+		hidden: function(self: Option, boolean)
+
+		convert: function(self: Option, function)
 	end
 
 	record Command
@@ -85,6 +95,8 @@ local record argparse
 		option: function(self: Command, name: string, description: string): Option
 
 		flag: function(self: Command, string, string): Option
+
+		handle_options: function(self: Command, boolean): Command
 	end
 
 	metamethod __call: function(self: argparse, name: string, description: string, epilog: string): Parser
