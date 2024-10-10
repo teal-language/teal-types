@@ -1,3 +1,4 @@
+-- TODO: see https://github.com/teal-language/tl/issues/812
 
 -- See full docs here
 -- https://github.com/luvit/luv/blob/master/docs.md
@@ -10,12 +11,17 @@ local record uv
       "nowait"
    end
 
-   record Req
+   interface Req
+      userdata
       cancel:function(Req):integer, string
-      req_get_type:function(Req):string, integer
+      get_type:function(Req):string, integer
    end
 
-   record Handle
+   cancel:function(Req):integer, string
+   req_get_type:function(Req):string, integer
+
+   interface Handle
+      userdata
 
       --- ### `uv.is_active(handle)`
       -- 
@@ -393,19 +399,7 @@ local record uv
    -- > [`uv_handle_t`] functions also apply.
    -- 
    -- Timer handles are used to schedule callbacks to be called in the future.
-   record Timer
-      -- Handle functions
-      is_active:function(Timer):boolean, string
-      is_closing:function(Timer):boolean, string
-      close:function(Timer, callback:function())
-      ref:function(Timer)
-      unref:function(Timer)
-      has_ref:function(Timer):boolean, string
-      send_buffer_size:function(Timer, size:integer):integer, string
-      recv_buffer_size:function(Timer, size:integer):integer, string
-      fileno:function(Timer):integer, string
-      get_type:function(Timer):string, integer
-
+   interface Timer is Handle where (self as Handle):get_type() == "timer"
       --- ### `uv.timer_start(timer, timeout, repeat, callback)`
       -- 
       -- > method form `timer:start(timeout, repeat, callback)`
@@ -519,19 +513,7 @@ local record uv
    --   print("Before I/O polling")
    -- end)
    -- ```
-   record Prepare
-      -- Handle functions
-      is_active:function(Prepare):boolean, string
-      is_closing:function(Prepare):boolean, string
-      close:function(Prepare, callback:function())
-      ref:function(Prepare)
-      unref:function(Prepare)
-      has_ref:function(Prepare):boolean, string
-      send_buffer_size:function(Prepare, size:integer):integer, string
-      recv_buffer_size:function(Prepare, size:integer):integer, string
-      fileno:function(Prepare):integer, string
-      get_type:function(Prepare):string, integer
-
+   interface Prepare is Handle where (self as Handle):get_type() == "prepare"
       --- ### `uv.prepare_start(prepare, callback)`
       -- 
       -- > method form `prepare:start(callback)`
@@ -583,19 +565,7 @@ local record uv
    -- end)
    -- ```
    -- 
-   record Check
-      -- Handle functions
-      is_active:function(Check):boolean, string
-      is_closing:function(Check):boolean, string
-      close:function(Check, callback:function())
-      ref:function(Check)
-      unref:function(Check)
-      has_ref:function(Check):boolean, string
-      send_buffer_size:function(Check, size:integer):integer, string
-      recv_buffer_size:function(Check, size:integer):integer, string
-      fileno:function(Check):integer, string
-      get_type:function(Check):string, integer
-
+   interface Check is Handle where (self as Handle):get_type() == "check"
       --- ### `uv.check_start(check, callback)`
       -- 
       -- > method form `check:start(callback)`
@@ -654,19 +624,7 @@ local record uv
    -- end)
    -- ```
    -- 
-   record Idle
-      -- Handle functions
-      is_active:function(Idle):boolean, string
-      is_closing:function(Idle):boolean, string
-      close:function(Idle, callback:function())
-      ref:function(Idle)
-      unref:function(Idle)
-      has_ref:function(Idle):boolean, string
-      send_buffer_size:function(Idle, size:integer):integer, string
-      recv_buffer_size:function(Idle, size:integer):integer, string
-      fileno:function(Idle):integer, string
-      get_type:function(Idle):string, integer
-
+   interface Idle is Handle where (self as Handle):get_type() == "idle"
       --- ### `uv.idle_start(idle, callback)`
       -- 
       -- > method form `idle:start(callback)`
@@ -721,19 +679,7 @@ local record uv
    -- async:send()
    -- ```
    -- 
-   record Async
-      -- Handle functions
-      is_active:function(Async):boolean, string
-      is_closing:function(Async):boolean, string
-      close:function(Async, callback:function())
-      ref:function(Async)
-      unref:function(Async)
-      has_ref:function(Async):boolean, string
-      send_buffer_size:function(Async, size:integer):integer, string
-      recv_buffer_size:function(Async, size:integer):integer, string
-      fileno:function(Async):integer, string
-      get_type:function(Async):string, integer
-
+   interface Async is Handle where (self as Handle):get_type() == "async"
       --- ### `uv.async_send(async, ...)`
       -- 
       -- > method form `async:send(...)`
@@ -803,19 +749,7 @@ local record uv
    -- **Note**: On windows only sockets can be polled with poll handles. On Unix any
    -- file descriptor that would be accepted by poll(2) can be used.
    -- 
-   record Poll
-      -- Handle functions
-      is_active:function(Poll):boolean, string
-      is_closing:function(Poll):boolean, string
-      close:function(Poll, callback:function())
-      ref:function(Poll)
-      unref:function(Poll)
-      has_ref:function(Poll):boolean, string
-      send_buffer_size:function(Poll, size:integer):integer, string
-      recv_buffer_size:function(Poll, size:integer):integer, string
-      fileno:function(Poll):integer, string
-      get_type:function(Poll):string, integer
-
+   interface Poll is Handle where (self as Handle):get_type() == "poll"
       --- ### `uv.poll_start(poll, events, callback)`
       -- 
       -- > method form `poll:start(events, callback)`
@@ -933,19 +867,7 @@ local record uv
    -- end)
    -- ```
    -- 
-   record Signal
-      -- Handle functions
-      is_active:function(Signal):boolean, string
-      is_closing:function(Signal):boolean, string
-      close:function(Signal, callback:function())
-      ref:function(Signal)
-      unref:function(Signal)
-      has_ref:function(Signal):boolean, string
-      send_buffer_size:function(Signal, size:integer):integer, string
-      recv_buffer_size:function(Signal, size:integer):integer, string
-      fileno:function(Signal):integer, string
-      get_type:function(Signal):string, integer
-
+   interface Signal is Handle where (self as Handle):get_type() == "signal"
       --- ### `uv.signal_start(signal, signum, callback)`
       -- 
       -- > method form `signal:start(signum, callback)`
@@ -1007,19 +929,7 @@ local record uv
    -- 
    new_signal:function():Signal, string
 
-   record Process
-      -- Handle functions
-      is_active:function(Process):boolean, string
-      is_closing:function(Process):boolean, string
-      close:function(Process, callback:function())
-      ref:function(Process)
-      unref:function(Process)
-      has_ref:function(Process):boolean, string
-      send_buffer_size:function(Process, size:integer):integer, string
-      recv_buffer_size:function(Process, size:integer):integer, string
-      fileno:function(Process):integer, string
-      get_type:function(Process):string, integer
-
+   interface Process is Handle where (self as Handle):get_type() == "process"
       --- ### `uv.process_kill(process, signum)`
       -- 
       -- > method form `process:kill(signum)`
@@ -1203,19 +1113,7 @@ local record uv
    -- [`uv_stream_t`] is an abstract type, libuv provides 3 stream implementations
    -- in the form of [`uv_tcp_t`], [`uv_pipe_t`] and [`uv_tty_t`].
    -- 
-   record Stream
-      -- Handle functions
-      is_active:function(Stream):boolean, string
-      is_closing:function(Stream):boolean, string
-      close:function(Stream, callback:function())
-      ref:function(Stream)
-      unref:function(Stream)
-      has_ref:function(Stream):boolean, string
-      send_buffer_size:function(Stream, size:integer):integer, string
-      recv_buffer_size:function(Stream, size:integer):integer, string
-      fileno:function(Stream):integer, string
-      get_type:function(Stream):string, integer
-
+   interface Stream is Handle where (self as Handle):get_type() == "stream"
       --- ### `uv.shutdown(stream, [callback])`
       -- 
       -- > method form `stream:shutdown([callback])`
@@ -1456,34 +1354,7 @@ local record uv
    -- 
    -- TCP handles are used to represent both TCP streams and servers.
    -- 
-   record Tcp
-      -- Handle functions
-      is_active:function(Tcp):boolean, string
-      is_closing:function(Tcp):boolean, string
-      close:function(Tcp, callback:function())
-      ref:function(Tcp)
-      unref:function(Tcp)
-      has_ref:function(Tcp):boolean, string
-      send_buffer_size:function(Tcp, size:integer):integer, string
-      recv_buffer_size:function(Tcp, size:integer):integer, string
-      fileno:function(Tcp):integer, string
-      get_type:function(Tcp):string, integer
-
-      -- Stream functions
-      shutdown:function(Tcp, callback:function())
-      listen:function(Tcp, backlog:integer, callback:function()):integer, string
-      accept:function(Tcp, client_stream:Tcp):integer, string
-      read_start:function(Tcp, callback:function())
-      read_stop:function(Tcp)
-      write:function(Tcp, data:any, callback:function()):any, string
-      write2:function(Tcp, data:any, send_handle:Tcp, callback:function())
-      try_write:function(Tcp, data:any):integer, string
-      try_write2:function(Tcp, data:any, send_handle:Tcp):integer, string
-      is_readable:function(Tcp):boolean
-      is_writable:function(Tcp):boolean
-      set_blocking:function(Tcp, blocking:boolean):integer, string
-      get_write_queue_size:function(Tcp):integer
-
+   interface Tcp is Stream where (self as Stream):get_type() == "tcp"
       --- ### `uv.tcp_open(tcp, sock)`
       -- 
       -- > method form `tcp:open(sock)`
@@ -1726,34 +1597,7 @@ local record uv
    -- end)
    -- ```
    -- 
-   record Pipe
-      -- Handle functions
-      is_active:function(Pipe):boolean, string
-      is_closing:function(Pipe):boolean, string
-      close:function(Pipe, callback:function())
-      ref:function(Pipe)
-      unref:function(Pipe)
-      has_ref:function(Pipe):boolean, string
-      send_buffer_size:function(Pipe, size:integer):integer, string
-      recv_buffer_size:function(Pipe, size:integer):integer, string
-      fileno:function(Pipe):integer, string
-      get_type:function(Pipe):string, integer
-
-      -- Stream functions
-      shutdown:function(Pipe, callback:function())
-      listen:function(Pipe, backlog:integer, callback:function()):integer, string
-      accept:function(Pipe, client_stream:Pipe):integer, string
-      read_start:function(Pipe, callback:function(string, string))
-      read_stop:function(Pipe)
-      write:function(Pipe, data:any, callback:function()):any, string
-      write2:function(Pipe, data:any, send_handle:Pipe, callback:function())
-      try_write:function(Pipe, data:any):integer, string
-      try_write2:function(Pipe, data:any, send_handle:Pipe):integer, string
-      is_readable:function(Pipe):boolean
-      is_writable:function(Pipe):boolean
-      set_blocking:function(Pipe, blocking:boolean):integer, string
-      get_write_queue_size:function(Pipe):integer
-
+   interface Pipe is Stream where (self as Stream):get_type() == "pipe"
       --- ### `uv.pipe_open(pipe, fd)`
       -- 
       -- > method form `pipe:open(fd)`
@@ -2021,34 +1865,7 @@ local record uv
    -- end)
    -- ```
    -- 
-   record Tty
-      -- Handle functions
-      is_active:function(Tty):boolean, string
-      is_closing:function(Tty):boolean, string
-      close:function(Tty, callback:function())
-      ref:function(Tty)
-      unref:function(Tty)
-      has_ref:function(Tty):boolean, string
-      send_buffer_size:function(Tty, size:integer):integer, string
-      recv_buffer_size:function(Tty, size:integer):integer, string
-      fileno:function(Tty):integer, string
-      get_type:function(Tty):string, integer
-
-      -- Stream functions
-      shutdown:function(Tty, callback:function())
-      listen:function(Tty, backlog:integer, callback:function()):integer, string
-      accept:function(Tty, client_stream:Tty):integer, string
-      read_start:function(Tty, callback:function(err:string, chunk:string))
-      read_stop:function(Tty)
-      write:function(Tty, data:any, callback:function()):any, string
-      write2:function(Tty, data:any, send_handle:Tty, callback:function())
-      try_write:function(Tty, data:any):integer, string
-      try_write2:function(Tty, data:any, send_handle:Tty):integer, string
-      is_readable:function(Tty):boolean
-      is_writable:function(Tty):boolean
-      set_blocking:function(Tty, blocking:boolean):integer, string
-      get_write_queue_size:function(Tty):integer
-
+   interface Tty is Stream where (self as Stream):get_type() == "tty"
       --- ### `uv.tty_set_mode(tty, mode)`
       -- 
       -- > method form `tty:set_mode(mode)`
@@ -2154,19 +1971,7 @@ local record uv
    -- 
    -- UDP handles encapsulate UDP communication for both clients and servers.
    -- 
-   record Udp
-      -- Handle functions
-      is_active:function(Udp):boolean, string
-      is_closing:function(Udp):boolean, string
-      close:function(Udp, callback:function())
-      ref:function(Udp)
-      unref:function(Udp)
-      has_ref:function(Udp):boolean, string
-      send_buffer_size:function(Udp, size:integer):integer, string
-      recv_buffer_size:function(Udp, size:integer):integer, string
-      fileno:function(Udp):integer, string
-      get_type:function(Udp):string, integer
-
+   interface Udp is Handle where (self as Handle):get_type() == "udp"
       --- ### `uv.udp_get_send_queue_size()`
       -- 
       -- > method form `udp:get_send_queue_size()`
@@ -2490,19 +2295,7 @@ local record uv
    -- example, if the file was renamed or there was a generic change in it. This
    -- handle uses the best backend for the job on each platform.
    -- 
-   record FsEvent
-      -- Handle functions
-      is_active:function(FsEvent):boolean, string
-      is_closing:function(FsEvent):boolean, string
-      close:function(FsEvent, callback:function())
-      ref:function(FsEvent)
-      unref:function(FsEvent)
-      has_ref:function(FsEvent):boolean, string
-      send_buffer_size:function(FsEvent, size:integer):integer, string
-      recv_buffer_size:function(FsEvent, size:integer):integer, string
-      fileno:function(FsEvent):integer, string
-      get_type:function(FsEvent):string, integer
-
+   interface FsEvent is Handle where (self as Handle):get_type() == "fs_event"
       --- ### `uv.fs_event_start(fs_event, path, flags, callback)`
       -- 
       -- > method form `fs_event:start(path, flags, callback)`
@@ -2567,7 +2360,7 @@ local record uv
    -- `uv_fs_event_t`, fs poll handles use `stat` to detect when a file has changed so
    -- they can work on file systems where fs event handles can't.
    -- 
-   record FsPoll
+   interface FsPoll is Handle where (self as Handle):get_type() == "fs_poll"
       -- Handle functions
       is_active:function(FsPoll):boolean, string
       is_closing:function(FsPoll):boolean, string
@@ -2703,7 +2496,7 @@ local record uv
    -- end)
    -- ```
    -- 
-   record Fs
+   interface Fs is Req where (self as Req):get_type() == "fs"
    end
 
    --- ### `uv.fs_close(fd, [callback])`
@@ -3534,6 +3327,8 @@ local record uv
    getnameinfo:function(address:any, callback:function(err:string, host:string, service:string))
 
    record Lthread
+      userdata
+
       --- ### `uv.thread_equal(thread, other_thread)`
       -- 
       -- > method form `thread:equal(other_thread)`
