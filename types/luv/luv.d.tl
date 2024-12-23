@@ -1101,7 +1101,7 @@ local record uv
    -- 
    -- @return `uv_process_t userdata`, `integer`
    -- 
-   spawn:function(path:string, options:SpawnOptions, on_exit:function(integer)):Process, integer
+   spawn:function(path:string, options:SpawnOptions, on_exit:function(exit_status: integer, term_signal: integer)):Process, integer
 
    --- ## `uv_stream_t` — Stream handle
    -- 
