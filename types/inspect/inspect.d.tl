@@ -6,7 +6,7 @@ local record inspect
         process: function(item: any, path: {any}): any
     end
 
-    metamethod __call: function(self: inspect, value: any, options: InspectOptions): string
+    metamethod __call: function(self: inspect, value: any, options?: InspectOptions): string
 end
 
 return inspect
