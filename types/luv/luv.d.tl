@@ -3119,8 +3119,12 @@ local record uv
       -- 
       -- **Returns (async version):** `uv_fs_t userdata`
       -- 
-      readdir:function(Ldir):any, string
-      readdir:function(Ldir, callback:function(string, any)):Fs
+      record Data
+	      name: string
+	      type: string
+      end
+      readdir:function(Ldir):{Data}, string
+      readdir:function(Ldir, callback:function(string, {Data})):Fs
 
       --- ### `uv.fs_closedir(dir, [callback])`
       -- 
@@ -3140,6 +3144,9 @@ local record uv
       closedir:function(Ldir):any, string
       closedir:function(Ldir, callback:function(string, any)):Fs
    end
+
+   fs_readdir:function(Ldir):{Ldir.Data}, string
+   fs_readdir:function(Ldir, callback:function(string, {Ldir.Data})):Fs
 
    --- ### `uv.fs_opendir(path, [callback, [entries]])`
    -- 
