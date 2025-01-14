@@ -3096,6 +3096,8 @@ local record uv
    fs_copyfile:function(path:string, new_path:string, flags:any, callback:function(string, boolean)):Fs
 
    record Ldir
+      userdata
+
       --- ### `uv.fs_readdir(dir, [callback])`
       -- 
       -- > method form `dir:readdir([callback])`
@@ -3203,6 +3205,7 @@ local record uv
    -- ```
    -- 
    record LworkCtx
+      userdata
       queue:function(LworkCtx, ...:any):boolean, string
    end
 
