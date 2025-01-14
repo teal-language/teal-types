@@ -2361,18 +2361,6 @@ local record uv
    -- they can work on file systems where fs event handles can't.
    -- 
    interface FsPoll is Handle where (self as Handle):get_type() == "fs_poll"
-      -- Handle functions
-      is_active:function(FsPoll):boolean, string
-      is_closing:function(FsPoll):boolean, string
-      close:function(FsPoll, callback:function())
-      ref:function(FsPoll)
-      unref:function(FsPoll)
-      has_ref:function(FsPoll):boolean, string
-      send_buffer_size:function(FsPoll, size:integer):integer, string
-      recv_buffer_size:function(FsPoll, size:integer):integer, string
-      fileno:function(FsPoll):integer, string
-      get_type:function(FsPoll):string, integer
-
       --- ### `uv.fs_poll_start(fs_poll, path, interval, callback)`
       -- 
       -- > method form `fs_poll:start(path, interval, callback)`
