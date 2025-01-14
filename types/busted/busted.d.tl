@@ -13,3 +13,7 @@ global randomize: function()
 global finally: function(function())
 global pending: function(string)
 
+local record busted
+end
+
+return busted
