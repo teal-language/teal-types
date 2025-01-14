@@ -83,7 +83,7 @@ local record uv
       -- 
       -- @return Nothing.
       -- 
-      close:function(Handle, callback:function())
+      close:function(Handle, callback?:function())
 
       --- ### `uv.ref(handle)`
       -- 
