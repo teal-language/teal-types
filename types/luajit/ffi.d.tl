@@ -23,7 +23,8 @@ local record libffi
     copy:       function(CData, string)
     fill:       function(CData, integer, CData)
     abi:        function(string): boolean
-    set:        function(function)
+    os:         string
+    arch:       string
 
     C: CNamespace
 end
