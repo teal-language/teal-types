@@ -1,6 +1,7 @@
 local ltn12 = require("ltn12")
 local type Pump = ltn12.Pump
 local type Sink = ltn12.Sink
+local type Source = ltn12.Source
 
 local record ftp
    get: function(string): string, string
@@ -21,7 +22,7 @@ local record ftp
 
    record FTPPutInfo
       host: string
-      source: Sink -- yes, this is a sink
+      source: Source
       argument: string
       path: string
       user: string
@@ -34,6 +35,10 @@ local record ftp
    end
    put: function(string, string): integer, string
    put: function(FTPPutInfo): integer, string
+
+   TIMEOUT: number
+   USER: string
+   PASSWORD: string
 end
 
 return ftp
