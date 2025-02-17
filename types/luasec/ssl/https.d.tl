@@ -1,11 +1,11 @@
 local ssl = require("ssl")
-local SSLCertificate = ssl.SSLCertificate
-local SSLConnection = ssl.SSLConnection
+local type SSLCertificate = ssl.SSLCertificate
+local type SSLConnection = ssl.SSLConnection
 
 local ltn12 = require("ltn12")
-local Pump = ltn12.Pump
-local Sink = ltn12.Sink
-local Source = ltn12.Source
+local type Pump = ltn12.Pump
+local type Sink = ltn12.Sink
+local type Source = ltn12.Source
 
 local record https
    record HTTPSRequest
@@ -45,6 +45,7 @@ local record https
    request: function(string, string): string, number, {string:string}, string
    request: function(HTTPSRequest): string, number, {string:string}, string
    tcp: function(): function(): SSLConnection
+   _VERSION: string
 end
 
 return https

@@ -20,7 +20,7 @@ local record ssl
       options: string|{string}
       ciphers: string
       ciphersuites: string
-      depth: number
+      depth: integer
       dhparam: function
       curve: string
       curves_list: string
@@ -57,7 +57,7 @@ local record ssl
       getalpn: function(SSLConnection): string
       getfinished: function(SSLConnection): string
       getpeercertificate: function(SSLConnection): X509Certificate
-      getpeercertificate: function(SSLConnection, number): X509Certificate
+      getpeercertificate: function(SSLConnection, integer): X509Certificate
       getpeerchain: function(SSLConnection): X509Certificate
       getpeerverification: function(SSLConnection): string
       getpeerfinished: function(SSLConnection): string
@@ -69,11 +69,9 @@ local record ssl
          "*a"
          "*l"
       end
-      receive: function(SSLConnection, number|ReceivePattern): string, string
-      receive: function(SSLConnection, number|ReceivePattern, string): string, string
-      send: function(SSLConnection): number, number|string, number
-      send: function(SSLConnection, number): number, number|string, number
-      send: function(SSLConnection, number, number): number, number|string, number
+      receive: function(SSLConnection, integer|ReceivePattern): string, string
+      receive: function(SSLConnection, integer|ReceivePattern, string): string, string
+      send: function(SSLConnection, string, ? integer, ? integer): integer, integer|string, integer
       setdane: function(SSLConnection, string)
       setstats: function(SSLConnection, number, number, number): number
       enum TimeoutMode
