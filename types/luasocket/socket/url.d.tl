@@ -18,8 +18,10 @@ local record url
    build: function(ParsedUrl): string
    build_path: function({string}, any): string
    escape: function(string): string
-   parse: function(string, table): ParsedUrl
+   parse: function(string, ? ParsedUrl): ParsedUrl
    parse_path: function(string): {string}
    unescape: function(string): string
+
+   _VERSION: string
 end
 return url

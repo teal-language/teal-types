@@ -27,6 +27,12 @@ local record smtp
       create: function
    end
    send: function(SMTPSendFormat): integer, string
+
+   TIMEOUT: number
+   SERVER: string
+   PORT: integer
+   DOMAIN: string
+   ZONE: string
 end
 
 return smtp

@@ -14,6 +14,12 @@ local record mime
       "binary"
    end
 
+   type BuildFn = function(any...): Filter
+
+   decodet: {string:BuildFn}
+   encodet: {string:BuildFn}
+   wrapt: {string:BuildFn}
+
    decode: function(Encoding): Filter
    encode: function(Encoding, Mode): Filter
 

@@ -1,6 +1,6 @@
 local ltn12 = require("ltn12")
-local Sink = ltn12.Sink
-local Source = ltn12.Source
+local type Sink = ltn12.Sink
+local type Source = ltn12.Source
 
 local record socket
    record TCP
@@ -22,7 +22,7 @@ local record socket
       end
       receive: function(TCP, TCPReceivePattern|integer, string): string, TCPReceiveError
 
-      send: function(TCP, string, integer, integer): integer, string, integer
+      send: function(TCP, string, ? integer, ? integer): integer, string, integer
 
       enum TCPShutdownMode
          "both"
@@ -108,6 +108,10 @@ local record socket
       toip: function(): string
       tohostname: function(string): string, DNSResolved|string
       gethostname: function(string): string, DNSResolved|string
+   end
+
+   record headers
+      canonic: {string: string}
    end
 
    bind: function(string, integer, integer): TCP
