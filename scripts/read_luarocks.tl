@@ -6,7 +6,16 @@
 -- Files that don't have a corresponding rock are listed and not copied.
 
 local ltn12 = require'vendored.ltn12'
-local lfs = require'lfs'
+
+-- prefer an installed version if available.
+local simplelfs = require'vendored.lfs'
+local lfs: simplelfs = simplelfs
+do
+   local worked, reallfs = pcall(require, 'lfs')
+   if worked then
+      lfs = reallfs as simplelfs
+   end
+end
 
 local REPO_DIR <const> = '..'
 

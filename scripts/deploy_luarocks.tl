@@ -3,7 +3,16 @@
 -- Copies files that have a matching .lua or .dll or similar in the tree.
 
 local ltn12 = require'vendored.ltn12'
-local lfs = require'lfs'
+
+-- prefer an installed version if available.
+local simplelfs = require'vendored.lfs'
+local lfs: simplelfs = simplelfs
+do
+   local worked, reallfs = pcall(require, 'lfs')
+   if worked then
+      lfs = reallfs as simplelfs
+   end
+end
 
 local REPO_DIR <const> = '..'
 
@@ -103,9 +112,9 @@ local function scan_deploy_dir(path: string, modname ?: string)
             else
                -- check if there is already a d.tl or .tl file
                if ext == '.lua' then
-                  if lfs.attributes(npath:sub(1, -5) .. '.tl') then
+                  if lfs.attributes(npath:sub(1, -5) .. '.tl', 'mode') then
                      -- .tl exists: nothing to do here
-                  elseif lfs.attributes(npath:sub(1, -5) .. '.d.tl') then
+                  elseif lfs.attributes(npath:sub(1, -5) .. '.d.tl', 'mode') then
                      -- .d.tl exists but not here
                      print('.d.tl exists but not in teal-types: ' .. name .. '\t(' .. npath:sub(1, -5) .. '.d.tl)')
                   elseif not excluded(name) and istoplevel(name) then

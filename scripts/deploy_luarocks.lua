@@ -1,9 +1,18 @@
-local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local assert = _tl_compat and _tl_compat.assert or assert; local io = _tl_compat and _tl_compat.io or io; local string = _tl_compat and _tl_compat.string or string
+local _tl_compat; if (tonumber((_VERSION or ''):match('[%d.]*$')) or 0) < 5.3 then local p, m = pcall(require, 'compat53.module'); if p then _tl_compat = m end end; local assert = _tl_compat and _tl_compat.assert or assert; local io = _tl_compat and _tl_compat.io or io; local pcall = _tl_compat and _tl_compat.pcall or pcall; local string = _tl_compat and _tl_compat.string or string
 
 
 
 local ltn12 = require('vendored.ltn12')
-local lfs = require('lfs')
+
+
+local simplelfs = require('vendored.lfs')
+local lfs = simplelfs
+do
+   local worked, reallfs = pcall(require, 'lfs')
+   if worked then
+      lfs = reallfs
+   end
+end
 
 local REPO_DIR = '..'
 
@@ -103,9 +112,9 @@ local function scan_deploy_dir(path, modname)
             else
 
                if ext == '.lua' then
-                  if lfs.attributes(npath:sub(1, -5) .. '.tl') then
+                  if lfs.attributes(npath:sub(1, -5) .. '.tl', 'mode') then
 
-                  elseif lfs.attributes(npath:sub(1, -5) .. '.d.tl') then
+                  elseif lfs.attributes(npath:sub(1, -5) .. '.d.tl', 'mode') then
 
                      print('.d.tl exists but not in teal-types: ' .. name .. '\t(' .. npath:sub(1, -5) .. '.d.tl)')
                   elseif not excluded(name) and istoplevel(name) then
