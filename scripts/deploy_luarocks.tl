@@ -98,7 +98,7 @@ local function scan_deploy_dir(path: string, modname ?: string)
                -- print(newpath, typath)
                assert(ltn12.pump.all(
                   ltn12.source.file(io.open(typath, 'rb')),
-                  ltn12.sink.file(io.open(newpath, 'wb'))
+                  ltn12.sink.file(write_and_make_dir(newpath))
                ))
             else
                -- check if there is already a d.tl or .tl file
