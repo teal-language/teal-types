@@ -2,7 +2,7 @@
 --
 -- Copies files that have a matching .lua or .dll or similar in the tree.
 
-local ltn12 = require'ltn12'
+local ltn12 = require'vendored.ltn12'
 local lfs = require'lfs'
 
 local REPO_DIR <const> = '..'

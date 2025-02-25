@@ -5,7 +5,7 @@
 --
 -- Files that don't have a corresponding rock are listed and not copied.
 
-local ltn12 = require'ltn12'
+local ltn12 = require'vendored.ltn12'
 local lfs = require'lfs'
 
 local REPO_DIR <const> = '..'
