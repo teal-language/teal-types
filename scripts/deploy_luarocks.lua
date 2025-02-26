@@ -78,7 +78,7 @@ for library in lfs.dir(REPO_DIR .. '/types') do
    end
 end
 
-local deploy_dir = assert(luarocks('config deploy_lua_dir --local'):read('l'), 'this script requires luarocks in your path')
+local deploy_dir = assert(luarocks('config deploy_lua_dir --local'):read(), 'this script requires luarocks in your path')
 
 local function name_to_dtlfile(name)
    return deploy_dir .. '/' .. name:gsub('%.', '/') .. '.d.tl'
@@ -130,4 +130,4 @@ local function scan_deploy_dir(path, modname)
 end
 
 scan_deploy_dir(deploy_dir)
-scan_deploy_dir((assert(luarocks('config deploy_lib_dir --local'):read('l'), 'this script requires luarocks in your path')))
+scan_deploy_dir((assert(luarocks('config deploy_lib_dir --local'):read(), 'this script requires luarocks in your path')))
