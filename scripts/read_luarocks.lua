@@ -14,7 +14,7 @@ local function luarocks(subc)
    return assert(io.popen('luarocks ' .. subc))
 end
 
-local deploy_dir = luarocks('config deploy_lua_dir'):read('l')
+local deploy_dir = luarocks('config deploy_lua_dir --local'):read('l')
 if not deploy_dir then
    error('this script requires luarocks in your path')
 end
