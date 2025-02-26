@@ -5,6 +5,8 @@
 local ltn12 = require'ltn12'
 local lfs = require'lfs'
 
+local REPO_DIR <const> = '..'
+
 local function luarocks(subc: string): FILE
    return assert(io.popen('luarocks ' .. subc))
 end
@@ -61,9 +63,9 @@ local function scan_lib_dir(path: string, modname ?: string)
    end
 end
 
-for library in lfs.dir 'types' do
+for library in lfs.dir(REPO_DIR .. '/types') do
    if library ~= '.' and library ~= '..' then
-      scan_lib_dir('types/' .. library)
+      scan_lib_dir(REPO_DIR .. '/types/' .. library)
    end
 end
 
