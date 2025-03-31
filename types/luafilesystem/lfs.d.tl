@@ -90,17 +90,17 @@ local record lfs
 
    currentdir: function(): string, string
 
-   attributes: function(string): Attributes
-   attributes: function(string, AttributeSelStr): string
-   attributes: function(string, AttributeSelInt): integer
-   attributes: function(string, AttributeSelFM): FileMode
-   attributes: function(string, Attributes): Attributes
+   attributes: function(string): Attributes, string, integer
+   attributes: function(string, AttributeSelStr): string, string, integer
+   attributes: function(string, AttributeSelInt): integer, string, integer
+   attributes: function(string, AttributeSelFM): FileMode, string, integer
+   attributes: function(string, Attributes): Attributes, string, integer
 
-   symlinkattributes: function(string): SymlinkAttributes
-   symlinkattributes: function(string, AttributeSelStr): string
-   symlinkattributes: function(string, AttributeSelInt): integer
-   symlinkattributes: function(string, AttributeSelFM): FileMode
-   symlinkattributes: function(string, SymlinkAttributes): SymlinkAttributes
+   symlinkattributes: function(string): SymlinkAttributes, string, integer
+   symlinkattributes: function(string, AttributeSelStr): string, string, integer
+   symlinkattributes: function(string, AttributeSelInt): integer, string, integer
+   symlinkattributes: function(string, AttributeSelFM): FileMode, string, integer
+   symlinkattributes: function(string, SymlinkAttributes): SymlinkAttributes, string, integer
 
    touch: function(string, ? integer, ? integer): boolean, string
 
