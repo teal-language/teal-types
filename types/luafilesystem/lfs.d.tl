@@ -11,7 +11,7 @@ local record lfs
       "other"
    end
 
-   record Attributes
+   interface Attributes
       dev: integer
       ino: integer
       mode: FileMode
@@ -26,6 +26,10 @@ local record lfs
       permissions: string
       blocks: integer
       blksize: integer
+   end
+
+   interface SymlinkAttributes is Attributes
+      target: string
    end
 
    enum AttributeSelInt
@@ -92,11 +96,11 @@ local record lfs
    attributes: function(string, AttributeSelFM): FileMode
    attributes: function(string, Attributes): Attributes
 
-   symlinkattributes: function(string): Attributes
+   symlinkattributes: function(string): SymlinkAttributes
    symlinkattributes: function(string, AttributeSelStr): string
    symlinkattributes: function(string, AttributeSelInt): integer
    symlinkattributes: function(string, AttributeSelFM): FileMode
-   symlinkattributes: function(string, Attributes): Attributes
+   symlinkattributes: function(string, SymlinkAttributes): SymlinkAttributes
 
    touch: function(string, ? integer, ? integer): boolean, string
 
