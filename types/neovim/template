@@ -1,4 +1,5 @@
 -- vim: ft=teal expandtab sw=3 ts=3
+local type luv = require("luv")
 
 global record vim
    -- TODO: Either find a way to generate these or at least find a comprehensive list to put a bunch of 'TODO' stub definitions here
@@ -14,6 +15,9 @@ global record vim
 
    -- TODO:
    -- vim.treesitter
+
+   loop: luv
+   uv: luv
 
    type WindowId = integer
    type BufferId = integer
@@ -228,96 +232,6 @@ global record vim
 
    record spell
       check: function(str: string): {{string | integer}}
-   end
-
-   -- TODO: these are a pitiful approximation of luv's types
-   -- once Teal has some form of type inheritance/composition and luv.d.tl is written
-   -- just steal from that
-   record loop
-      cwd: function(): string
-      sleep: function(integer)
-      record Handle
-         close: function(Handle)
-         is_closing: function(Timer)
-      end
-      record Pipe
-         read_start: function(Pipe, function(string, string))
-         read_stop: function(Pipe)
-         close: function(Pipe)
-      end
-      record Process
-         close: function(Process)
-      end
-      record Timer
-         start: function(Timer, integer, integer, function)
-         close: function(Timer)
-         stop: function(Timer)
-         is_closing: function(Timer)
-      end
-      new_timer: function(): Timer
-
-      new_pipe: function(boolean): Pipe
-
-      -- TODO: the rest of these
-      record SpawnOptions
-         cwd: string
-         args: {string}
-         stdio: {Pipe, Pipe, Pipe}
-      end
-      spawn: function(string, SpawnOptions, function): Process
-
-      read_start: function(Pipe, function(string, string))
-
-      record Fs userdata end
-      fs_open: function(string, string|integer, integer): integer, string, string
-      fs_open: function(string, string|integer, integer, function(string, integer)): Fs
-
-      fs_close: function(integer): boolean, string, string
-      fs_close: function(integer, function(string, boolean)): Fs
-
-      fs_read: function(integer, integer, integer): string, string, string
-      fs_read: function(integer, integer, integer, function(string, integer)): Fs
-
-      fs_write: function(integer, string|{string}, integer): integer, string, string
-      fs_write: function(integer, string|{string}, integer, function(string, integer)): Fs
-
-      record FsStat
-         record Time
-            sec: integer
-            nsec: integer
-         end
-         dev: integer
-         mode: integer
-         nlink: integer
-         uid: integer
-         gid: integer
-         rdev: integer
-         ino: integer
-         size: integer
-         blksize: integer
-         blocks: integer
-         flags: integer
-         gen: integer
-         atime: Time
-         mtime: Time
-         ctime: Time
-         birthtime: Time
-         type: string
-      end
-      fs_stat: function(string): FsStat, string, string
-      fs_stat: function(string, function(string, FsStat))
-
-      fs_lstat: function(string): FsStat, string, string
-      fs_lstat: function(string, function(string, FsStat))
-
-      fs_fstat: function(integer): FsStat, string, string
-      fs_fstat: function(integer, function(string, FsStat))
-
-      fs_scandir: function(string, function(string, Fs)): Fs, string, string
-      fs_scandir_next: function(Fs): string, string, string
-
-      fs_mkdir: function(string, integer): boolean, string, string
-      fs_mkdir: function(string, integer, function(string, boolean)): Fs
    end
 
    in_fast_event: function(): boolean
