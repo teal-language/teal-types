@@ -15,6 +15,51 @@ global record vim
    -- TODO:
    -- vim.treesitter
 
+   type WindowId = integer
+   type BufferId = integer
+   type TabpageId = integer
+   type NamespaceId = integer
+
+   interface DecorationProviderCallbacks
+      on_start: function(string, integer): boolean
+      on_buf: function(string, BufferId, integer): boolean
+      on_win: function(string, WindowId, BufferId, integer, integer): boolean
+      on_line: function(string, WindowId, BufferId, integer): boolean
+      on_end: function(string, integer): boolean
+   end
+
+   interface CreateUserCommandOptions
+      name: string
+      desc: string
+      force: boolean
+      preview: function(table, NamespaceId, BufferId): integer
+      bang: boolean
+      nargs: integer | string
+      complete: string -- TODO: enum
+      range: boolean | string | integer
+      count: integer
+      addr: string
+      bar: boolean
+      register: boolean
+      buffer: boolean
+      keepscript: boolean
+   end
+
+   interface CommandArguments
+      name: string
+      args: string
+      fargs: {string}
+      nargs: integer
+      bang: boolean
+      line1: integer
+      line2: integer
+      range: integer
+      count: integer
+      reg: string
+      mods: string
+      smods: table
+   end
+
    fn: {string:function(...: any): (any)}
    cmd: function(cmd: string)
    call: function(func: string, ...: any)
@@ -359,8 +404,7 @@ global record vim
          higroup: string,
          start: {integer, integer},
          finish: {integer, integer},
-         rtype: any,
-         inclusive: boolean
+         options: table
       )
    end
 

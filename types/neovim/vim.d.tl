@@ -15,6 +15,51 @@ global record vim
    -- TODO:
    -- vim.treesitter
 
+   type WindowId = integer
+   type BufferId = integer
+   type TabpageId = integer
+   type NamespaceId = integer
+
+   interface DecorationProviderCallbacks
+      on_start: function(string, integer): boolean
+      on_buf: function(string, BufferId, integer): boolean
+      on_win: function(string, WindowId, BufferId, integer, integer): boolean
+      on_line: function(string, WindowId, BufferId, integer): boolean
+      on_end: function(string, integer): boolean
+   end
+
+   interface CreateUserCommandOptions
+      name: string
+      desc: string
+      force: boolean
+      preview: function(table, NamespaceId, BufferId): integer
+      bang: boolean
+      nargs: integer | string
+      complete: string -- TODO: enum
+      range: boolean | string | integer
+      count: integer
+      addr: string
+      bar: boolean
+      register: boolean
+      buffer: boolean
+      keepscript: boolean
+   end
+
+   interface CommandArguments
+      name: string
+      args: string
+      fargs: {string}
+      nargs: integer
+      bang: boolean
+      line1: integer
+      line2: integer
+      range: integer
+      count: integer
+      reg: string
+      mods: string
+      smods: table
+   end
+
    fn: {string:function(...: any): (any)}
    cmd: function(cmd: string)
    call: function(func: string, ...: any)
@@ -359,8 +404,7 @@ global record vim
          higroup: string,
          start: {integer, integer},
          finish: {integer, integer},
-         rtype: any,
-         inclusive: boolean
+         options: table
       )
    end
 
@@ -1891,189 +1935,189 @@ global record vim
    record api
       --[[
          API version Information
-            neovim version: 0.10.0
+            neovim version: 0.10.2
 
             compatible: 0
             level: 12
-            prerelease: vim.NIL
+            prerelease: false
       --]]
 
       --[[
          Vim Type -> Teal Type
          Boolean -> boolean
-         Buffer -> integer
+         Buffer -> BufferId
          Dictionary -> {string:any}
          Float -> number
          Integer -> integer
          Number -> number
          String -> string
-         Tabpage -> integer
-         Window -> integer
+         Tabpage -> TabpageId
+         Window -> WindowId
          none of the above -> any
       --]]
 
-      nvim_buf_add_highlight: function(integer--[[Buffer]], integer--[[Integer]], string--[[String]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]]): integer--[[Integer]]
-      nvim_buf_attach: function(integer--[[Buffer]], boolean--[[Boolean]], {string:any}--[[Dictionary]]): boolean--[[Boolean]]
-      nvim_buf_call: function(integer--[[Buffer]], any--[[LuaRef]]): any--[[Object]]
-      nvim_buf_clear_namespace: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]])--[[void]]
-      nvim_buf_create_user_command: function(integer--[[Buffer]], string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_buf_del_extmark: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]]): boolean--[[Boolean]]
-      nvim_buf_del_keymap: function(integer--[[Buffer]], string--[[String]], string--[[String]])--[[void]]
-      nvim_buf_del_mark: function(integer--[[Buffer]], string--[[String]]): boolean--[[Boolean]]
-      nvim_buf_del_user_command: function(integer--[[Buffer]], string--[[String]])--[[void]]
-      nvim_buf_del_var: function(integer--[[Buffer]], string--[[String]])--[[void]]
-      nvim_buf_delete: function(integer--[[Buffer]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_buf_detach: function(integer--[[Buffer]]): boolean--[[Boolean]]
-      nvim_buf_get_changedtick: function(integer--[[Buffer]]): integer--[[Integer]]
-      nvim_buf_get_commands: function(integer--[[Buffer]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
-      nvim_buf_get_extmark_by_id: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], {string:any}--[[Dictionary]]): {integer}--[[ArrayOf(Integer)]]
-      nvim_buf_get_extmarks: function(integer--[[Buffer]], integer--[[Integer]], any--[[Object]], any--[[Object]], {string:any}--[[Dictionary]]): any--[[Array]]
-      nvim_buf_get_keymap: function(integer--[[Buffer]], string--[[String]]): {{string:any}}--[[ArrayOf(Dictionary)]]
-      nvim_buf_get_lines: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], boolean--[[Boolean]]): {string}--[[ArrayOf(String)]]
-      nvim_buf_get_mark: function(integer--[[Buffer]], string--[[String]]): {integer,integer}--[[ArrayOf(Integer, 2)]]
-      nvim_buf_get_name: function(integer--[[Buffer]]): string--[[String]]
-      nvim_buf_get_offset: function(integer--[[Buffer]], integer--[[Integer]]): integer--[[Integer]]
-      nvim_buf_get_text: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]], {string:any}--[[Dictionary]]): {string}--[[ArrayOf(String)]]
-      nvim_buf_get_var: function(integer--[[Buffer]], string--[[String]]): any--[[Object]]
-      nvim_buf_is_loaded: function(integer--[[Buffer]]): boolean--[[Boolean]]
-      nvim_buf_is_valid: function(integer--[[Buffer]]): boolean--[[Boolean]]
-      nvim_buf_line_count: function(integer--[[Buffer]]): integer--[[Integer]]
-      nvim_buf_set_extmark: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]], {string:any}--[[Dictionary]]): integer--[[Integer]]
-      nvim_buf_set_keymap: function(integer--[[Buffer]], string--[[String]], string--[[String]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_buf_set_lines: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], boolean--[[Boolean]], {string}--[[ArrayOf(String)]])--[[void]]
-      nvim_buf_set_mark: function(integer--[[Buffer]], string--[[String]], integer--[[Integer]], integer--[[Integer]], {string:any}--[[Dictionary]]): boolean--[[Boolean]]
-      nvim_buf_set_name: function(integer--[[Buffer]], string--[[String]])--[[void]]
-      nvim_buf_set_text: function(integer--[[Buffer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]], {string}--[[ArrayOf(String)]])--[[void]]
-      nvim_buf_set_var: function(integer--[[Buffer]], string--[[String]], any--[[Object]])--[[void]]
-      nvim_call_dict_function: function(any--[[Object]], string--[[String]], any--[[Array]]): any--[[Object]]
-      nvim_call_function: function(string--[[String]], any--[[Array]]): any--[[Object]]
-      nvim_chan_send: function(integer--[[Integer]], string--[[String]])--[[void]]
-      nvim_clear_autocmds: function({string:any}--[[Dictionary]])--[[void]]
-      nvim_cmd: function({string:any}--[[Dictionary]], {string:any}--[[Dictionary]]): string--[[String]]
-      nvim_command: function(string--[[String]])--[[void]]
-      nvim_create_augroup: function(string--[[String]], {string:any}--[[Dictionary]]): integer--[[Integer]]
-      nvim_create_autocmd: function(any--[[Object]], {string:any}--[[Dictionary]]): integer--[[Integer]]
-      nvim_create_buf: function(boolean--[[Boolean]], boolean--[[Boolean]]): integer--[[Buffer]]
-      nvim_create_namespace: function(string--[[String]]): integer--[[Integer]]
-      nvim_create_user_command: function(string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_del_augroup_by_id: function(integer--[[Integer]])--[[void]]
-      nvim_del_augroup_by_name: function(string--[[String]])--[[void]]
-      nvim_del_autocmd: function(integer--[[Integer]])--[[void]]
-      nvim_del_current_line: function()--[[void]]
-      nvim_del_keymap: function(string--[[String]], string--[[String]])--[[void]]
-      nvim_del_mark: function(string--[[String]]): boolean--[[Boolean]]
-      nvim_del_user_command: function(string--[[String]])--[[void]]
-      nvim_del_var: function(string--[[String]])--[[void]]
-      nvim_echo: function(any--[[Array]], boolean--[[Boolean]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_err_write: function(string--[[String]])--[[void]]
-      nvim_err_writeln: function(string--[[String]])--[[void]]
-      nvim_eval: function(string--[[String]]): any--[[Object]]
-      nvim_eval_statusline: function(string--[[String]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
-      nvim_exec2: function(string--[[String]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
-      nvim_exec_autocmds: function(any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_exec_lua: function(string--[[String]], any--[[Array]]): any--[[Object]]
-      nvim_feedkeys: function(string--[[String]], string--[[String]], boolean--[[Boolean]])--[[void]]
-      nvim_get_all_options_info: function(): {string:any}--[[Dictionary]]
-      nvim_get_api_info: function(): any--[[Array]]
-      nvim_get_autocmds: function({string:any}--[[Dictionary]]): any--[[Array]]
-      nvim_get_chan_info: function(integer--[[Integer]]): {string:any}--[[Dictionary]]
-      nvim_get_color_by_name: function(string--[[String]]): integer--[[Integer]]
-      nvim_get_color_map: function(): {string:any}--[[Dictionary]]
-      nvim_get_commands: function({string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
-      nvim_get_context: function({string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
-      nvim_get_current_buf: function(): integer--[[Buffer]]
-      nvim_get_current_line: function(): string--[[String]]
-      nvim_get_current_tabpage: function(): integer--[[Tabpage]]
-      nvim_get_current_win: function(): integer--[[Window]]
-      nvim_get_hl: function(integer--[[Integer]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
-      nvim_get_hl_id_by_name: function(string--[[String]]): integer--[[Integer]]
-      nvim_get_hl_ns: function({string:any}--[[Dictionary]]): integer--[[Integer]]
-      nvim_get_keymap: function(string--[[String]]): {{string:any}}--[[ArrayOf(Dictionary)]]
-      nvim_get_mark: function(string--[[String]], {string:any}--[[Dictionary]]): any--[[Array]]
-      nvim_get_mode: function(): {string:any}--[[Dictionary]]
-      nvim_get_namespaces: function(): {string:any}--[[Dictionary]]
-      nvim_get_option_info2: function(string--[[String]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
-      nvim_get_option_value: function(string--[[String]], {string:any}--[[Dictionary]]): any--[[Object]]
-      nvim_get_proc: function(integer--[[Integer]]): any--[[Object]]
-      nvim_get_proc_children: function(integer--[[Integer]]): any--[[Array]]
-      nvim_get_runtime_file: function(string--[[String]], boolean--[[Boolean]]): {string}--[[ArrayOf(String)]]
-      nvim_get_var: function(string--[[String]]): any--[[Object]]
-      nvim_get_vvar: function(string--[[String]]): any--[[Object]]
-      nvim_input: function(string--[[String]]): integer--[[Integer]]
-      nvim_input_mouse: function(string--[[String]], string--[[String]], string--[[String]], integer--[[Integer]], integer--[[Integer]], integer--[[Integer]])--[[void]]
-      nvim_list_bufs: function(): {integer}--[[ArrayOf(Buffer)]]
-      nvim_list_chans: function(): any--[[Array]]
-      nvim_list_runtime_paths: function(): {string}--[[ArrayOf(String)]]
-      nvim_list_tabpages: function(): {integer}--[[ArrayOf(Tabpage)]]
-      nvim_list_uis: function(): any--[[Array]]
-      nvim_list_wins: function(): {integer}--[[ArrayOf(Window)]]
-      nvim_load_context: function({string:any}--[[Dictionary]]): any--[[Object]]
-      nvim_notify: function(string--[[String]], integer--[[Integer]], {string:any}--[[Dictionary]]): any--[[Object]]
-      nvim_open_term: function(integer--[[Buffer]], {string:any}--[[Dictionary]]): integer--[[Integer]]
-      nvim_open_win: function(integer--[[Buffer]], boolean--[[Boolean]], {string:any}--[[Dictionary]]): integer--[[Window]]
-      nvim_out_write: function(string--[[String]])--[[void]]
-      nvim_parse_cmd: function(string--[[String]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
-      nvim_parse_expression: function(string--[[String]], string--[[String]], boolean--[[Boolean]]): {string:any}--[[Dictionary]]
-      nvim_paste: function(string--[[String]], boolean--[[Boolean]], integer--[[Integer]]): boolean--[[Boolean]]
-      nvim_put: function({string}--[[ArrayOf(String)]], string--[[String]], boolean--[[Boolean]], boolean--[[Boolean]])--[[void]]
-      nvim_replace_termcodes: function(string--[[String]], boolean--[[Boolean]], boolean--[[Boolean]], boolean--[[Boolean]]): string--[[String]]
-      nvim_select_popupmenu_item: function(integer--[[Integer]], boolean--[[Boolean]], boolean--[[Boolean]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_set_client_info: function(string--[[String]], {string:any}--[[Dictionary]], string--[[String]], {string:any}--[[Dictionary]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_set_current_buf: function(integer--[[Buffer]])--[[void]]
-      nvim_set_current_dir: function(string--[[String]])--[[void]]
-      nvim_set_current_line: function(string--[[String]])--[[void]]
-      nvim_set_current_tabpage: function(integer--[[Tabpage]])--[[void]]
-      nvim_set_current_win: function(integer--[[Window]])--[[void]]
-      nvim_set_decoration_provider: function(integer--[[Integer]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_set_hl: function(integer--[[Integer]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_set_hl_ns: function(integer--[[Integer]])--[[void]]
-      nvim_set_hl_ns_fast: function(integer--[[Integer]])--[[void]]
-      nvim_set_keymap: function(string--[[String]], string--[[String]], string--[[String]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_set_option_value: function(string--[[String]], any--[[Object]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_set_var: function(string--[[String]], any--[[Object]])--[[void]]
-      nvim_set_vvar: function(string--[[String]], any--[[Object]])--[[void]]
-      nvim_strwidth: function(string--[[String]]): integer--[[Integer]]
-      nvim_subscribe: function(string--[[String]])--[[void]]
-      nvim_tabpage_del_var: function(integer--[[Tabpage]], string--[[String]])--[[void]]
-      nvim_tabpage_get_number: function(integer--[[Tabpage]]): integer--[[Integer]]
-      nvim_tabpage_get_var: function(integer--[[Tabpage]], string--[[String]]): any--[[Object]]
-      nvim_tabpage_get_win: function(integer--[[Tabpage]]): integer--[[Window]]
-      nvim_tabpage_is_valid: function(integer--[[Tabpage]]): boolean--[[Boolean]]
-      nvim_tabpage_list_wins: function(integer--[[Tabpage]]): {integer}--[[ArrayOf(Window)]]
-      nvim_tabpage_set_var: function(integer--[[Tabpage]], string--[[String]], any--[[Object]])--[[void]]
-      nvim_tabpage_set_win: function(integer--[[Tabpage]], integer--[[Window]])--[[void]]
-      nvim_ui_attach: function(integer--[[Integer]], integer--[[Integer]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_ui_detach: function()--[[void]]
-      nvim_ui_pum_set_bounds: function(number--[[Float]], number--[[Float]], number--[[Float]], number--[[Float]])--[[void]]
-      nvim_ui_pum_set_height: function(integer--[[Integer]])--[[void]]
-      nvim_ui_set_focus: function(boolean--[[Boolean]])--[[void]]
-      nvim_ui_set_option: function(string--[[String]], any--[[Object]])--[[void]]
-      nvim_ui_term_event: function(string--[[String]], any--[[Object]])--[[void]]
-      nvim_ui_try_resize: function(integer--[[Integer]], integer--[[Integer]])--[[void]]
-      nvim_ui_try_resize_grid: function(integer--[[Integer]], integer--[[Integer]], integer--[[Integer]])--[[void]]
-      nvim_unsubscribe: function(string--[[String]])--[[void]]
-      nvim_win_call: function(integer--[[Window]], any--[[LuaRef]]): any--[[Object]]
-      nvim_win_close: function(integer--[[Window]], boolean--[[Boolean]])--[[void]]
-      nvim_win_del_var: function(integer--[[Window]], string--[[String]])--[[void]]
-      nvim_win_get_buf: function(integer--[[Window]]): integer--[[Buffer]]
-      nvim_win_get_config: function(integer--[[Window]]): {string:any}--[[Dictionary]]
-      nvim_win_get_cursor: function(integer--[[Window]]): {integer,integer}--[[ArrayOf(Integer, 2)]]
-      nvim_win_get_height: function(integer--[[Window]]): integer--[[Integer]]
-      nvim_win_get_number: function(integer--[[Window]]): integer--[[Integer]]
-      nvim_win_get_position: function(integer--[[Window]]): {integer,integer}--[[ArrayOf(Integer, 2)]]
-      nvim_win_get_tabpage: function(integer--[[Window]]): integer--[[Tabpage]]
-      nvim_win_get_var: function(integer--[[Window]], string--[[String]]): any--[[Object]]
-      nvim_win_get_width: function(integer--[[Window]]): integer--[[Integer]]
-      nvim_win_hide: function(integer--[[Window]])--[[void]]
-      nvim_win_is_valid: function(integer--[[Window]]): boolean--[[Boolean]]
-      nvim_win_set_buf: function(integer--[[Window]], integer--[[Buffer]])--[[void]]
-      nvim_win_set_config: function(integer--[[Window]], {string:any}--[[Dictionary]])--[[void]]
-      nvim_win_set_cursor: function(integer--[[Window]], {integer,integer}--[[ArrayOf(Integer, 2)]])--[[void]]
-      nvim_win_set_height: function(integer--[[Window]], integer--[[Integer]])--[[void]]
-      nvim_win_set_hl_ns: function(integer--[[Window]], integer--[[Integer]])--[[void]]
-      nvim_win_set_var: function(integer--[[Window]], string--[[String]], any--[[Object]])--[[void]]
-      nvim_win_set_width: function(integer--[[Window]], integer--[[Integer]])--[[void]]
-      nvim_win_text_height: function(integer--[[Window]], {string:any}--[[Dictionary]]): {string:any}--[[Dictionary]]
+      nvim_buf_add_highlight: function(BufferId, integer, string, integer, integer, integer): integer
+      nvim_buf_attach: function(BufferId, boolean, {string:any}): boolean
+      nvim_buf_call: function(BufferId, any): any
+      nvim_buf_clear_namespace: function(BufferId, integer, integer, integer)
+      nvim_buf_create_user_command: function(BufferId, string, any, {string:any})
+      nvim_buf_del_extmark: function(BufferId, integer, integer): boolean
+      nvim_buf_del_keymap: function(BufferId, string, string)
+      nvim_buf_del_mark: function(BufferId, string): boolean
+      nvim_buf_del_user_command: function(BufferId, string)
+      nvim_buf_del_var: function(BufferId, string)
+      nvim_buf_delete: function(BufferId, {string:any})
+      nvim_buf_detach: function(BufferId): boolean
+      nvim_buf_get_changedtick: function(BufferId): integer
+      nvim_buf_get_commands: function(BufferId, {string:any}): {string:any}
+      nvim_buf_get_extmark_by_id: function(BufferId, integer, integer, {string:any}): {integer}
+      nvim_buf_get_extmarks: function(BufferId, integer, any, any, {string:any}): any
+      nvim_buf_get_keymap: function(BufferId, string): {{string:any}}
+      nvim_buf_get_lines: function(BufferId, integer, integer, boolean): {string}
+      nvim_buf_get_mark: function(BufferId, string): {integer,integer}
+      nvim_buf_get_name: function(BufferId): string
+      nvim_buf_get_offset: function(BufferId, integer): integer
+      nvim_buf_get_text: function(BufferId, integer, integer, integer, integer, {string:any}): {string}
+      nvim_buf_get_var: function(BufferId, string): any
+      nvim_buf_is_loaded: function(BufferId): boolean
+      nvim_buf_is_valid: function(BufferId): boolean
+      nvim_buf_line_count: function(BufferId): integer
+      nvim_buf_set_extmark: function(BufferId, integer, integer, integer, {string:any}): integer
+      nvim_buf_set_keymap: function(BufferId, string, string, string, {string:any})
+      nvim_buf_set_lines: function(BufferId, integer, integer, boolean, {string})
+      nvim_buf_set_mark: function(BufferId, string, integer, integer, {string:any}): boolean
+      nvim_buf_set_name: function(BufferId, string)
+      nvim_buf_set_text: function(BufferId, integer, integer, integer, integer, {string})
+      nvim_buf_set_var: function(BufferId, string, any)
+      nvim_call_dict_function: function(any, string, any): any
+      nvim_call_function: function(string, any): any
+      nvim_chan_send: function(integer, string)
+      nvim_clear_autocmds: function({string:any})
+      nvim_cmd: function({string:any}, {string:any}): string
+      nvim_command: function(string)
+      nvim_create_augroup: function(string, {string:any}): integer
+      nvim_create_autocmd: function(any, {string:any}): integer
+      nvim_create_buf: function(boolean, boolean): BufferId
+      nvim_create_namespace: function(string): NamespaceId
+      nvim_create_user_command: function(string, string | function(CommandArguments), CreateUserCommandOptions)
+      nvim_del_augroup_by_id: function(integer)
+      nvim_del_augroup_by_name: function(string)
+      nvim_del_autocmd: function(integer)
+      nvim_del_current_line: function()
+      nvim_del_keymap: function(string, string)
+      nvim_del_mark: function(string): boolean
+      nvim_del_user_command: function(string)
+      nvim_del_var: function(string)
+      nvim_echo: function(any, boolean, {string:any})
+      nvim_err_write: function(string)
+      nvim_err_writeln: function(string)
+      nvim_eval: function(string): any
+      nvim_eval_statusline: function(string, {string:any}): {string:any}
+      nvim_exec2: function(string, {string:any}): {string:any}
+      nvim_exec_autocmds: function(any, {string:any})
+      nvim_exec_lua: function(string, any): any
+      nvim_feedkeys: function(string, string, boolean)
+      nvim_get_all_options_info: function(): {string:any}
+      nvim_get_api_info: function(): any
+      nvim_get_autocmds: function({string:any}): any
+      nvim_get_chan_info: function(integer): {string:any}
+      nvim_get_color_by_name: function(string): integer
+      nvim_get_color_map: function(): {string:any}
+      nvim_get_commands: function({string:any}): {string:any}
+      nvim_get_context: function({string:any}): {string:any}
+      nvim_get_current_buf: function(): BufferId
+      nvim_get_current_line: function(): string
+      nvim_get_current_tabpage: function(): TabpageId
+      nvim_get_current_win: function(): WindowId
+      nvim_get_hl: function(integer, {string:any}): {string:any}
+      nvim_get_hl_id_by_name: function(string): integer
+      nvim_get_hl_ns: function({string:any}): integer
+      nvim_get_keymap: function(string): {{string:any}}
+      nvim_get_mark: function(string, {string:any}): any
+      nvim_get_mode: function(): {string:any}
+      nvim_get_namespaces: function(): {string:any}
+      nvim_get_option_info2: function(string, {string:any}): {string:any}
+      nvim_get_option_value: function(string, {string:any}): any
+      nvim_get_proc: function(integer): any
+      nvim_get_proc_children: function(integer): any
+      nvim_get_runtime_file: function(string, boolean): {string}
+      nvim_get_var: function(string): any
+      nvim_get_vvar: function(string): any
+      nvim_input: function(string): integer
+      nvim_input_mouse: function(string, string, string, integer, integer, integer)
+      nvim_list_bufs: function(): {BufferId}
+      nvim_list_chans: function(): any
+      nvim_list_runtime_paths: function(): {string}
+      nvim_list_tabpages: function(): {TabpageId}
+      nvim_list_uis: function(): any
+      nvim_list_wins: function(): {WindowId}
+      nvim_load_context: function({string:any}): any
+      nvim_notify: function(string, integer, {string:any}): any
+      nvim_open_term: function(BufferId, {string:any}): integer
+      nvim_open_win: function(BufferId, boolean, {string:any}): WindowId
+      nvim_out_write: function(string)
+      nvim_parse_cmd: function(string, {string:any}): {string:any}
+      nvim_parse_expression: function(string, string, boolean): {string:any}
+      nvim_paste: function(string, boolean, integer): boolean
+      nvim_put: function({string}, string, boolean, boolean)
+      nvim_replace_termcodes: function(string, boolean, boolean, boolean): string
+      nvim_select_popupmenu_item: function(integer, boolean, boolean, {string:any})
+      nvim_set_client_info: function(string, {string:any}, string, {string:any}, {string:any})
+      nvim_set_current_buf: function(BufferId)
+      nvim_set_current_dir: function(string)
+      nvim_set_current_line: function(string)
+      nvim_set_current_tabpage: function(TabpageId)
+      nvim_set_current_win: function(WindowId)
+      nvim_set_decoration_provider: function(NamespaceId, DecorationProviderCallbacks)
+      nvim_set_hl: function(integer, string, {string:any})
+      nvim_set_hl_ns: function(integer)
+      nvim_set_hl_ns_fast: function(integer)
+      nvim_set_keymap: function(string, string, string, {string:any})
+      nvim_set_option_value: function(string, any, {string:any})
+      nvim_set_var: function(string, any)
+      nvim_set_vvar: function(string, any)
+      nvim_strwidth: function(string): integer
+      nvim_subscribe: function(string)
+      nvim_tabpage_del_var: function(TabpageId, string)
+      nvim_tabpage_get_number: function(TabpageId): integer
+      nvim_tabpage_get_var: function(TabpageId, string): any
+      nvim_tabpage_get_win: function(TabpageId): WindowId
+      nvim_tabpage_is_valid: function(TabpageId): boolean
+      nvim_tabpage_list_wins: function(TabpageId): {WindowId}
+      nvim_tabpage_set_var: function(TabpageId, string, any)
+      nvim_tabpage_set_win: function(TabpageId, WindowId)
+      nvim_ui_attach: function(integer, integer, {string:any})
+      nvim_ui_detach: function()
+      nvim_ui_pum_set_bounds: function(number, number, number, number)
+      nvim_ui_pum_set_height: function(integer)
+      nvim_ui_set_focus: function(boolean)
+      nvim_ui_set_option: function(string, any)
+      nvim_ui_term_event: function(string, any)
+      nvim_ui_try_resize: function(integer, integer)
+      nvim_ui_try_resize_grid: function(integer, integer, integer)
+      nvim_unsubscribe: function(string)
+      nvim_win_call: function(WindowId, any): any
+      nvim_win_close: function(WindowId, boolean)
+      nvim_win_del_var: function(WindowId, string)
+      nvim_win_get_buf: function(WindowId): BufferId
+      nvim_win_get_config: function(WindowId): {string:any}
+      nvim_win_get_cursor: function(WindowId): {integer,integer}
+      nvim_win_get_height: function(WindowId): integer
+      nvim_win_get_number: function(WindowId): integer
+      nvim_win_get_position: function(WindowId): {integer,integer}
+      nvim_win_get_tabpage: function(WindowId): TabpageId
+      nvim_win_get_var: function(WindowId, string): any
+      nvim_win_get_width: function(WindowId): integer
+      nvim_win_hide: function(WindowId)
+      nvim_win_is_valid: function(WindowId): boolean
+      nvim_win_set_buf: function(WindowId, BufferId)
+      nvim_win_set_config: function(WindowId, {string:any})
+      nvim_win_set_cursor: function(WindowId, {integer,integer})
+      nvim_win_set_height: function(WindowId, integer)
+      nvim_win_set_hl_ns: function(WindowId, integer)
+      nvim_win_set_var: function(WindowId, string, any)
+      nvim_win_set_width: function(WindowId, integer)
+      nvim_win_text_height: function(WindowId, {string:any}): {string:any}
    end
 
 

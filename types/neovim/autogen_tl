@@ -47,6 +47,12 @@ global vim <const>: VimStub
 
 local substitutions <const>: {string:string} = {}
 
+local manual_api_annotations <const>: {string:string} = {
+	nvim_create_namespace = "function(string): NamespaceId",
+	nvim_create_user_command = "function(string, string | function(CommandArguments), CreateUserCommandOptions)",
+	nvim_set_decoration_provider = "function(NamespaceId, DecorationProviderCallbacks)",
+}
+
 do
 	local api_info <const> = vim.fn.api_info()
 
@@ -56,9 +62,9 @@ do
 		["Float"] = "number",
 		["Integer"] = "integer",
 		["Boolean"] = "boolean",
-		["Buffer"] = "integer",
-		["Window"] = "integer",
-		["Tabpage"] = "integer",
+		["Buffer"] = "BufferId",
+		["Window"] = "WindowId",
+		["Tabpage"] = "TabpageId",
 		["Dictionary"] = "{string:any}",
 	}, {
 		__index = function(): string
@@ -86,10 +92,10 @@ do
 		else
 			tname = typeMap[name]
 		end
-		return tname .. "--[[" .. name .. "]]"
+		return tname -- .. "--[[" .. name .. "]]"
 	end
 
-	local ins = table.insert
+	local ins <const> = table.insert
 	local buf: {string} = {}
 	local list: {string} = {}
 
@@ -133,24 +139,28 @@ record api
 
 	for _, f in ipairs(api_info.functions) do
 		if not f.deprecated_since then
-			local line: {string} = {}
-			ins(line, "      ")
-			ins(line, f.name)
-			ins(line, ": function(")
-			for idx, param in ipairs(f.parameters) do
-				ins(line, getTypeName(param[1]))
-				if idx < #f.parameters then
-					ins(line, ", ")
+			if manual_api_annotations[f.name] then
+				ins(list, "      " .. f.name .. ": " .. manual_api_annotations[f.name])
+			else
+				local line: {string} = {}
+				ins(line, "      ")
+				ins(line, f.name)
+				ins(line, ": function(")
+				for idx, param in ipairs(f.parameters) do
+					ins(line, getTypeName(param[1]))
+					if idx < #f.parameters then
+						ins(line, ", ")
+					end
 				end
+				ins(line, ")")
+				if f.return_type and f.return_type ~= "void" then
+					ins(line, ": ")
+					ins(line , getTypeName(f.return_type))
+				--elseif f.return_type == "void" then
+				--	ins(line, "--[[void]]")
+				end
+				ins(list, table.concat(line))
 			end
-			ins(line, ")")
-			if f.return_type and f.return_type ~= "void" then
-				ins(line, ": ")
-				ins(line , getTypeName(f.return_type))
-			elseif f.return_type == "void" then
-				ins(line, "--[[void]]")
-			end
-			ins(list, table.concat(line))
 		end
 	end
 	table.sort(list)
@@ -184,8 +194,8 @@ do
 
       for _, tab in ipairs(tables) do
 			if opt.shortname ~= "" then
-			 	table.insert(tab, string.format("      %s: %s", opt.shortname, opt.type))
-			 end
+				table.insert(tab, string.format("      %s: %s", opt.shortname, opt.type))
+			end
 			table.insert(tab, string.format("      %s: %s", opt.name, opt.type))
       end
 	end
