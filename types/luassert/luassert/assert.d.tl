@@ -197,8 +197,6 @@ local record asserts
 
    get_level:function(self:asserts, any)
    level:function(self:asserts, integer)
-
-   has_property:function(any, ?string)
 end
 
 return asserts
