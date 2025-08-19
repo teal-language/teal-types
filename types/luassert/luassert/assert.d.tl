@@ -41,6 +41,9 @@ end
 
 -- We use asserts instead of assert here to avoid tl warning
 local record asserts
+   -- TODO: should be <T...>(self, T...): T...
+   metamethod __call: function(self, any...): any...
+
    -- True / false
    is_not_true:function(any, ?string):any, string
    is_true:function(any, ?string):any, string
