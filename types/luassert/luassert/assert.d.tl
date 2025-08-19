@@ -151,7 +151,11 @@ local record asserts
    no_error_matches:function(Callable, string, ?string):{any}
 
    -- matches
+   match:function(string, string, ?string)
    matches:function(string, string, ?string)
+
+   not_match:function(string, string, ?string)
+   not_matches:function(string, string, ?string)
 
    has_match:function(string, string, ?string):{string}
    has_no_match:function(string, string, ?string):{string}
