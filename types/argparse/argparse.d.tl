@@ -10,8 +10,8 @@ local record argparse
 		flag: function(self: Parser, flag: string): Option
 		flag: function(self: Parser, shortalias: string, longalias: string): Option
 
-		parse: function(self: Parser, argv: {string}): Args
-		pparse: function(self: Parser, argv: {string}): boolean, Args | string
+		parse: function(self: Parser, argv?: {string}): Args
+		pparse: function(self: Parser, argv?: {string}): boolean, Args | string
 
 		error: function(self: Parser, error: string)
 
@@ -20,13 +20,13 @@ local record argparse
 		get_usage: function(self: Parser): string
 		get_help: function(self: Parser): string
 
-		option: function(self: Parser, name: string, description: string, default: string, convert: function | {function}, args: {string}, count: integer | string): Option
-		option: function(self: Parser, name: string, description: string, default: string, convert: {string:string}, args: {string}, count: integer | string): Option
+		option: function(self: Parser, name: string, description?: string, default?: string, convert?: function | {function}, args?: {string}, count?: integer | string): Option
+		option: function(self: Parser, name: string, description?: string, default?: string, convert?: {string:string}, args?: {string}, count?: integer | string): Option
 
 		require_command: function(self: Parser, require_command: boolean): Parser
 		command_target: function(self: Parser, command_target: string): Parser
 
-		command: function(self: Parser, name: string, description: string, epilog: string): Command
+		command: function(self: Parser, name: string, description?: string, epilog?: string): Command
 
 		add_help: function(self: Parser, boolean)
 
@@ -92,14 +92,14 @@ local record argparse
 
 		argument: function(self: Command, name: string, description: string): Argument
 
-		option: function(self: Command, name: string, description: string): Option
+		option: function(self: Command, name: string, description?: string): Option
 
 		flag: function(self: Command, string, string): Option
 
 		handle_options: function(self: Command, boolean): Command
 	end
 
-	metamethod __call: function(self: argparse, name: string, description: string, epilog: string): Parser
+	metamethod __call: function(self: argparse, name?: string, description?: string, epilog?: string): Parser
 end
 
 return argparse
