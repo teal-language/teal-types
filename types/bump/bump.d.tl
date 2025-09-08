@@ -16,9 +16,9 @@ global record World<T>
       w : number
       h : number
    end
-   type Collision = record<T>
-      item: T
-      other: T
+   type Collision = record<U>
+      item: U
+      other: U
       type : CollisionType
       overlaps: boolean
       ti: number
@@ -28,8 +28,8 @@ global record World<T>
       otherRect: Rect
    end
 
-   type ItemInfo = record<T>
-      item: T
+   type ItemInfo = record<U>
+      item: U
       x1: number
       y1: number
       x2: number

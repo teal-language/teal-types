@@ -7,7 +7,7 @@ local record pl
         {T}
 
         new: function({T}): pl.List<T>
-        metamethod __call: function<T>(pl.List, {T}): pl.List<T>
+        metamethod __call: function<U>(pl.List, {U}): pl.List<U>
         metamethod __concat: function(pl.List<T>, pl.List<T>): pl.List<T>
 
         range: function(number, number, number): pl.List<number>
@@ -60,7 +60,7 @@ local record pl
     end
 
     record Map<K, V>
-        metamethod __call: function<K, V>(any, {K: V}): Map<K, V>
+        metamethod __call: function<A, B>(any, {A: B}): Map<A, B>
 
         -- These two are substitutes for maprecords ({K: V})
         metamethod __index: function(pl.Map<K, V>, K): V

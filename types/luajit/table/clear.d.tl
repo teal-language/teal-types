@@ -1,1 +1,1 @@
-return function(tab: table) end
+return function(_tab: table) end
