@@ -209,20 +209,20 @@ global record vim
 
    version: function(): VersionInfo
 
-   uri_from_bufnr: function(bufnr: integer): string
+   uri_from_bufnr: function(bufnr: BufferId): string
    uri_from_fname: function(path: string): string
    uri_to_bufnr: function(uri: string): integer
    uri_to_fname: function(uri: string): string
 
    pretty_print: function(obj: any): string
 
-   region: function(bufnr: integer, pos1: {integer}, pos2: {integer}, regtype: string, inclusive: boolean): {integer:{integer}}
+   region: function(bufnr: BufferId, pos1: {integer}, pos2: {integer}, regtype: string, inclusive: boolean): {integer:{integer}}
 
    record filetype
       -- TODO - replace table with options record
       add: function(filetypes: table)
 
-      match: function(name: string, bufnr: integer)
+      match: function(name: string, bufnr: BufferId)
    end
 
    record mpack
@@ -236,7 +236,9 @@ global record vim
 
    in_fast_event: function(): boolean
 
-   type NIL = record userdata end -- special nil for filling tables
+   -- special nil for filling tables in rpc stuff
+   interface NIL is userdata
+   end
 
    empty_dict: function(): table
    on_key: function(function(string), integer): integer
@@ -313,8 +315,8 @@ global record vim
       end
       on_yank: function(Opts)
       range: function(
-         bufnr: integer,
-         ns: integer,
+         bufnr: BufferId,
+         ns: NamespaceId,
          higroup: string,
          start: {integer, integer},
          finish: {integer, integer},
@@ -323,39 +325,38 @@ global record vim
    end
 
    record diagnostic
-      record Severity -- would be great if this could be a tuplerecord
-         {string}
-         ERROR: integer
-         WARN: integer
-         INFO: integer
-         HINT: integer
-         E: integer
-         W: integer
-         I: integer
-         H: integer
+      type Severity = integer
+      record severity is {string} -- would be great if this could be a tuplerecord
+         ERROR: Severity
+         WARN: Severity
+         INFO: Severity
+         HINT: Severity
+         E: Severity
+         W: Severity
+         I: Severity
+         H: Severity
       end
-      severity: Severity
 
       record Diagnostic
          lnum: integer -- The starting line of the diagnostic
          end_lnum: integer -- The final line of the diagnostic
          col: integer -- The starting column of the diagnostic
          end_col: integer -- The final column of the diagnostic
-         severity: integer -- The severity of the diagnostic |vim.diagnostic.severity|
+         severity: Severity -- The severity of the diagnostic |vim.diagnostic.severity|
          message: string -- The diagnostic text
          source: string -- The source of the diagnostic
       end
       record ConfigOpts
          record UnderlineOpts
-            severity: integer -- vim.diagnostic.severity
+            severity: Severity
          end
          record VirtualTextOpts
-            severity: integer -- vim.diagnostic.severity
+            severity: Severity
             source: string
             format: function(diagnostic: Diagnostic): string
          end
          record SignsOpts
-            severity: integer
+            severity: Severity
             priority: integer
          end
 
@@ -367,17 +368,17 @@ global record vim
          severity_sort: boolean
       end
       record GetOpts
-         namespace: integer
+         namespace: NamespaceId
          lnum: integer
-         severity: integer -- vim.diagnostic.severity
+         severity: Severity
       end
       record GotoOpts
-         namespace: integer
+         namespace: NamespaceId
          cursor_position: {integer, integer}
          wrap: boolean
-         severity: integer -- vim.diagnostic.severity
+         severity: Severity
          float: boolean|OpenFloatOpts
-         win_id: integer
+         win_id: WindowId
       end
       record OpenFloatOpts
          enum Scope
@@ -386,50 +387,50 @@ global record vim
             "cursor"
          end
 
-         namespace: integer
+         namespace: NamespaceId
          scope: Scope
          pos: integer|{integer, integer}
          severity_sort: boolean
-         severity: integer -- vim.diagnostic.severity
+         severity: Severity
          header: string|{string, string}
          source: string
          format: function(diagnostic: Diagnostic): string
          prefix: string|{string, string}|function(diagnostic: Diagnostic, i: integer, total: integer): string, string
       end
       record SetLocListOpts
-         namespace: integer
-         winnr: integer
+         namespace: NamespaceId
+         winnr: WindowId
          open: boolean
          title: string
-         severity: integer -- vim.diagnostic.severity
+         severity: Severity
       end
       record SetQfListOpts
-         namespace: integer
+         namespace: NamespaceId
          open: boolean
          title: string
-         severity: integer -- vim.diagnostic.severity
+         severity: Severity
       end
-      config: function(opts: ConfigOpts, namespace: integer)
-      disable: function(bufnr: integer, namespace: integer)
-      enable: function(bufnr: integer, namespace: integer)
+      config: function(opts: ConfigOpts, namespace: NamespaceId)
+      disable: function(bufnr: BufferId, namespace: NamespaceId)
+      enable: function(bufnr: BufferId, namespace: NamespaceId)
       fromqflist: function(list: {any}): {Diagnostic}
-      get: function(bufnr: integer, opts: GetOpts)
-      get_namespace: function(namespace: integer): {string:integer}
-      get_namespace: function(namespace: integer): {{string:integer}}
+      get: function(bufnr: BufferId, opts: GetOpts)
+      get_namespace: function(namespace: NamespaceId): {string:integer}
+      get_namespace: function(namespace: NamespaceId): {{string:integer}}
       get_next: function(opts: GotoOpts): Diagnostic
       get_next_pos: function(opts: GotoOpts): {integer, integer}
       get_prev: function(opts: GotoOpts): Diagnostic
       get_prev_pos: function(opts: GotoOpts): {integer, integer}
       goto_next: function(opts: GotoOpts)
       goto_prev: function(opts: GotoOpts)
-      hide: function(namespace: integer, bufnr: integer)
+      hide: function(namespace: NamespaceId, bufnr: BufferId)
       match: function(str: string, pat: string, groups: {string}, severity_map: {string:string}, defaults: {string:any}): Diagnostic
       open_float: function(opts: OpenFloatOpts): {integer, integer}
-      reset: function(namespace: integer, bufnr: integer)
-      set: function(namespace: integer, bufnr: integer, diagnostics: {Diagnostic}, opts: ConfigOpts)
+      reset: function(namespace: NamespaceId, bufnr: BufferId)
+      set: function(namespace: NamespaceId, bufnr: BufferId, diagnostics: {Diagnostic}, opts: ConfigOpts)
       setloclist: function(opts: SetLocListOpts)
       setqflist: function(opts: SetQfListOpts)
-      show: function(namespace: integer, bufnr: integer, diagnostics: {Diagnostic}, opts: ConfigOpts)
+      show: function(namespace: NamespaceId, bufnr: BufferId, diagnostics: {Diagnostic}, opts: ConfigOpts)
       toqflist: function({Diagnostic}): {string:any}
    end
 
@@ -437,12 +438,12 @@ global record vim
       record buf
          hover: function
       end
-      buf_attach_client: function(bufnr: integer, client_id: integer)
-      buf_get_clients: function(bufnr: integer)
-      buf_is_attached: function(bufnr: integer, client_id: integer)
-      buf_notify: function(bufnr: integer, method: string, params: string): boolean
-      buf_request: function(bufnr: integer, method: string, params: table, handler: function): {integer:integer}, function
-      buf_request_sync: function(bufnr: integer, method: string, params: table, timeout_ms: integer): {integer:integer}, string
+      buf_attach_client: function(bufnr: BufferId, client_id: integer)
+      buf_get_clients: function(bufnr: BufferId)
+      buf_is_attached: function(bufnr: BufferId, client_id: integer)
+      buf_notify: function(bufnr: BufferId, method: string, params: string): boolean
+      buf_request: function(bufnr: BufferId, method: string, params: table, handler: function): {integer:integer}, function
+      buf_request_sync: function(bufnr: BufferId, method: string, params: table, timeout_ms: integer): {integer:integer}, string
 
       record Client
          request: function(Client)
@@ -450,10 +451,19 @@ global record vim
       client: function(): Client
    end
 
-   -- TODO:
-   -- vim.opt
-   -- vim.opt_global
-   -- vim.opt_local
+   record Option
+      append: function(Option, string)
+      prepend: function(Option, string)
+      remove: function(Option, string)
+      get: function(Option): any
+
+      metamethod __add: function(Option, string): Option
+      metamethod __sub: function(Option, string): Option
+      metamethod __pow: function(Option, string): Option
+   end
+   opt: {string:Option}
+   opt_local: {string:Option}
+   opt_global: {string:Option}
 
    g: {string:any}
    t: {string:any}
@@ -531,6 +541,7 @@ global record vim
       channel: number
       charconvert: string
       ci: boolean
+      cia: string
       cin: boolean
       cindent: boolean
       cink: string
@@ -557,6 +568,7 @@ global record vim
       compatible: boolean
       complete: string
       completefunc: string
+      completeitemalign: string
       completeopt: string
       completeslash: string
       concealcursor: string
@@ -605,6 +617,7 @@ global record vim
       ef: string
       efm: string
       ei: string
+      eiw: string
       emo: boolean
       emoji: boolean
       enc: string
@@ -621,6 +634,7 @@ global record vim
       errorformat: string
       et: boolean
       eventignore: string
+      eventignorewin: string
       ex: boolean
       expandtab: boolean
       exrc: boolean
@@ -641,6 +655,7 @@ global record vim
       fex: string
       ff: string
       ffs: string
+      ffu: string
       fic: boolean
       fileencoding: string
       fileencodings: string
@@ -649,6 +664,7 @@ global record vim
       fileignorecase: boolean
       filetype: string
       fillchars: string
+      findfunc: string
       fixendofline: boolean
       fixeol: boolean
       flp: string
@@ -801,6 +817,7 @@ global record vim
       mef: string
       menc: string
       menuitems: number
+      messagesopt: string
       mfd: number
       mh: boolean
       mis: number
@@ -816,6 +833,7 @@ global record vim
       modelines: number
       modifiable: boolean
       modified: boolean
+      mopt: string
       more: boolean
       mouse: string
       mousef: boolean
@@ -1015,6 +1033,7 @@ global record vim
       syn: string
       synmaxcol: number
       syntax: string
+      tabclose: string
       tabline: string
       tabpagemax: number
       tabstop: number
@@ -1030,6 +1049,7 @@ global record vim
       tbidi: boolean
       tbs: boolean
       tc: string
+      tcl: string
       tenc: string
       termbidi: boolean
       termencoding: string
@@ -1122,6 +1142,7 @@ global record vim
       winbar: string
       winbl: number
       winblend: number
+      winborder: string
       window: number
       winfixbuf: boolean
       winfixheight: boolean
@@ -1194,6 +1215,7 @@ global record vim
       cf: boolean
       ch: number
       charconvert: string
+      cia: string
       clipboard: string
       cmdheight: number
       cmdwinheight: number
@@ -1201,14 +1223,11 @@ global record vim
       co: number
       columns: number
       compatible: boolean
-      completeopt: string
-      completeslash: string
+      completeitemalign: string
       confirm: boolean
-      cot: string
       cp: boolean
       cpo: string
       cpoptions: string
-      csl: string
       cwh: number
       debug: string
       deco: boolean
@@ -1343,6 +1362,7 @@ global record vim
       mco: number
       mef: string
       menuitems: number
+      messagesopt: string
       mfd: number
       mh: boolean
       mis: number
@@ -1353,6 +1373,7 @@ global record vim
       mmp: number
       modelineexpr: boolean
       modelines: number
+      mopt: string
       more: boolean
       mouse: string
       mousef: boolean
@@ -1483,6 +1504,7 @@ global record vim
       switchbuf: string
       sxe: string
       sxq: string
+      tabclose: string
       tabline: string
       tabpagemax: number
       tagbsearch: boolean
@@ -1492,6 +1514,7 @@ global record vim
       tal: string
       tbidi: boolean
       tbs: boolean
+      tcl: string
       tenc: string
       termbidi: boolean
       termencoding: string
@@ -1559,6 +1582,7 @@ global record vim
       wildoptions: string
       wim: string
       winaltkeys: string
+      winborder: string
       window: number
       winheight: number
       winminheight: number
@@ -1614,8 +1638,12 @@ global record vim
       commentstring: string
       complete: string
       completefunc: string
+      completeopt: string
+      completeslash: string
       copyindent: boolean
+      cot: string
       cpt: string
+      csl: string
       def: string
       define: string
       dict: string
@@ -1633,9 +1661,11 @@ global record vim
       fenc: string
       fex: string
       ff: string
+      ffu: string
       fileencoding: string
       fileformat: string
       filetype: string
+      findfunc: string
       fixendofline: boolean
       fixeol: boolean
       flp: string
@@ -1770,6 +1800,8 @@ global record vim
       cursorline: boolean
       cursorlineopt: string
       diff: boolean
+      eiw: string
+      eventignorewin: string
       fcs: string
       fdc: string
       fde: string
@@ -1849,30 +1881,32 @@ global record vim
    record api
       --[[
          API version Information
-            neovim version: 0.10.2
+            neovim version: 0.11.3
 
             compatible: 0
-            level: 12
+            level: 13
             prerelease: false
       --]]
 
       --[[
          Vim Type -> Teal Type
+         Array -> {any}
          Boolean -> boolean
          Buffer -> BufferId
+         Dict -> {string:any}
          Dictionary -> {string:any}
          Float -> number
          Integer -> integer
          Number -> number
+         Object -> any
          String -> string
          Tabpage -> TabpageId
          Window -> WindowId
          none of the above -> any
       --]]
 
-      nvim_buf_add_highlight: function(BufferId, integer, string, integer, integer, integer): integer
       nvim_buf_attach: function(BufferId, boolean, {string:any}): boolean
-      nvim_buf_call: function(BufferId, any): any
+      nvim_buf_call: function(BufferId, function(): any): any
       nvim_buf_clear_namespace: function(BufferId, integer, integer, integer)
       nvim_buf_create_user_command: function(BufferId, string, any, {string:any})
       nvim_buf_del_extmark: function(BufferId, integer, integer): boolean
@@ -1885,7 +1919,7 @@ global record vim
       nvim_buf_get_changedtick: function(BufferId): integer
       nvim_buf_get_commands: function(BufferId, {string:any}): {string:any}
       nvim_buf_get_extmark_by_id: function(BufferId, integer, integer, {string:any}): {integer}
-      nvim_buf_get_extmarks: function(BufferId, integer, any, any, {string:any}): any
+      nvim_buf_get_extmarks: function(BufferId, integer, any, any, {string:any}): {any}
       nvim_buf_get_keymap: function(BufferId, string): {{string:any}}
       nvim_buf_get_lines: function(BufferId, integer, integer, boolean): {string}
       nvim_buf_get_mark: function(BufferId, string): {integer,integer}
@@ -1903,8 +1937,8 @@ global record vim
       nvim_buf_set_name: function(BufferId, string)
       nvim_buf_set_text: function(BufferId, integer, integer, integer, integer, {string})
       nvim_buf_set_var: function(BufferId, string, any)
-      nvim_call_dict_function: function(any, string, any): any
-      nvim_call_function: function(string, any): any
+      nvim_call_dict_function: function(any, string, {any}): any
+      nvim_call_function: function(string, {any}): any
       nvim_chan_send: function(integer, string)
       nvim_clear_autocmds: function({string:any})
       nvim_cmd: function({string:any}, {string:any}): string
@@ -1922,18 +1956,16 @@ global record vim
       nvim_del_mark: function(string): boolean
       nvim_del_user_command: function(string)
       nvim_del_var: function(string)
-      nvim_echo: function(any, boolean, {string:any})
-      nvim_err_write: function(string)
-      nvim_err_writeln: function(string)
+      nvim_echo: function({any}, boolean, {string:any})
       nvim_eval: function(string): any
       nvim_eval_statusline: function(string, {string:any}): {string:any}
       nvim_exec2: function(string, {string:any}): {string:any}
       nvim_exec_autocmds: function(any, {string:any})
-      nvim_exec_lua: function(string, any): any
+      nvim_exec_lua: function(string, {any}): any
       nvim_feedkeys: function(string, string, boolean)
       nvim_get_all_options_info: function(): {string:any}
-      nvim_get_api_info: function(): any
-      nvim_get_autocmds: function({string:any}): any
+      nvim_get_api_info: function(): {any}
+      nvim_get_autocmds: function({string:any}): {any}
       nvim_get_chan_info: function(integer): {string:any}
       nvim_get_color_by_name: function(string): integer
       nvim_get_color_map: function(): {string:any}
@@ -1947,29 +1979,27 @@ global record vim
       nvim_get_hl_id_by_name: function(string): integer
       nvim_get_hl_ns: function({string:any}): integer
       nvim_get_keymap: function(string): {{string:any}}
-      nvim_get_mark: function(string, {string:any}): any
+      nvim_get_mark: function(string, {string:any}): {any}
       nvim_get_mode: function(): {string:any}
       nvim_get_namespaces: function(): {string:any}
       nvim_get_option_info2: function(string, {string:any}): {string:any}
       nvim_get_option_value: function(string, {string:any}): any
       nvim_get_proc: function(integer): any
-      nvim_get_proc_children: function(integer): any
+      nvim_get_proc_children: function(integer): {any}
       nvim_get_runtime_file: function(string, boolean): {string}
       nvim_get_var: function(string): any
       nvim_get_vvar: function(string): any
       nvim_input: function(string): integer
       nvim_input_mouse: function(string, string, string, integer, integer, integer)
       nvim_list_bufs: function(): {BufferId}
-      nvim_list_chans: function(): any
+      nvim_list_chans: function(): {any}
       nvim_list_runtime_paths: function(): {string}
       nvim_list_tabpages: function(): {TabpageId}
-      nvim_list_uis: function(): any
+      nvim_list_uis: function(): {any}
       nvim_list_wins: function(): {WindowId}
       nvim_load_context: function({string:any}): any
-      nvim_notify: function(string, integer, {string:any}): any
       nvim_open_term: function(BufferId, {string:any}): integer
       nvim_open_win: function(BufferId, boolean, {string:any}): WindowId
-      nvim_out_write: function(string)
       nvim_parse_cmd: function(string, {string:any}): {string:any}
       nvim_parse_expression: function(string, string, boolean): {string:any}
       nvim_paste: function(string, boolean, integer): boolean
@@ -1991,7 +2021,6 @@ global record vim
       nvim_set_var: function(string, any)
       nvim_set_vvar: function(string, any)
       nvim_strwidth: function(string): integer
-      nvim_subscribe: function(string)
       nvim_tabpage_del_var: function(TabpageId, string)
       nvim_tabpage_get_number: function(TabpageId): integer
       nvim_tabpage_get_var: function(TabpageId, string): any
@@ -2009,8 +2038,7 @@ global record vim
       nvim_ui_term_event: function(string, any)
       nvim_ui_try_resize: function(integer, integer)
       nvim_ui_try_resize_grid: function(integer, integer, integer)
-      nvim_unsubscribe: function(string)
-      nvim_win_call: function(WindowId, any): any
+      nvim_win_call: function(WindowId, function(): any): any
       nvim_win_close: function(WindowId, boolean)
       nvim_win_del_var: function(WindowId, string)
       nvim_win_get_buf: function(WindowId): BufferId

@@ -51,6 +51,8 @@ local manual_api_annotations <const>: {string:string} = {
 	nvim_create_namespace = "function(string): NamespaceId",
 	nvim_create_user_command = "function(string, string | function(CommandArguments), CreateUserCommandOptions)",
 	nvim_set_decoration_provider = "function(NamespaceId, DecorationProviderCallbacks)",
+	nvim_buf_call = "function(BufferId, function(): any): any",
+	nvim_win_call = "function(WindowId, function(): any): any",
 }
 
 do
@@ -65,10 +67,14 @@ do
 		["Buffer"] = "BufferId",
 		["Window"] = "WindowId",
 		["Tabpage"] = "TabpageId",
+		["Array"] = "{any}",
+		["Dict"] = "{string:any}",
 		["Dictionary"] = "{string:any}",
+		["Object"] = "any",
 	}, {
-		__index = function(): string
-			return "any"
+		__index = function(_: any, key: string): string
+			io.stderr:write("Unknown type: ‘", key, "’\n")
+			return "any--[[" .. key .. "]]"
 		end
 	})
 
@@ -182,22 +188,22 @@ do
 	for _, opt in pairs(opts) do
 		local tables: {{string}} = {}
 
-      table.insert(tables, o)
+		table.insert(tables, o)
 
 		if opt.scope == "win" then
-         table.insert(tables, wo)
+			table.insert(tables, wo)
 		elseif opt.scope == "buf" then
-         table.insert(tables, bo)
+			table.insert(tables, bo)
 		elseif opt.scope == "global" then
-         table.insert(tables, go)
+			table.insert(tables, go)
 		end
 
-      for _, tab in ipairs(tables) do
+		for _, tab in ipairs(tables) do
 			if opt.shortname ~= "" then
 				table.insert(tab, string.format("      %s: %s", opt.shortname, opt.type))
 			end
 			table.insert(tab, string.format("      %s: %s", opt.name, opt.type))
-      end
+		end
 	end
 
 	table.sort(o)
@@ -233,4 +239,4 @@ do
 	fh:close()
 end
 
--- vim: ft=teal sw=3 ts=3
+-- vim: ft=teal sw=3 ts=3 noexpandtab
