@@ -1,10 +1,10 @@
 --[[
 	NOTE: For simplicity, this def file returns one single record, instead
 	of returning a library record that contains a vector record.
-	
+
 	This allows to define functions that accept vectors easier, you just
 	need to use the name that you store the library in.
-	
+
 	For example:
 	local Vector = require 'brinevector'
 	function doThing(x: Vector) end
@@ -16,11 +16,11 @@ local record Vector
 	-- Static functions
 	metamethod __call: function(self: Vector, x: number, y: number): Vector
 	isVector: function(value: any): boolean
-	
+
 	-- Fields
 	x: number
 	y: number
-	
+
 	-- Metamethods
 	metamethod __add: function(left: Vector, right: Vector): Vector
 	metamethod __sub: function(left: Vector, right: Vector): Vector
@@ -31,7 +31,7 @@ local record Vector
 	metamethod __div: function(left: Vector, right: Vector | number): Vector
 	metamethod __unm: function(self: Vector): Vector
 	metamethod __len: function(self: Vector): number
-	
+
 	-- __index / __newindex getters / setters
 	length: number
 	angle: number
@@ -41,7 +41,7 @@ local record Vector
 	copy: Vector
 	floor: Vector
 	ceil: Vector
-	
+
 	-- Explicit getters
 	getLength: function(self: Vector): number
 	getAngle: function(self: Vector): number
@@ -51,7 +51,7 @@ local record Vector
 	getCopy: function(self: Vector): Vector
 	getFloor: function(self: Vector): Vector
 	getCeil: function(self: Vector): Vector
-	
+
 	-- Vector ops
 	dot: function(self: Vector, other: Vector): number
 	angled: function(self: Vector, angle: number): Vector

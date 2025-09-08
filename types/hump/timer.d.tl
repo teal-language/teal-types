@@ -41,7 +41,7 @@ local record timer
 
     clear: function()
     clear: function(self: timer)
-    
+
     update: function(dt: number)
     update: function(self: timer, dt: number)
 

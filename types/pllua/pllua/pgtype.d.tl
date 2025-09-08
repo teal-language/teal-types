@@ -24,7 +24,7 @@ global record TypeInfo
 
    -- For array or range types, returns the typeinfo of the element type
    element: function(TypeInfo): TypeInfo
-   -- For row types, returns the typeinfo of the named column 
+   -- For row types, returns the typeinfo of the named column
    element: function(TypeInfo, column_name: string): TypeInfo
 end
 

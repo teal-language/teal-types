@@ -29,7 +29,7 @@ local record err
       pg_source_line: integer|nil  -- source line number of the error
       position: integer|nil  -- character position of the error within the original query
       schema: string|nil  -- Name of a schema associated with the error, if any
-      table: string|nil  -- Name of a table associated with the error, if any 
+      table: string|nil  -- Name of a table associated with the error, if any
    end
 
    -- returns "error" if e is an SQL error object, otherwise nothing

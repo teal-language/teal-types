@@ -22,13 +22,13 @@ local record sql
     enum Alpha
         "s"
     end
-    
+
     record Cursor
         close:function(Cursor):boolean
         --this is the hack: https://github.com/teal-language/teal-types/pull/18#discussion_r518265263
         fetch: function(Numeric): {string}
         fetch: function(Alpha): {string:string}
-        
+
         getcolnames:function(Cursor):{string}
         getcoltypes:function(Cursor):{string}
         numrows:function(Cursor):number

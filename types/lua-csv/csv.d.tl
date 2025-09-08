@@ -42,7 +42,7 @@ local record Csv
 
         -- Mapper that will be applied to the value.
         transform: function(value: string): any
-        
+
         -- Uses this value instead of nil/false returned by the mapper.
         default: any
     end

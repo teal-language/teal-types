@@ -21,7 +21,7 @@ local record spi
 
    record Statement
       metamethod __call: function(Statement, ...: any): {Row} | integer
-   
+
       execute: function(Statement, ...: any): {Row} | integer
       execute_count: function(Statement, maxrows: integer, ...: any): {Row} | integer
       getcursor: function(Statement, ...: any): Cursor

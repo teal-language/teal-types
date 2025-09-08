@@ -8,11 +8,11 @@ local record log
 		"fatal"
 	end
 	type LogFunction = function(...: any)
-	
+
 	usecolor: boolean
 	outfile: string
 	level: Level
-	
+
 	trace: LogFunction
 	debug: LogFunction
 	info: LogFunction

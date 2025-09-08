@@ -1,6 +1,6 @@
 local type reaper_array = record
 	userdata
-	
+
 	-- NOTE: For some reason REAPER doesn't use colon (:) syntax for these methods, even though they act on the array
 	clear: function(value: number, offset: integer, size: integer)
 	convolve: function(src: reaper_array, srcoffs: integer, size: integer, destoffs: integer)
@@ -29,7 +29,7 @@ global record reaper
 	type joystick_device = record userdata end
 	type KbdSectionInfo = record userdata end
 	type identifier = record userdata end
-	
+
 	atexit: function(function())
 	defer: function(function())
 	get_action_context: function(): boolean, string, integer, integer, integer, integer, integer
@@ -39,7 +39,7 @@ global record reaper
 	new_array: function(size: integer)
 	new_array: function({number} | reaper_array, size: integer)
 	runloop: function(function())
-	
+
 	AddMediaItemToTrack: function(tr: MediaTrack): (MediaItem)
 	AddProjectMarker: function(proj: ReaProject, isrgn: boolean, pos: number, rgnend: number, name: string, wantidx: integer): (integer)
 	AddProjectMarker2: function(proj: ReaProject, isrgn: boolean, pos: number, rgnend: number, name: string, wantidx: integer, color: integer): (integer)
@@ -740,7 +740,7 @@ global record gfx
 	mouse_wheel: integer
 	mouse_hwheel: integer
 	mouse_cap: integer
-	
+
 	arc: function(x: number, y: number, r: number, ang1: number, ang2: number, antialias: boolean)
 	blit: function(source: integer, scale: number, rotation: number, srcx: integer, srcy: integer, srcw: integer, srch: integer, destx: integer, desty: integer, destw: integer, desth: integer, rotxoffs: integer, rotyoffs: integer)
 	blitext: function(source: integer, coordinatelist: {number}, rotation: number)

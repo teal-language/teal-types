@@ -15,11 +15,11 @@ local record Log
    log: function(self: Log, level: Level, ...: any)
    getPrint: function(self: Log, level: Level): function(...: any)
 
-   debug: function(self: Log, ...: any) 
-   info: function(self: Log, ...: any) 
-   warn: function(self: Log, ...: any) 
-   error: function(self: Log, ...: any) 
-   fatal: function(self: Log, ...: any) 
+   debug: function(self: Log, ...: any)
+   info: function(self: Log, ...: any)
+   warn: function(self: Log, ...: any)
+   error: function(self: Log, ...: any)
+   fatal: function(self: Log, ...: any)
 
    DEBUG: Level
    INFO: Level

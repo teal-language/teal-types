@@ -29,7 +29,7 @@ local record flux
 		"elasticout"
 		"elasticinout"
 	end
-	
+
 	record Tween<T>
 		ease: function(self: Tween<T>, type: Easing): Tween<T>
 		delay: function(self: Tween<T>, time: number): Tween<T>
@@ -40,14 +40,14 @@ local record flux
 		after: function<U>(self: Tween<T>, obj: U, time: number, vars: U): Tween<T>
 		stop: function(self: Tween<T>)
 	end
-	
+
 	record Group
 		update: function(self: Group, deltatime: number)
 		to: function<K, V>(self: Group, obj: {K:V}, time: number, vars: {K:V}): Tween<{K:V}>
 		to: function<T>(self: Group, obj: T, time: number, vars: T): Tween<T>
 		-- group: function(self: Group): Group
 	end
-	
+
 	update: function(deltatime: number)
 	to: function<K, V>(obj: {K:V}, time: number, vars: {K:V}): Tween<{K:V}>
 	to: function<T>(obj: T, time: number, vars: T): Tween<T>

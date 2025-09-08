@@ -4,13 +4,13 @@ local record signal
 
     register: function(s: string, f: function): function
     register: function(self: signal, s: string, f: function): function
-    
+
     emit: function(s: string, ...: any)
     emit: function(self: signal, s: string, ...: any)
 
     remove: function(...: function)
     remove: function(self: signal, ...: function)
-    
+
     clear: function(s: string)
     clear: function(self: signal, s: string)
 
@@ -22,7 +22,7 @@ local record signal
 
     clearPattern: function(p: string)
     clearPattern: function(self: signal, p: string)
-    
+
 end
 
 return signal

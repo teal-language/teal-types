@@ -8,16 +8,16 @@ local record baton
 		deadzone: number
 		squareDeadzone: boolean
 	end
-	
+
 	enum ActiveDevice
 		"kbm"
 		"joy"
 		"none"
 	end
-	
+
 	record Player
 		config: Configuration
-		
+
 		update: function(self: Player)
 		getRaw: function(self: Player, name: string): number
 		get: function(self: Player, name: string): number
@@ -25,11 +25,11 @@ local record baton
 		down: function(self: Player, name: string): boolean
 		pressed: function(self: Player, name: string): boolean
 		released: function(self: Player, name: string): boolean
-		
+
 		getActiveDevice: function(self: Player): ActiveDevice
 		_activeDevice: ActiveDevice
 	end
-	
+
 	new: function(config: Configuration): Player
 end
 

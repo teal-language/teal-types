@@ -1,11 +1,11 @@
-global record World<T>   
-   enum CollisionType 
+global record World<T>
+   enum CollisionType
       "touch"
       "cross"
       "slide"
       "bounce"
    end
-   
+
    type Vector = record
       x : number
       y : number

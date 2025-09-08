@@ -2,7 +2,7 @@ local record lume
     -- Returns the number x clamped between the numbers min and max.
     clamp: function(x: number, min: number, max: number): number
 
-    -- Rounds x to the nearest integer; rounds away from zero if we're midway between two integers. 
+    -- Rounds x to the nearest integer; rounds away from zero if we're midway between two integers.
     -- If increment is set then the number is rounded to the nearest increment.
     round: function(x: number, increment: number): number
 
@@ -18,7 +18,7 @@ local record lume
     -- Ping-pongs the number x between 0 and 1.
     pingpong: function(x: number): number
 
-    -- Returns the distance between the two points. 
+    -- Returns the distance between the two points.
     -- If squared is true then the squared distance is returned -- this is faster to calculate and can still be used when comparing distances.
     distance: function(x1: number, y1: number, x2: number, y2: number, squared: boolean): number
 
@@ -54,7 +54,7 @@ local record lume
     clear: function<N>(t: {N}): {N}
     clear: function<K, V>(t: {K:V}): {K:V}
 
-    -- Copies all the fields from the source tables to the table t and returns t. 
+    -- Copies all the fields from the source tables to the table t and returns t.
     -- If a key exists in multiple tables the right-most table's value is used.
     extend: function<K, V>(t: {K:V}, ...: {K:V}): {K:V}
 
@@ -63,7 +63,7 @@ local record lume
 
     type SortFunction = function<V>(a: V, b: V): boolean
 
-    -- Returns a copy of the array t with all its items sorted. 
+    -- Returns a copy of the array t with all its items sorted.
     -- If comp is a function it will be used to compare the items when sorting.
     -- If comp is a string it will be used as the key to sort the items by.
     sort: function<N>(t: {N}, comp: SortFunction<N>): {N}
@@ -72,8 +72,8 @@ local record lume
     -- Iterates the supplied iterator and returns an array filled with the values.
     array: function<N>(it: function(): N): {N}
 
-    -- Iterates the table t and calls the function fn on each value followed by the supplied additional arguments. 
-    -- If fn is a string the method of that name is called for each value. 
+    -- Iterates the table t and calls the function fn on each value followed by the supplied additional arguments.
+    -- If fn is a string the method of that name is called for each value.
     -- The function returns t unmodified.
     each: function<N>(t: {N}, fn: function(...: any), ...: any): {N}
     each: function<K, V>(t: {{K:V}}, fn: string, ...: any): {{K:V}}
