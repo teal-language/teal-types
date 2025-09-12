@@ -1952,9 +1952,9 @@ global record vim
       --]]
 
       nvim_buf_attach: function(BufferId, boolean, {string:any}): boolean
-      nvim_buf_call: function(BufferId, function(): any): any
+      nvim_buf_call: function<Ret>(BufferId, function(): Ret): Ret
       nvim_buf_clear_namespace: function(BufferId, integer, integer, integer)
-      nvim_buf_create_user_command: function(BufferId, string, any, {string:any})
+      nvim_buf_create_user_command: function(BufferId, string, string | function(CommandArguments), CreateUserCommandOptions)
       nvim_buf_del_extmark: function(BufferId, integer, integer): boolean
       nvim_buf_del_keymap: function(BufferId, string, string)
       nvim_buf_del_mark: function(BufferId, string): boolean
@@ -2084,7 +2084,7 @@ global record vim
       nvim_ui_term_event: function(string, any)
       nvim_ui_try_resize: function(integer, integer)
       nvim_ui_try_resize_grid: function(integer, integer, integer)
-      nvim_win_call: function(WindowId, function(): any): any
+      nvim_win_call: function<Ret>(WindowId, function(): Ret): Ret
       nvim_win_close: function(WindowId, boolean)
       nvim_win_del_var: function(WindowId, string)
       nvim_win_get_buf: function(WindowId): BufferId

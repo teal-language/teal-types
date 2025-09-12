@@ -50,9 +50,12 @@ local substitutions <const>: {string:string} = {}
 local manual_api_annotations <const>: {string:string} = {
 	nvim_create_namespace = "function(string): NamespaceId",
 	nvim_create_user_command = "function(string, string | function(CommandArguments), CreateUserCommandOptions)",
+	nvim_buf_create_user_command = "function(BufferId, string, string | function(CommandArguments), CreateUserCommandOptions)",
 	nvim_set_decoration_provider = "function(NamespaceId, DecorationProviderCallbacks)",
-	nvim_buf_call = "function(BufferId, function(): any): any",
-	nvim_win_call = "function(WindowId, function(): any): any",
+
+	-- TODO: variadic generics would be useful here
+	nvim_buf_call = "function<Ret>(BufferId, function(): Ret): Ret",
+	nvim_win_call = "function<Ret>(WindowId, function(): Ret): Ret",
 }
 
 do
