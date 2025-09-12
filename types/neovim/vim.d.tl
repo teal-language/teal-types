@@ -305,7 +305,7 @@ global record vim
       changed_window: any
    end
 
-   record highlight
+   record hl
       record Opts
          higroup: string
          timeout: integer
@@ -323,6 +323,7 @@ global record vim
          options: table
       )
    end
+   highlight: hl
 
    record diagnostic
       type Severity = integer
