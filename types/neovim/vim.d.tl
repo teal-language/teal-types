@@ -32,6 +32,51 @@ global record vim
       on_end: function(string, integer): boolean
    end
 
+   enum UserCommandComplete
+      "arglist"
+      "augroup"
+      "breakpoint"
+      "buffer"
+      "color"
+      "command"
+      "compiler"
+      "diff_buffer"
+      "dir"
+      "dir_in_path"
+      "environment"
+      "event"
+      "expression"
+      "file"
+      "file_in_path"
+      "filetype"
+      "function"
+      "help"
+      "highlight"
+      "history"
+      "keymap"
+      "locale"
+      "lua"
+      "mapclear"
+      "mapping"
+      "menu"
+      "messages"
+      "option"
+      "packadd"
+      "runtime"
+      "scriptnames"
+      "shellcmd"
+      "shellcmdline"
+      "sign"
+      "syntax"
+      "syntime"
+      "tag"
+      "tag_listfiles"
+      "user"
+      "var"
+      --"custom"
+      --"customlist"
+   end
+
    interface CreateUserCommandOptions
       name: string
       desc: string
@@ -39,7 +84,7 @@ global record vim
       preview: function(table, NamespaceId, BufferId): integer
       bang: boolean
       nargs: integer | string
-      complete: string -- TODO: enum
+      complete: UserCommandComplete | function(string, string, integer): string | {string}
       range: boolean | string | integer
       count: integer
       addr: string
