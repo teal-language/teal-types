@@ -311,9 +311,37 @@ global record vim
    end
    regex: function(string): Regex
 
-   diff: function(a: string, b: string): string
-   -- TODO
-   -- diff: function(a: string, b: string, options: DiffOptions): string | {integer}
+   record DiffOpts
+      enum ResultType
+         "unified"
+         "indices"
+      end
+
+      enum Algorithm
+         "myers"
+         "minimal"
+         "patience"
+         "histogram"
+      end
+
+      on_hunk: function(integer, integer, integer, integer): integer
+      result_type: ResultType
+      linematch: boolean | integer
+      algorithm: Algorithm
+      ctxlen: integer
+      interhunkctxlen: integer
+      ignore_whitespace: boolean
+      ignore_whitespace_change: boolean
+      ignore_whitespace_change_at_eol: boolean
+      ignore_cr_at_eol: boolean
+      ignore_blank_lines: boolean
+      indent_heuristic: boolean
+   end
+   diff: function(a: string, b: string, ?DiffOpts): string | {{integer, integer, integer, integer}}
+   -- TODO: Is this possible/desirable?
+   -- diff: function(a: string, b: string, DiffOpts where result_type == "unified"): string
+   -- diff: function(a: string, b: string, DiffOpts where result_type == "indices"): {{integer, integer, integer, integer}}
+   -- diff: function(a: string, b: string, DiffOpts where on_hunk)
 
    record VersionInfo
       api_compatible: integer
