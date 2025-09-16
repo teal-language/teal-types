@@ -297,13 +297,18 @@ global record vim
       "number" "n"
       "boolean" "b"
       "function" "f"
+      "callable"
       "nil"
       "thread"
       "userdata"
    end
-   -- Technically, this should be a union of tuples since the types are dependent and this allows for invalid combos
-   validate: function({string:{any, TypeName | {TypeName} | function(any): (boolean, string), boolean | string}})
-   -- should be {string:{any, TypeName, boolean} | {any, function(any): (boolean, string)}, string}}
+
+   type Validator = TypeName | {TypeName} | function(any): (boolean, string)
+   validate: function(string, any, Validator, ?boolean, ?string)
+
+   -- Deprecated form
+   type ValidatorSpec = {string:{any, Validator, boolean|string}}
+   validate: function(ValidatorSpec)
 
    record Regex
       match_str: function(Regex, string): integer, integer
