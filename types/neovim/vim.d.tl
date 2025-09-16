@@ -2252,6 +2252,10 @@ global record vim
 
 
    record json
+      record EncodeOpts
+         escape_slash: boolean
+      end
+
       record DecodeOpts
          record Luanil
             object: boolean
@@ -2261,8 +2265,8 @@ global record vim
          luanil: Luanil
       end
 
-      encode: function(string)
-      decode: function(string, DecodeOpts)
+      encode: function(string, ?EncodeOpts)
+      decode: function(string, ?DecodeOpts)
    end
 
    record ui
