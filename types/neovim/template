@@ -152,7 +152,7 @@ global record vim
       indent: string
       process: function
    end
-   inspect: function(any, InspectOptions): string
+   inspect: function(any, ?InspectOptions): string
 
    record log
       record levels
