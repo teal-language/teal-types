@@ -727,6 +727,17 @@ global record vim
    end
 
    system: function({string}, ?SystemOpts, function(SystemCompleted)): SystemObj
+
+   record Ringbuf<T>
+      clear: function(self)
+      push: function(self, T)
+      pop: function(self): T
+      peek: function(self): T
+
+      metamethod __call: function(self): T
+   end
+   ringbuf: function<T>(integer): Ringbuf<T>
+
    record ui
       record InputOpts
          prompt: string
