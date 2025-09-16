@@ -316,23 +316,20 @@ global record vim
    end
    regex: function(string): Regex
 
-   record DiffOpts
-      enum ResultType
-         "unified"
-         "indices"
-      end
-
-      enum Algorithm
-         "myers"
-         "minimal"
-         "patience"
-         "histogram"
-      end
-
+   enum DiffResultType
+      "unified"
+      "indices"
+   end
+   enum DiffAlgorithm
+      "myers"
+      "minimal"
+      "patience"
+      "histogram"
+   end
+   interface DiffOpts
       on_hunk: function(integer, integer, integer, integer): integer
-      result_type: ResultType
-      linematch: boolean | integer
-      algorithm: Algorithm
+      result_type: DiffResultType
+      algorithm: DiffAlgorithm
       ctxlen: integer
       interhunkctxlen: integer
       ignore_whitespace: boolean
@@ -342,11 +339,18 @@ global record vim
       ignore_blank_lines: boolean
       indent_heuristic: boolean
    end
+   interface DiffOptsUnified is DiffOpts where self.result_type == "unified"
+   end
+   interface DiffOptsIndices is DiffOpts where self.result_type == "indices"
+      linematch: boolean | integer
+   end
+   interface DiffOptsWithCallback is DiffOpts where self.on_hunk
+   end
+
    diff: function(a: string, b: string, ?DiffOpts): string | {{integer, integer, integer, integer}}
-   -- TODO: Is this possible/desirable?
-   -- diff: function(a: string, b: string, DiffOpts where result_type == "unified"): string
-   -- diff: function(a: string, b: string, DiffOpts where result_type == "indices"): {{integer, integer, integer, integer}}
-   -- diff: function(a: string, b: string, DiffOpts where on_hunk)
+   diff: function(a: string, b: string, DiffOptsUnified): string
+   diff: function(a: string, b: string, DiffOptsIndices): {{integer, integer, integer, integer}}
+   diff: function(a: string, b: string, DiffOptsWithCallback)
 
    record VersionInfo
       api_compatible: integer
