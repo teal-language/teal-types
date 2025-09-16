@@ -396,7 +396,13 @@ global record vim
    end
 
    record spell
-      check: function(str: string): {{string | integer}}
+      enum MistakeKind
+         "bad"
+         "rare"
+         "local"
+         "caps"
+      end
+      check: function(str: string): {{string, MistakeKind, integer}}
    end
 
    in_fast_event: function(): boolean
