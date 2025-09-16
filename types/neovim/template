@@ -181,6 +181,11 @@ global record vim
    end
    inspect: function(any, ?InspectOptions): string
 
+   interface BlockingMode
+      mode: Mode
+      blocking: boolean
+   end
+
    record log
       record levels
          DEBUG: integer

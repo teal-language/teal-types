@@ -54,6 +54,7 @@ local manual_api_annotations <const>: {string:string} = {
 	nvim_set_decoration_provider = "function(NamespaceId, DecorationProviderCallbacks)",
 	nvim_create_autocmd = "function(string|{string}, AutocmdOptions): AutocmdId",
 	nvim_create_augroup = "function(string, AugroupOptions): AutocmdGroupId",
+	nvim_get_mode = "function(): BlockingMode",
 
 	-- TODO: variadic generics would be useful here
 	nvim_buf_call = "function<Ret>(BufferId, function(): Ret): Ret",

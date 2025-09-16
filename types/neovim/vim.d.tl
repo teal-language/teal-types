@@ -181,6 +181,11 @@ global record vim
    end
    inspect: function(any, ?InspectOptions): string
 
+   interface BlockingMode
+      mode: Mode
+      blocking: boolean
+   end
+
    record log
       record levels
          DEBUG: integer
@@ -2053,7 +2058,7 @@ global record vim
       nvim_get_hl_ns: function({string:any}): integer
       nvim_get_keymap: function(string): {{string:any}}
       nvim_get_mark: function(string, {string:any}): {any}
-      nvim_get_mode: function(): {string:any}
+      nvim_get_mode: function(): BlockingMode
       nvim_get_namespaces: function(): {string:any}
       nvim_get_option_info2: function(string, {string:any}): {string:any}
       nvim_get_option_value: function(string, {string:any}): any
