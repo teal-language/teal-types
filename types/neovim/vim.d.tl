@@ -34,6 +34,39 @@ global record vim
       on_end: function(string, integer): boolean
    end
 
+   enum OptionScope
+      "global"
+      "local"
+   end
+
+   interface OptionInfo2Options
+      scope: OptionScope
+      win: WindowId
+      buf: BufferId
+   end
+
+   interface OptionInfo
+      name: string
+      shortname: string
+      type: string
+      default: any
+      was_set: boolean
+      last_set_sid: integer
+      last_set_linenr: integer
+      last_set_chan: integer
+      scope: string
+      global_local: boolean
+      commalist: boolean
+      flaglist: boolean
+   end
+
+   interface GetOptionValueOptions
+      scope: OptionScope
+      win: WindowId
+      buf: BufferId
+      filetype: string
+   end
+
    interface AutocmdCallbackData
       id: AutocmdId
       event: string
@@ -2060,8 +2093,8 @@ global record vim
       nvim_get_mark: function(string, {string:any}): {any}
       nvim_get_mode: function(): BlockingMode
       nvim_get_namespaces: function(): {string:any}
-      nvim_get_option_info2: function(string, {string:any}): {string:any}
-      nvim_get_option_value: function(string, {string:any}): any
+      nvim_get_option_info2: function(string, OptionInfo2Options): OptionInfo
+      nvim_get_option_value: function(string, GetOptionValueOptions): any
       nvim_get_proc: function(integer): any
       nvim_get_proc_children: function(integer): {any}
       nvim_get_runtime_file: function(string, boolean): {string}
