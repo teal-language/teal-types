@@ -23,6 +23,8 @@ global record vim
    type BufferId = integer
    type TabpageId = integer
    type NamespaceId = integer
+   type AutocmdId = integer
+   type AutocmdGroupId = integer
 
    interface DecorationProviderCallbacks
       on_start: function(string, integer): boolean
@@ -30,6 +32,31 @@ global record vim
       on_win: function(string, WindowId, BufferId, integer, integer): boolean
       on_line: function(string, WindowId, BufferId, integer): boolean
       on_end: function(string, integer): boolean
+   end
+
+   interface AutocmdCallbackData
+      id: AutocmdId
+      event: string
+      group: AutocmdGroupId
+      file: string
+      match: string
+      buf: BufferId
+      data: any
+   end
+
+   record AutocmdOptions
+      group: string | AutocmdId
+      pattern: string | {string}
+      buffer: BufferId
+      desc: string
+      callback: string | function(AutocmdCallbackData): any
+      command: string
+      once: boolean
+      nested: boolean
+   end
+
+   record AugroupOptions
+      clear: boolean
    end
 
    enum UserCommandComplete

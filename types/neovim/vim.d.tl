@@ -23,6 +23,8 @@ global record vim
    type BufferId = integer
    type TabpageId = integer
    type NamespaceId = integer
+   type AutocmdId = integer
+   type AutocmdGroupId = integer
 
    interface DecorationProviderCallbacks
       on_start: function(string, integer): boolean
@@ -30,6 +32,31 @@ global record vim
       on_win: function(string, WindowId, BufferId, integer, integer): boolean
       on_line: function(string, WindowId, BufferId, integer): boolean
       on_end: function(string, integer): boolean
+   end
+
+   interface AutocmdCallbackData
+      id: AutocmdId
+      event: string
+      group: AutocmdGroupId
+      file: string
+      match: string
+      buf: BufferId
+      data: any
+   end
+
+   record AutocmdOptions
+      group: string | AutocmdId
+      pattern: string | {string}
+      buffer: BufferId
+      desc: string
+      callback: string | function(AutocmdCallbackData): any
+      command: string
+      once: boolean
+      nested: boolean
+   end
+
+   record AugroupOptions
+      clear: boolean
    end
 
    enum UserCommandComplete
@@ -1989,8 +2016,8 @@ global record vim
       nvim_clear_autocmds: function({string:any})
       nvim_cmd: function({string:any}, {string:any}): string
       nvim_command: function(string)
-      nvim_create_augroup: function(string, {string:any}): integer
-      nvim_create_autocmd: function(any, {string:any}): integer
+      nvim_create_augroup: function(string, AugroupOptions): AutocmdGroupId
+      nvim_create_autocmd: function(string|{string}, AutocmdOptions): AutocmdId
       nvim_create_buf: function(boolean, boolean): BufferId
       nvim_create_namespace: function(string): NamespaceId
       nvim_create_user_command: function(string, string | function(CommandArguments), CreateUserCommandOptions)
