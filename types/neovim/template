@@ -141,7 +141,7 @@ global record vim
       name: string
       desc: string
       force: boolean
-      preview: function(table, NamespaceId, BufferId): integer
+      preview: function(CommandArguments, NamespaceId, BufferId): integer
       bang: boolean
       nargs: integer | string
       complete: UserCommandComplete | function(string, string, integer): string | {string}
