@@ -696,8 +696,37 @@ global record vim
       encode: function(string): string
       decode: function(string): string
    end
+
+   record SystemCompleted
+      code: integer
+      signal: integer
+      stdout: string
+      stderr: string
    end
 
+   record SystemObj
+      cmd: {string}
+      pid: integer
+
+      wait: function(SystemObj, ?integer): SystemCompleted
+      kill: function(SystemObj, integer|string)
+      write: function(SystemObj, string)
+      is_closing: function(SystemObj): boolean
+   end
+
+   record SystemOpts
+      cwd: string
+      env: {string:string}
+      clear_env: boolean
+      stdin: string | {string} | boolean
+      stdout: boolean | function(string, string)
+      stderr: boolean | function(string, string)
+      text: boolean
+      timeout: integer
+      detach: boolean
+   end
+
+   system: function({string}, ?SystemOpts, function(SystemCompleted)): SystemObj
    record ui
       record InputOpts
          prompt: string
