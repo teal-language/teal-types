@@ -170,7 +170,14 @@ global record vim
    end
 
    fn: {string:function(...: any): (any)}
-   cmd: function(cmd: string)
+   record cmd
+      interface _cmd
+         metamethod __call: function(self, string | CommandArguments)
+      end
+
+      metamethod __call: function(self, string | CommandArguments)
+      metamethod __index: function(self, string): _cmd
+   end
    call: function(func: string, ...: any)
    call: function(string, ...: any): any
 
