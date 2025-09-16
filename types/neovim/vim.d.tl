@@ -364,10 +364,30 @@ global record vim
    region: function(bufnr: BufferId, pos1: {integer}, pos2: {integer}, regtype: string, inclusive: boolean): {integer:{integer}}
 
    record filetype
-      -- TODO - replace table with options record
-      add: function(filetypes: table)
+      -- Directly translated from $VIMRUNTIME/lua/vim/filetype.lua
+      type mapfn = function(string, BufferId, ...: any): string, function(BufferId)
+      record mapopts
+         priority: number
+      end
+      type maptbl = { string | mapfn, mapopts }
+      type value = string | mapfn | maptbl
+      type mapping = {string:value}
 
-      match: function(name: string, bufnr: BufferId)
+      record AddOpts
+         extension: mapping
+         filename: mapping
+         pattern: mapping
+      end
+      add: function(AddOpts)
+
+      get_option: function(string, string): string|boolean|integer
+
+      record MatchArgs
+         buf: integer
+         filename: string
+         contents: {string}
+      end
+      match: function(MatchArgs): string, function(BufferId)
    end
 
    record mpack
