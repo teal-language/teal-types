@@ -2324,12 +2324,12 @@ global record vim
       end
       input: function(InputOpts, function(string))
 
-      record SelectOpts
+      record SelectOpts<T>
          prompt: string
-         format_item: function(any): string
+         format_item: function(T): string
          kind: string
       end
-      select: function(any, SelectOpts, function(any, integer))
+      select: function<T>({T}, SelectOpts<T>, function(T, integer))
 
       record OpenOpts
          cmd: {string}
