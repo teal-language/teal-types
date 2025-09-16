@@ -691,6 +691,11 @@ global record vim
       encode: function(string, ?EncodeOpts)
       decode: function(string, ?DecodeOpts)
    end
+
+   record base64
+      encode: function(string): string
+      decode: function(string): string
+   end
    end
 
    record ui

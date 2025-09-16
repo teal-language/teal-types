@@ -2269,6 +2269,11 @@ global record vim
       decode: function(string, ?DecodeOpts)
    end
 
+   record base64
+      encode: function(string): string
+      decode: function(string): string
+   end
+
    record ui
       record InputOpts
          prompt: string
