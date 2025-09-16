@@ -2318,6 +2318,7 @@ global record vim
    record ui
       record InputOpts
          prompt: string
+         default: string
          completion: string
          highlight: function()
       end
@@ -2329,6 +2330,11 @@ global record vim
          kind: string
       end
       select: function(any, SelectOpts, function(any, integer))
+
+      record OpenOpts
+         cmd: {string}
+      end
+      open: function(string, ?OpenOpts): SystemObj, string
    end
 end
 
