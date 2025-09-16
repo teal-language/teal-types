@@ -39,7 +39,7 @@ global record vim
       "local"
    end
 
-   interface OptionInfo2Options
+   interface OptionInfo2Opts
       scope: OptionScope
       win: WindowId
       buf: BufferId
@@ -60,7 +60,7 @@ global record vim
       flaglist: boolean
    end
 
-   interface GetOptionValueOptions
+   interface GetOptionValueOpts
       scope: OptionScope
       win: WindowId
       buf: BufferId
@@ -77,7 +77,7 @@ global record vim
       data: any
    end
 
-   record AutocmdOptions
+   record AutocmdOpts
       group: string | AutocmdId
       pattern: string | {string}
       buffer: BufferId
@@ -88,7 +88,7 @@ global record vim
       nested: boolean
    end
 
-   record AugroupOptions
+   record AugroupOpts
       clear: boolean
    end
 
@@ -137,7 +137,7 @@ global record vim
       --"customlist"
    end
 
-   interface CreateUserCommandOptions
+   interface CreateUserCommandOpts
       name: string
       desc: string
       force: boolean
@@ -206,13 +206,13 @@ global record vim
       "t" -- Terminal mode: keys go to the job
    end
 
-   record InspectOptions
+   record InspectOpts
       depth: integer
       newline: string
       indent: string
-      process: function
+      process: function(any, {string}): any
    end
-   inspect: function(any, ?InspectOptions): string
+   inspect: function(any, ?InspectOpts): string
 
    interface BlockingMode
       mode: Mode
@@ -371,11 +371,11 @@ global record vim
    types: {string|integer:string|integer}
 
    record keymap
-      record DelOptions
+      record DelOpts
          buffer: boolean | integer
       end
 
-      record SetOptions
+      record SetOpts
          buffer: boolean | integer
          callback: function
          desc: string
@@ -388,8 +388,8 @@ global record vim
          unique: boolean
       end
 
-      set: function(mode: string|{string}, lhs: string, rhs: string|function(), opts: SetOptions)
-      del: function(modes: string|{string}, lhs: string, opts: DelOptions)
+      set: function(mode: string|{string}, lhs: string, rhs: string|function(), opts: SetOpts)
+      del: function(modes: string|{string}, lhs: string, opts: DelOpts)
    end
 
    record EventData --TODO: this is a vim thing, so types aren't really documented
@@ -2019,7 +2019,7 @@ global record vim
       nvim_buf_attach: function(BufferId, boolean, {string:any}): boolean
       nvim_buf_call: function<Ret>(BufferId, function(): Ret): Ret
       nvim_buf_clear_namespace: function(BufferId, integer, integer, integer)
-      nvim_buf_create_user_command: function(BufferId, string, string | function(CommandArguments), CreateUserCommandOptions)
+      nvim_buf_create_user_command: function(BufferId, string, string | function(CommandArguments), CreateUserCommandOpts)
       nvim_buf_del_extmark: function(BufferId, integer, integer): boolean
       nvim_buf_del_keymap: function(BufferId, string, string)
       nvim_buf_del_mark: function(BufferId, string): boolean
@@ -2054,11 +2054,11 @@ global record vim
       nvim_clear_autocmds: function({string:any})
       nvim_cmd: function({string:any}, {string:any}): string
       nvim_command: function(string)
-      nvim_create_augroup: function(string, AugroupOptions): AutocmdGroupId
-      nvim_create_autocmd: function(string|{string}, AutocmdOptions): AutocmdId
+      nvim_create_augroup: function(string, AugroupOpts): AutocmdGroupId
+      nvim_create_autocmd: function(string|{string}, AutocmdOpts): AutocmdId
       nvim_create_buf: function(boolean, boolean): BufferId
       nvim_create_namespace: function(string): NamespaceId
-      nvim_create_user_command: function(string, string | function(CommandArguments), CreateUserCommandOptions)
+      nvim_create_user_command: function(string, string | function(CommandArguments), CreateUserCommandOpts)
       nvim_del_augroup_by_id: function(integer)
       nvim_del_augroup_by_name: function(string)
       nvim_del_autocmd: function(integer)
@@ -2093,8 +2093,8 @@ global record vim
       nvim_get_mark: function(string, {string:any}): {any}
       nvim_get_mode: function(): BlockingMode
       nvim_get_namespaces: function(): {string:any}
-      nvim_get_option_info2: function(string, OptionInfo2Options): OptionInfo
-      nvim_get_option_value: function(string, GetOptionValueOptions): any
+      nvim_get_option_info2: function(string, OptionInfo2Opts): OptionInfo
+      nvim_get_option_value: function(string, GetOptionValueOpts): any
       nvim_get_proc: function(integer): any
       nvim_get_proc_children: function(integer): {any}
       nvim_get_runtime_file: function(string, boolean): {string}

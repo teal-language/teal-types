@@ -49,14 +49,14 @@ local substitutions <const>: {string:string} = {}
 
 local manual_api_annotations <const>: {string:string} = {
 	nvim_create_namespace = "function(string): NamespaceId",
-	nvim_create_user_command = "function(string, string | function(CommandArguments), CreateUserCommandOptions)",
-	nvim_buf_create_user_command = "function(BufferId, string, string | function(CommandArguments), CreateUserCommandOptions)",
+	nvim_create_user_command = "function(string, string | function(CommandArguments), CreateUserCommandOpts)",
+	nvim_buf_create_user_command = "function(BufferId, string, string | function(CommandArguments), CreateUserCommandOpts)",
 	nvim_set_decoration_provider = "function(NamespaceId, DecorationProviderCallbacks)",
-	nvim_create_autocmd = "function(string|{string}, AutocmdOptions): AutocmdId",
-	nvim_create_augroup = "function(string, AugroupOptions): AutocmdGroupId",
+	nvim_create_autocmd = "function(string|{string}, AutocmdOpts): AutocmdId",
+	nvim_create_augroup = "function(string, AugroupOpts): AutocmdGroupId",
 	nvim_get_mode = "function(): BlockingMode",
-	nvim_get_option_info2 = "function(string, OptionInfo2Options): OptionInfo",
-	nvim_get_option_value = "function(string, GetOptionValueOptions): any",
+	nvim_get_option_info2 = "function(string, OptionInfo2Opts): OptionInfo",
+	nvim_get_option_value = "function(string, GetOptionValueOpts): any",
 
 	-- TODO: variadic generics would be useful here
 	nvim_buf_call = "function<Ret>(BufferId, function(): Ret): Ret",

@@ -39,7 +39,7 @@ global record vim
       "local"
    end
 
-   interface OptionInfo2Options
+   interface OptionInfo2Opts
       scope: OptionScope
       win: WindowId
       buf: BufferId
@@ -60,7 +60,7 @@ global record vim
       flaglist: boolean
    end
 
-   interface GetOptionValueOptions
+   interface GetOptionValueOpts
       scope: OptionScope
       win: WindowId
       buf: BufferId
@@ -77,7 +77,7 @@ global record vim
       data: any
    end
 
-   record AutocmdOptions
+   record AutocmdOpts
       group: string | AutocmdId
       pattern: string | {string}
       buffer: BufferId
@@ -88,7 +88,7 @@ global record vim
       nested: boolean
    end
 
-   record AugroupOptions
+   record AugroupOpts
       clear: boolean
    end
 
@@ -137,7 +137,7 @@ global record vim
       --"customlist"
    end
 
-   interface CreateUserCommandOptions
+   interface CreateUserCommandOpts
       name: string
       desc: string
       force: boolean
@@ -206,13 +206,13 @@ global record vim
       "t" -- Terminal mode: keys go to the job
    end
 
-   record InspectOptions
+   record InspectOpts
       depth: integer
       newline: string
       indent: string
-      process: function
+      process: function(any, {string}): any
    end
-   inspect: function(any, ?InspectOptions): string
+   inspect: function(any, ?InspectOpts): string
 
    interface BlockingMode
       mode: Mode
@@ -371,11 +371,11 @@ global record vim
    types: {string|integer:string|integer}
 
    record keymap
-      record DelOptions
+      record DelOpts
          buffer: boolean | integer
       end
 
-      record SetOptions
+      record SetOpts
          buffer: boolean | integer
          callback: function
          desc: string
@@ -388,8 +388,8 @@ global record vim
          unique: boolean
       end
 
-      set: function(mode: string|{string}, lhs: string, rhs: string|function(), opts: SetOptions)
-      del: function(modes: string|{string}, lhs: string, opts: DelOptions)
+      set: function(mode: string|{string}, lhs: string, rhs: string|function(), opts: SetOpts)
+      del: function(modes: string|{string}, lhs: string, opts: DelOpts)
    end
 
    record EventData --TODO: this is a vim thing, so types aren't really documented
