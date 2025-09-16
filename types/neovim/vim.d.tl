@@ -477,22 +477,38 @@ global record vim
    end
 
    record hl
-      record Opts
+      record OnYankOpts
          higroup: string
          timeout: integer
          on_macro: boolean
          on_visual: boolean
          event: EventData
+         priority: integer
       end
-      on_yank: function(Opts)
+      on_yank: function(OnYankOpts)
+
+      record RangeOpts
+         regtype: string
+         inclusive: boolean
+         priority: integer
+         timeout: integer
+      end
       range: function(
          bufnr: BufferId,
          ns: NamespaceId,
          higroup: string,
          start: {integer, integer},
          finish: {integer, integer},
-         options: table
-      )
+         options: RangeOpts
+      ): luv.Timer, function()
+
+      record priorities
+         syntax: integer
+         treesitter: integer
+         semantic_tokens: integer
+         diagnostics: integer
+         user: integer
+      end
    end
    highlight: hl
 
