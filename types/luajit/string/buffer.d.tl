@@ -12,7 +12,8 @@ local record StringBuffer
 
     type Data = string | number | SerialisationOptions.IStringable
 
-    new:        function(integer | nil, SerialisationOptions | nil): StringBuffer
+    new:        function(size?: integer, options?: SerialisationOptions): StringBuffer
+    new:        function(options?: SerialisationOptions): StringBuffer
     put:        function(StringBuffer, Data, ...: Data): StringBuffer
     putf:       function(StringBuffer, string, ...: Data): StringBuffer
     putcdata:   function(StringBuffer, ffi.CData, integer): StringBuffer
@@ -23,7 +24,7 @@ local record StringBuffer
     reserve:    function(StringBuffer, integer): ffi.CData, integer
     commit:     function(StringBuffer, integer): StringBuffer
     skip:       function(StringBuffer, integer): StringBuffer
-    get:        function(StringBuffer, integer | nil, ...: integer): string...
+    get:        function(StringBuffer, len?: integer, ...: integer): string...
     tostring:   function(StringBuffer): string
 
     ref:        function(StringBuffer): ffi.CData
