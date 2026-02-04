@@ -18,6 +18,16 @@ Usage: `lua read_luarocks.lua` or `tl run read_luarocks.tl`
 Scans for `.d.tl` files under your local `luarocks` tree and copies them here.
 Note that this script must be run from within the scripts directory.
 
+## `generate_rockspecs.tl`
+
+NOTE: This file should be run from the root of the repository and not from
+within the scripts directory! This script also requires `git` to be available.
+
+Usage: `lua ./scripts/generate_rockspecs.lua` or
+`tl run ./scripts/generate_rockspecs.tl`
+
+Generates rockspecs in `./rockspecs/` for all the teal types in `./types` and 
+saves off the last git commit it ran from in `./scripts/previous-sha`.
 
 ## Requirements
 
