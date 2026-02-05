@@ -1,0 +1,22 @@
+name: Upload Teal Types to LuaRocks
+
+on:
+  push:
+    branches: master
+    paths:
+      - scripts/updated-rockspecs.txt
+
+jobs:
+  Upload-Types:
+    runs-on: "ubuntu-latest"
+
+    steps:
+    - uses: actions/checkout@master
+
+    - uses: luarocks/gh-actions-luarocks@master
+
+    - name: Upload Rockspecs
+      env:
+        LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
+      run: |
+        cat ./scripts/updated-rockspecs.txt | xargs -n1 -I{} luarocks upload {} --api-key "$LUAROCKS_API_KEY"
