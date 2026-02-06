@@ -10,7 +10,22 @@ libraries!
 
 To learn more about declaration files in Teal, see the [declaration files](https://github.com/teal-language/tl/blob/master/docs/declaration_files.md) page.
 
-For the time being, the best way to install the declaration files on your machine is to copy them into your project. In the future, this step may be automated (see [issue #21](https://github.com/teal-language/teal-types/issues/21))
+### Install types via LuaRocks
+All the Teal Types [in this repo](https://github.com/teal-language/teal-types/tree/master/types) are uploaded to Luarocks can be installed into your local LuaRocks tree by running the following:
+
+```
+luarocks install [ORIGINAL_PACKAGE]-tl-type
+```
+
+For example, for `lua-cjson`:
+
+```
+luarocks install lua-cjson-tl-type
+```
+
+### Install types locally
+
+Types can also be installed manually by going to the respective folder in [https://github.com/teal-language/teal-types/tree/master/types], and placing the `*.d.tl` files (and directories if present) in the `source_dir` file defined in `tl_config.lua` (if using [cyan](https://github.com/teal-language/cyan)) or directly next to your Teal script.
 
 ## Contribution guidelines
 

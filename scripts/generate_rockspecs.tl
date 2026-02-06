@@ -113,10 +113,11 @@ end
 
 local function write_new_rockspec(module_name: string, version?: string): string
    version = version or "0.0.1"
+   local rockspec_module: string = string.lower(module_name)
    local files_in_module: {string} = get_files_in_module("./types/" .. module_name)
    local files_string = format_files(files_in_module)
-   local rockspec = string.format(ROCKSPEC_TEMPLATE, module_name, version, module_name, files_string)
-   local filepath = "./rockspecs/" .. module_name .. "-tl-type-" .. version .. "-1.rockspec"
+   local rockspec = string.format(ROCKSPEC_TEMPLATE, rockspec_module, version, module_name, files_string)
+   local filepath = "./rockspecs/" .. rockspec_module .. "-tl-type-" .. version .. "-1.rockspec"
 
    local output_file = io.open(filepath, "w")
    output_file:write(rockspec)
@@ -159,7 +160,10 @@ local function main()
    local rockspec: string
    local new_or_updated_rockspecs: {string} = {} 
    for module_to_update, _ in pairs(output) do
-      if rockspecs[module_to_update] then
+      -- rockspec files are always lowercase, but modules in ./types might not be,
+      -- so do the compare in lowercase and then correctly handle lowercasing
+      -- the rockspec filename in the write_new_rockspec
+      if rockspecs[string.lower(module_to_update)] then
          rockspec = update_rockspec(module_to_update, rockspecs[module_to_update])
       else
          rockspec = write_new_rockspec(module_to_update)
