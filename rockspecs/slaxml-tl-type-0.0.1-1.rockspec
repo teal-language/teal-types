@@ -1,4 +1,4 @@
-package = "SLAXML-tl-type"
+package = "slaxml-tl-type"
 version = "0.0.1-1"
 source = {
    url = "git+https://github.com/teal-language/teal-types"
