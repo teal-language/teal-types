@@ -17,6 +17,8 @@ local record lpeg
       metamethod __div: function(Pattern, number): Pattern
       metamethod __div: function<A, B>(Pattern, {A: B}): Pattern
       metamethod __div: function(Pattern, function(...: any): any...): Pattern
+
+      match: function(pattern: Pattern, subject: string, init?: number): any...
    end
 
    record Locale
@@ -33,8 +35,7 @@ local record lpeg
       xdigit: Pattern
    end
 
-   match: function(pattern: Pattern, subject: string, init: number): number
-   match: function(pattern: Pattern, subject: string, init: number): any...
+   match: function(pattern: Pattern, subject: string, init?: number): any...
 
    type: function(patt: Pattern): string
 
@@ -55,7 +56,7 @@ local record lpeg
    Cb: function(name: string): Pattern
    Cc: function(...: any): Pattern
    Cf: function(patt: Pattern, func: function(any, any): any): Pattern
-   Cg: function(patt: Pattern, name: string): Pattern
+   Cg: function(patt: Pattern, name?: string): Pattern
    Cp: function(): Pattern
    Cs: function(patt: Pattern): Pattern
    Ct: function(patt: Pattern): Pattern
