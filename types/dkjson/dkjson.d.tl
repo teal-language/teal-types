@@ -11,21 +11,21 @@ local record dkjson
       buffer: {string}
       bufferlen: number
       tables: {table:boolean}
-      exception: function(string, string, string, string): boolean|string, string
+      exception: function(reason: string, value: string, state: string, defaultmessage: string): boolean|string, string
    end
-   encode: function({string:any}, JsonState): string
+   encode: function(value: {string:any}, state?: JsonState): string
 
-   decode: function(string, number, any, table): {string:any}
+   decode: function(str: string, pos?: number, nullval?: any, objectmeta?: table, arraymeta?: table): {string:any}, number, string
 
    null: table
 
    version: string
 
-   quotestring: function(string): string
+   quotestring: function(value: string): string
 
-   addnewline: function(JsonState)
+   addnewline: function(state: JsonState)
 
-   encodeexception: function(string, any, JsonState, string): string
+   encodeexception: function(reason: string, value: any, state: JsonState, defaultmessage: string): string
 
    use_lpeg: function(): dkjson
 end
