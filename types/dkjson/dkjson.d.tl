@@ -8,7 +8,7 @@ local record dkjson
       | table | userdata  -- can always be valid with getmetatable(value).__tojson defined
 
    type OutputJsonValue = string | number | boolean
-      | {string|number : OutputJsonValue}
+      | {string|integer : OutputJsonValue}
 
    record JsonState
       indent: boolean
