@@ -19,7 +19,6 @@ local record dkjson
       tables: {table:boolean}
       exception: function(reason: string, value: InputJsonValue, state: JsonState, defaultmessage: string): string, string
    end
-
    encode: function(value: InputJsonValue, state?: JsonState): string
 
    decode: function(str: string, pos?: number, nullval?: any, objectmeta?: table, arraymeta?: table): OutputJsonValue, number, string
