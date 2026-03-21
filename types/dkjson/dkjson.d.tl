@@ -4,8 +4,12 @@
 ]]
 
 local record dkjson
-   type InputJsonValue = string | number | boolean
-      | table | userdata  -- can always be valid with getmetatable(value).__tojson defined
+   interface InputJsonUserdata is userdata
+      where ((getmetatable(self) as table) or {}).__tojson
+   end
+
+   type InputJsonValue = string | number | boolean | InputJsonUserdata
+      | table  -- can always be valid with getmetatable(value).__tojson defined
 
    type OutputJsonValue = string | number | boolean
       | {string|integer : OutputJsonValue}
