@@ -11,7 +11,7 @@ local record dkjson
       buffer: {string}
       bufferlen: number
       tables: {table:boolean}
-      exception: function(reason: string, value: string, state: string, defaultmessage: string): boolean|string, string
+      exception: function(reason: string, value: any, state: JsonState, defaultmessage: string): string, string
    end
    encode: function(value: {string:any}, state?: JsonState): string
 
@@ -25,7 +25,7 @@ local record dkjson
 
    addnewline: function(state: JsonState)
 
-   encodeexception: function(reason: string, value: any, state: JsonState, defaultmessage: string): string
+   encodeexception: function(reason: string, value: any, state: JsonState, defaultmessage: string): string, string
 
    use_lpeg: function(): dkjson
 end
