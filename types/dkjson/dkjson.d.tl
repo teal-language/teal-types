@@ -25,7 +25,7 @@ local record dkjson
    end
    encode: function(value: InputJsonValue, state?: JsonState): string
 
-   decode: function(str: string, pos?: number, nullval?: any, objectmeta?: table, arraymeta?: table): OutputJsonValue, number, string
+   decode: function<Null>(str: string, pos?: number, nullval?: Null, objectmeta?: table, arraymeta?: table): OutputJsonValue | Null, number, string
 
    null: table
 
