@@ -4,6 +4,16 @@
 ]]
 
 local record dkjson
+   interface InputJsonUserdata is userdata
+      where ((getmetatable(self) as table) or {}).__tojson
+   end
+
+   type InputJsonValue = string | number | boolean | InputJsonUserdata
+      | table  -- can always be valid with getmetatable(value).__tojson defined
+
+   type OutputJsonValue = string | number | boolean
+      | {string|integer : OutputJsonValue}
+
    record JsonState
       indent: boolean
       keyorder: {string}
@@ -11,11 +21,11 @@ local record dkjson
       buffer: {string}
       bufferlen: number
       tables: {table:boolean}
-      exception: function(reason: string, value: string, state: string, defaultmessage: string): boolean|string, string
+      exception: function(reason: string, value: InputJsonValue, state: JsonState, defaultmessage: string): string, string
    end
-   encode: function(value: {string:any}, state?: JsonState): string
+   encode: function(value: InputJsonValue, state?: JsonState): string
 
-   decode: function(str: string, pos?: number, nullval?: any, objectmeta?: table, arraymeta?: table): {string:any}, number, string
+   decode: function<Null>(str: string, pos?: number, nullval?: Null, objectmeta?: table, arraymeta?: table): OutputJsonValue | Null, number, string
 
    null: table
 
@@ -25,7 +35,7 @@ local record dkjson
 
    addnewline: function(state: JsonState)
 
-   encodeexception: function(reason: string, value: any, state: JsonState, defaultmessage: string): string
+   encodeexception: function(reason: string, value: InputJsonValue, state: JsonState, defaultmessage: string): string, string
 
    use_lpeg: function(): dkjson
 end
