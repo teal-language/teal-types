@@ -1,5 +1,6 @@
 -- Teal definitions for ComputerCraft / CraftOS
 -- Source basis: ported from @jackmacwindows TypeScript declarations in craftos-types and cc-types.
+-- This excludes APIs specific to CraftOS-PC and provides only vanilla ComputerCraft APIs.
 
 
 local enum SeekWhence
