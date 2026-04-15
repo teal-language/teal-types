@@ -20,6 +20,7 @@ build = {
       lua = {
          ["table.new"] = "types/luajit/table/new.d.tl",
          ["table.clear"] = "types/luajit/table/clear.d.tl",
+         "types/luajit/bit.d.tl",
          "types/luajit/ffi.d.tl",
          ["string.buffer"] = "types/luajit/string/buffer.d.tl",
          "types/luajit/jit.d.tl",
