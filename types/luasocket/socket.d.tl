@@ -20,7 +20,7 @@ local record socket
          "closed"
          "timeout"
       end
-      receive: function(TCP, TCPReceivePattern|integer, string): string, TCPReceiveError
+      receive: function(TCP, ? TCPReceivePattern|integer, ? string): string, TCPReceiveError
 
       send: function(TCP, string, ? integer, ? integer): integer, string, integer
 
@@ -38,6 +38,7 @@ local record socket
       enum TCPOption
          "keepalive"
          "reuseaddr"
+         "reuseport"
          "tcp-nodelay"
       end
       enum TCPLinger
@@ -48,6 +49,7 @@ local record socket
          timeout: integer
       end
       setoption: function(TCP, TCPOption): integer
+      setoption: function(TCP, TCPOption, boolean): integer
       setoption: function(TCP, TCPLinger, TCPLingerOption): integer
 
       -- master, client, and server methods
@@ -63,7 +65,7 @@ local record socket
          "b"
          "t"
       end
-      settimeout: function(TCP, integer, TCPTimeoutMode)
+      settimeout: function(TCP, number, ? TCPTimeoutMode)
    end
    record UDP
       close: function(UDP)
@@ -93,7 +95,7 @@ local record socket
       end
       setoption: function(UDP, UDPOptions, boolean): integer, string
 
-      settimeout: function(UDP, integer)
+      settimeout: function(UDP, number)
    end
    tcp: function(): TCP, string
 
