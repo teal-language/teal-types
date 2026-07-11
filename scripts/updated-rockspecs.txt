@@ -1,1 +1,6 @@
-./rockspecs/slaxml-tl-type-0.0.1-1.rockspec
+./rockspecs/dkjson-tl-type-0.0.2-1.rockspec
+./rockspecs/computer-craft-tl-type-0.0.1-1.rockspec
+./rockspecs/mame-tl-type-0.0.1-1.rockspec
+./rockspecs/luajit-tl-type-0.0.2-1.rockspec
+./rockspecs/lpeg-tl-type-0.0.2-1.rockspec
+./rockspecs/luasocket-tl-type-0.0.2-1.rockspec

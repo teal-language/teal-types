@@ -1,10 +1,10 @@
-package = "lpeg-tl-type"
+package = "computer-craft-tl-type"
 version = "0.0.1-1"
 source = {
    url = "git+https://github.com/teal-language/teal-types"
 }
 description = {
-   summary = "Teal type definition files for lpeg",
+   summary = "Teal type definition files for computer-craft",
    detailed = [[
       The Teal type definition files allow users to install Teal
       type defintion for a given Lua package into their rocks tree.
@@ -18,8 +18,7 @@ build = {
    modules = {},
    install = {
       lua = {
-         "types/lpeg/lpeg.d.tl",
-         "types/lpeg/re.d.tl",
+         "types/computer-craft/computer-craft.d.tl",
       }
    }
 }
