@@ -8,7 +8,7 @@ libraries!
 
 ## How to use
 
-To learn more about declaration files in Teal, see the [declaration files](https://github.com/teal-language/tl/blob/master/docs/declaration_files.md) page.
+To learn more about declaration files in Teal, see the [declaration files](https://teal-language.org/book/latest/declaration_files.html) page.
 
 ### Install types via LuaRocks
 All the Teal Types [in this repo](https://github.com/teal-language/teal-types/tree/master/types) are uploaded to Luarocks can be installed into your local LuaRocks tree by running the following:
