@@ -1,0 +1,38 @@
+name: Generate rockspecs
+
+on:
+  push:
+    branches: master
+    paths:
+      - types/**
+
+jobs:
+  Upload-Types:
+    runs-on: "ubuntu-latest"
+
+    steps:
+    - uses: actions/checkout@master
+
+    - uses: luarocks/gh-actions-lua@master
+      with:
+        luaVersion: "5.4"
+    - uses: luarocks/gh-actions-luarocks@master
+
+    - name: Install tl + luafilesystem
+      run: |
+        luarocks install tl
+        luarocks install luafilesystem
+        luarocks install luafilesystem-tl-type
+
+    - name: Run rockspec generation
+      run: |
+        git checkout -b update/rockspecs
+        tl run ./scripts/generate_rockspecs.tl
+        git add rockspecs scripts
+        git commit -m 'updated rockspecs'
+
+    - name: Upload Rockspecs
+      env:
+        GITHUB_TOKEN: ${{ secrets.TEAL_TYPES_BOT_PAT }}
+      run: |
+        gh pr create -B master -H update/rockspecs --title 'Update rockspecs' --body-file ./scripts/updated-rockspecs.txt
