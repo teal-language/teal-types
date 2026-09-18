@@ -26,13 +26,19 @@ jobs:
 
     - name: Run rockspec generation
       run: |
-        git checkout -b update/rockspecs
         tl run ./scripts/generate_rockspecs.tl
-        git add rockspecs scripts
-        git commit -m 'updated rockspecs'
 
     - name: Upload Rockspecs
       env:
         GITHUB_TOKEN: ${{ secrets.TEAL_TYPES_BOT_PAT }}
       run: |
-        gh pr create -B master -H update/rockspecs --title 'Update rockspecs' --body-file ./scripts/updated-rockspecs.txt
+        git config user.name "teal-types-bot"
+        git config user.email "teal-types-bot@users.noreply.github.com"
+
+        BRANCH="update/rockspecs-${{ github.run_id }}"
+
+        git checkout -b "$BRANCH"
+        git add rockspecs scripts
+        git commit -m 'updated rockspecs'
+        
+        gh pr create -B master -H "$BRANCH" --title 'Generated rockspecs' --body-file ./scripts/updated-rockspecs.txt
