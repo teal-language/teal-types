@@ -44,4 +44,5 @@ jobs:
         git add rockspecs scripts
         git commit -m 'updated rockspecs'
 
-        gh pr create -B master --title 'Generated rockspecs' --body-file ./scripts/updated-rockspecs.txt
+        git push origin "$BRANCH"
+        gh pr create -B master -H "$BRANCH" --title 'Generated rockspecs' --body-file ./scripts/updated-rockspecs.txt
