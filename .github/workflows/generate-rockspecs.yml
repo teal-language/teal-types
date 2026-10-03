@@ -12,6 +12,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@master
+      with:
+        fetch-depth: 0
 
     - uses: luarocks/gh-actions-lua@master
       with:
