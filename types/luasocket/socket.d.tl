@@ -129,8 +129,8 @@ local record socket
    -- tagged records/Table Union types would be nice here,
    -- as this should be {TCP|UDP}
    -- but I imagine this should be fine for most uses
-   select: function({UDP}, {UDP}, integer): {UDP}, {UDP}, string
-   select: function({TCP}, {TCP}, integer): {TCP}, {TCP}, string
+   select: function({UDP}, {UDP}, number): {UDP}, {UDP}, string
+   select: function({TCP}, {TCP}, number): {TCP}, {TCP}, string
 
    enum SinkMode
       "http-chunked"
@@ -143,7 +143,7 @@ local record socket
 
    skip: function(integer, ...: any): any...
 
-   sleep: function(integer)
+   sleep: function(number)
 
    enum SourceMode
       "http-chunked"
