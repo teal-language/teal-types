@@ -5,6 +5,7 @@ on:
     branches: master
     paths:
       - types/**
+  workflow_dispatch: 
 
 jobs:
   Upload-Types:
